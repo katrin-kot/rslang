@@ -1,0 +1,5 @@
+.header {
+    display: flex;
+    grid-area: header;
+    grid-column: 1/-1;
+}

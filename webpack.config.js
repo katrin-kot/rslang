@@ -30,6 +30,7 @@ const config = {
     main: './src/pages/main/main.js',
     login: './src/pages/login/login.js',
     audioCall: './src/pages/audioCall/startPage.js',
+    stats: './src/pages/stats/stats.js',
     savanna: './src/pages/savanna/savanna.js',
     speakIt: './src/pages/speakIt/speakIt.js',
     settings: './src/pages/settings/settings.js',
@@ -229,6 +230,12 @@ const config = {
       template: 'src/pages/dictionary/dictionary.html',
       filename: './dictionary.html',
 
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang stats',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['stats'],
+      filename: './stats.html',
     }),
     new HtmlWebPackPlugin({
       title: 'RS lang',
