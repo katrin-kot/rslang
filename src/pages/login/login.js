@@ -70,6 +70,10 @@ const input = document.querySelectorAll('.validate-input .input');
 
 document.querySelector('.validate-form').addEventListener('submit', (event) => {
   event.preventDefault();
+  const errorText = document.querySelector('.error-text');
+  if (errorText) {
+    errorText.remove();
+  }
   let check = true;
 
   for (let i = 0; i < input.length; i += 1) {
@@ -84,10 +88,8 @@ document.querySelector('.validate-form').addEventListener('submit', (event) => {
       createUser({
         email: `${input[0].value}`,
         password: `${input[1].value}`,
-      });
-      document.querySelector('.password-valid').remove();
-      document.querySelector('.login-form-btn').textContent = 'Войти';
-      document.querySelector('.login-form-btn').classList.remove('sign-up');
+      }).catch((err) => renderError(err));
+      renderLogIn();
     }
   } else if (check) {
     loginUser({
@@ -119,6 +121,10 @@ document.querySelector('.btn-show-pass').addEventListener('click', () => {
 const txt2 = document.querySelector('.txt2');
 txt2.addEventListener('click', (event) => {
   event.preventDefault();
+  const errorText = document.querySelector('.error-text');
+  if (errorText) {
+    errorText.remove();
+  }
   const signUp = document.querySelector('.signUp');
   if (signUp) {
     renderSignUp();
