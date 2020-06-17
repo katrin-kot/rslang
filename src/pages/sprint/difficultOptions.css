@@ -1,0 +1,11 @@
+form {
+  background-color: brown;
+}
+
+label {
+  display: block;
+}
+
+label:hover {
+  opacity: 0.3;
+}
