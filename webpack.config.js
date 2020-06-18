@@ -2,14 +2,15 @@ const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 const ENV = process.env.npm_lifecycle_event;
-const isDev = ENV === 'dev';
+const isDev = ENV === 'start';
 const isProd = ENV === 'build';
 
 function setDevTool() {
   if (isDev) {
-    return 'eval-cheap-module-source-map';
+    return 'inline-source-map';
   }
   return 'none';
 }
@@ -163,8 +164,9 @@ const config = {
   },
 
   plugins: [
+    new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
-      filename: 'style.css',
+      filename: '[name].css',
     }),
     new HtmlWebPackPlugin({
       title: 'RS lang-main',
@@ -176,6 +178,7 @@ const config = {
       title: 'RS lang',
       favicon: './assets/images/favicon.ico',
       chunks: ['login'],
+      template: 'src/pages/login/login.html',
       filename: './index.html',
     }),
     new CopyWebpackPlugin([
