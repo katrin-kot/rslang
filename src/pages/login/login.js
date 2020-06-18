@@ -6,54 +6,22 @@ import { renderError } from './errors';
 
 const body = document.querySelector('body');
 body.innerHTML = `
-<div class="limiter">
-		<div class="container-login">
-			<div class="wrap-login">
-				<form class="login-form validate-form">
-					<span class="login-form-title">
-						Добро пожаловать!
-					</span>
-					<span class="login-form-title text-center">
-						<img class ="logo" src="/assets/images/logo.png" alt="logo">
-					</span>
-
-					<div class="wrap-input validate-input" data-validate = "Корректный адрес: a@b.c">
-						<input class="input" type="text" name="email">
-						<span class="focus-input" data-placeholder="Электронная почта"></span>
-					</div>
-
-					<div class="wrap-input validate-input" data-validate="Ошибка в пароле">
-						<span class="btn-show-pass">
-                        <span class="material-icons">
-                        visibility
-                        </span>
-						</span>
-						<input class="input" type="password" name="pass">
-						<span class="focus-input" data-placeholder="Пароль"></span>
-					</div>
-
-					<div class="container-login-form-btn">
-						<div class="wrap-login-form-btn">
-							<div class="login-form-bgbtn"></div>
-							<button class="login-form-btn">
-								Войти
-							</button>
-						</div>
-					</div>
-
-					<div class="text-center">
-						<span class="txt1">
-                        У вас нет аккаунта?
-						</span>
-
-						<a class="txt2 signUp" href="#">
-							Зарегистрироваться
-						</a>
-					</div>
-				</form>
-			</div>
-		</div>
-    </div>
+<div class="limiter"><div class="container-login"><div class="wrap-login">
+<form class="login-form validate-form"><span class="login-form-title">
+Добро пожаловать!</span><span class="login-form-title text-center">
+<img class ="logo" src="/assets/images/logo.png" alt="logo">
+</span><div class="wrap-input validate-input" data-validate = "Корректный адрес: a@b.c">
+<input class="input" type="text" name="email">
+<span class="focus-input" data-placeholder="Электронная почта"></span>
+</div><div class="wrap-input validate-input" data-validate="Ошибка в пароле">
+<span class="btn-show-pass"><span class="material-icons">visibility</span>
+</span><input class="input" type="password" name="pass">
+<span class="focus-input" data-placeholder="Пароль"></span>
+</div><div class="container-login-form-btn">
+<div class="wrap-login-form-btn"><div class="login-form-bgbtn"></div>
+<button class="login-form-btn">Войти</button>
+</div></div><div class="text-center"><span class="txt1">У вас нет аккаунта?</span>
+<a class="txt2 signUp" href="#">Зарегистрироваться</a></div></form></div></div></div>
 `;
 
 document.querySelectorAll('.input').forEach((elem) => {

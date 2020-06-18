@@ -23,7 +23,7 @@ export function validate(input) {
         .trim()
         .match(
           // eslint-disable-next-line no-useless-escape
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[+-_@$!%*?&#\.,;:\[\]\{\}]).{8,}$/,
+          /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[+\-_@$!%*?&#.,;:[\]{}])[0-9a-zA-Z+\-_@$!%*?&#.,;:[\]{}]{8,}/g,
         )
     ) {
       return false;
