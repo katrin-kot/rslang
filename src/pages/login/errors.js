@@ -17,7 +17,7 @@ export function renderError(error) {
   } else {
     btn.insertAdjacentHTML(
       'beforebegin',
-      `<p class = "error-text">${error}</p>`,
+      `<p class = "error-text">${error.message}</p>`,
     );
   }
 }
