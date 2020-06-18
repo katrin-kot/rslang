@@ -1,3 +1,8 @@
+.game-wrapper {
+  width: 50%;
+  min-width: 300px;
+}
+
 button {
   background-color: yellow;
 }

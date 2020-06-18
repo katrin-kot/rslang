@@ -1,5 +1,5 @@
-import './difficultOptions.css';
-import './reset.css';
+import difficultOptions from '../../components/main/difficultOptions/difficultOptions';
+//import './reset.css';
 class Result {
   constructor() {}
 }
@@ -19,25 +19,37 @@ class StartPage {
 
     body.appendChild(gameField);
 
-    gameField.insertAdjacentHTML('afterbegin', this.getDifficultOptions());
+    gameField.insertAdjacentHTML('afterbegin', difficultOptions());
     gameField.insertAdjacentHTML(
       'beforeEnd',
       this.getButton('start-button', 'START')
     );
+
     //this.addDifficultOptions(gameField);
     //this.addStartButton(gameField);
   }
 
   getDifficultOptions() {
     const form = `
-    <form action="difficult">
+    <form class="difficult-form" action="difficult">
     <p><b>Выберите уровень сложности слов:</b></p>
-     <label><input name="difficult" type="radio" value="0" checked>1</label>
-     <label><input name="difficult" type="radio" value="1">2</label>
-     <label><input name="difficult" type="radio" value="3">3</label>
-     <label><input name="difficult" type="radio" value="4">4</label>
-     <label><input name="difficult" type="radio" value="5">5</label>
-     <label><input name="difficult" type="radio" value="6">6</label>
+     <input id="radio-difficult-1" name="difficult" type="radio" value="0" checked>
+     <label class="label-difficult" for="radio-difficult-1">Базовый</label>
+     <br>
+     <input id="radio-difficult-2" name="difficult" type="radio" value="1">
+     <label class="label-difficult" for="radio-difficult-2">Лёгкий</label>
+     <br>
+     <input id="radio-difficult-3" name="difficult" type="radio" value="3">
+     <label class="label-difficult" for="radio-difficult-3">Простой</label>
+     <br>
+     <input id="radio-difficult-4" name="difficult" type="radio" value="4">
+     <label class="label-difficult" for="radio-difficult-4">Средний</label>
+     <br>
+     <input id="radio-difficult-5" name="difficult" type="radio" value="5">
+     <label class="label-difficult" for="radio-difficult-5">Сложный</label>
+     <br>
+     <input id="radio-difficult-6" name="difficult" type="radio" value="6">
+     <label class="label-difficult" for="radio-difficult-6">Максимальный</label>
    </form> `;
 
     return form;
