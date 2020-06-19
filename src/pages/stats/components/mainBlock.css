@@ -1,15 +1,20 @@
 .main-container {
     grid-area: gauge;
     grid-column: 1/-1;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 50%;
 }
 .course-completion {
     color: green;
 }
 
-.pie {
-    margin: 20px;
+.course-completion {
+    font-size: 1.5rem;
+    font-family: fantasy;
+    color: cadetblue;
 }
-
 .pie text{
     font-size: 3em;
     font-family: "Verdana";
