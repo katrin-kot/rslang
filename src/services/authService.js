@@ -12,7 +12,7 @@ export const loginUser = async (user) => {
   );
   const content = await rawResponse.json();
   localStorage.setItem('token', content.token);
-  localStorage.setItem('userID', content.userID);
+  localStorage.setItem('userID', content.userId);
 };
 
 export const createUser = async (user) => {
