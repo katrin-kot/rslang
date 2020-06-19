@@ -1,0 +1,17 @@
+.main-container {
+    grid-area: gauge;
+    grid-column: 1/-1;
+}
+.course-completion {
+    color: green;
+}
+
+.pie {
+    margin: 20px;
+}
+
+.pie text{
+    font-size: 3em;
+    font-family: "Verdana";
+    fill: #888;
+}
