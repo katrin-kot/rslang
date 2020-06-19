@@ -1,12 +1,125 @@
+body {
+  margin: 0px;
+}
+
 .game-wrapper {
-  width: 50%;
+  position: relative;
+  width: 30%;
   min-width: 300px;
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 25px;
+
+  border-radius: 25px;
+
+  background-color: rgba(250, 245, 196, 0.753);
+
+  box-shadow: 0px 0px 15px 15px rgb(223, 219, 186);
 }
 
-button {
-  background-color: yellow;
+.form-difficult {
+  margin: 20px;
 }
 
-button:hover {
-  box-shadow: 0px 0px 8px 4px rgba(34, 60, 80, 0.5);
+.start-button {
+  width: 100%;
+  display: block;
+  position: relative;
+  z-index: 1;
+  border-radius: 25px;
+  overflow: hidden;
+  margin: 10px auto;
+
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  width: 100%;
+  height: 50px;
+
+  cursor: pointer;
+  outline: none;
+  background: linear-gradient(to right, #0f7183, #21caaa);
+}
+
+.additonal-option {
+  position: relative;
+  width: 100%;
+  margin: 0px 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+input[type='checkbox'] {
+  display: none;
+}
+
+.additonal-option label:before {
+  display: inline-block;
+  content: '\2713';
+  color: rgba(0, 0, 0, 0);
+  height: 20px;
+  width: 20px;
+  background-color: #aaa;
+  box-shadow: inset 0px 2px 3px 0px rgba(0, 0, 0, 0.3),
+    0px 1px 0px 0px rgba(255, 255, 255, 0.8);
+  border-radius: 3px;
+  font-size: 16px;
+  font-size: 900;
+  text-align: center;
+}
+
+input[type='checkbox']:checked + label:before {
+  display: inline-block;
+  content: '\2713';
+  height: 20px;
+  width: 20px;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
+  font-size: 16px;
+  color: #f3f3f3;
+  font-size: 900;
+  text-align: center;
+}
+
+.additonal-option-hint {
+  display: inline-block;
+  height: 20px;
+  width: 20px;
+  border: 2px solid black;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.additonal-option-hint:before {
+  content: '?';
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  font-weight: 900;
+}
+
+.additonal-option-hint:hover::after {
+  content: attr(data-title);
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 5px;
+  z-index: 5;
+  background: rgba(0, 42, 167, 0.6);
+  color: #fff;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  padding: 5px 10px;
+  border: 1px solid #333;
 }
