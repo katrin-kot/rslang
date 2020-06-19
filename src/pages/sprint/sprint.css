@@ -54,7 +54,7 @@ body {
 .additonal-option {
   position: relative;
   width: 100%;
-  margin: 0px 20px;
+  margin: 5px 20px;
   display: flex;
   justify-content: space-between;
 }
