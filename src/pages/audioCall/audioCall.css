@@ -1,0 +1,45 @@
+.wrapper{
+  width: 100vw;
+  height: 100vh;
+  background: #5f2c82;  
+  background: -webkit-linear-gradient(to top, #49a09d, #5f2c82); 
+  background: linear-gradient(to top, #49a09d, #5f2c82);
+}
+body{
+  margin: 0;
+  padding: 0;
+}
+.start-page{
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  height: 200px;
+  width: 400px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -100px;
+  margin-left: -200px;
+}
+.start-page__title{
+  text-align: center;
+  font-weight: 400;
+  font-size: 31px;
+}
+.start-page__description{
+  text-align: center;
+  font-weight: 400;
+  font-size: 18px;
+  
+}
+.start-page__button{
+  font-weight: 400;
+  margin: 0 auto;
+  width: 130px;
+  height: 40px;
+  background-color: rgba(255,255,255,0.2);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
