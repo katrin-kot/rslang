@@ -13,6 +13,12 @@ class GameWindow {
 
     return button;
   }
+
+  addDivByClass(divClass, content = '') {
+    const div = `<div class="${divClass}">${content}</div>`;
+
+    return div;
+  }
 }
 
 class Result extends GameWindow {
@@ -106,9 +112,52 @@ class Result extends GameWindow {
 class Game extends GameWindow {
   constructor() {
     super();
+    this.buttonList = [
+      { class: 'wrong-answer-button', text: 'Неверно' },
+      { class: 'correct-answer-button', text: 'Верно' },
+    ];
   }
 
-  getPage() {}
+  getPage() {
+    const body = document.querySelector('body');
+    const gameField = document.createElement('div');
+
+    gameField.setAttribute('class', 'game-wrapper');
+
+    body.appendChild(gameField);
+
+    gameField.insertAdjacentHTML(
+      'beforebegin',
+      this.addDivByClass('game-score', 0)
+    );
+
+    gameField.insertAdjacentHTML(
+      'afterbegin',
+      this.addDivByClass('game-bonus')
+    );
+
+    gameField.insertAdjacentHTML('beforeend', this.addGameImage());
+
+    gameField.insertAdjacentHTML('beforeend', this.addDivByClass('game-word'));
+
+    gameField.insertAdjacentHTML(
+      'beforeend',
+      this.addDivByClass('game-translation')
+    );
+
+    gameField.insertAdjacentHTML('beforeend', '<hr>');
+
+    gameField.insertAdjacentHTML(
+      'beforeEnd',
+      this.addDivByClass('buttons-block', this.getButton(this.buttonList))
+    );
+  }
+
+  addGameImage() {
+    const image = `<img class="game-image" src="/assets/default-image.png">`;
+
+    return image;
+  }
 }
 
 class StartPage extends GameWindow {
@@ -176,6 +225,7 @@ class Builder {
 
   initialize() {
     this.startPage.getPage();
+    this.game.getPage();
     this.result.getPage();
   }
 }
