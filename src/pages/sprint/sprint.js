@@ -1,6 +1,6 @@
 import difficultOptions from '../../components/main/difficultOptions/difficultOptions';
 import './sprint.css';
-//import './reset.css';
+
 class GameWindow {
   constructor() {}
 
