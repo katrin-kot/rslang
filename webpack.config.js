@@ -27,6 +27,7 @@ const config = {
   entry: {
     main: './src/pages/main/main.js',
     login: './src/pages/login/login.js',
+    SRgame: './src/pages/SRgame/SRgame.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -179,6 +180,13 @@ const config = {
       favicon: './assets/images/favicon.ico',
       chunks: ['login'],
       template: 'src/pages/login/login.html',
+      filename: './index.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang SR game',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['SRgame'],
+      template: 'src/pages/SRgame/SRgame.html',
       filename: './index.html',
     }),
     new CopyWebpackPlugin([
