@@ -25,8 +25,9 @@ function setDMode() {
 const config = {
   target: 'web',
   entry: {
-    main: './src/pages/main/main.js',
-    login: './src/pages/login/login.js',
+    //main: './src/pages/main/main.js',
+    //login: './src/pages/login/login.js',
+    audioCall: './src/pages/audioCall/audioCall.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -168,18 +169,26 @@ const config = {
     new MiniCssExtractPlugin({
       filename: '[name].css',
     }),
+    // new HtmlWebPackPlugin({
+    //   title: 'RS lang-main',
+    //   favicon: './assets/images/favicon.ico',
+    //   chunks: ['main'],
+    //   filename: './main.html',
+    // }),
+    // new HtmlWebPackPlugin({
+    //   title: 'RS lang',
+    //   favicon: './assets/images/favicon.ico',
+    //   chunks: ['login'],
+    //   template: 'src/pages/login/login.html',
+    //   filename: './index.html',
+    // }),
+    
     new HtmlWebPackPlugin({
-      title: 'RS lang-main',
-      favicon: './assets/images/favicon.ico',
-      chunks: ['main'],
-      filename: './main.html',
-    }),
-    new HtmlWebPackPlugin({
-      title: 'RS lang',
-      favicon: './assets/images/favicon.ico',
-      chunks: ['login'],
-      template: 'src/pages/login/login.html',
-      filename: './index.html',
+      //title: 'RS lang-audioCall',
+      //favicon: './assets/images/favicon.ico',
+      //chunks: ['audioCall'],
+      template: 'src/pages/audioCall/audioCall.html',
+      //filename: './audioCall.html',
     }),
     new CopyWebpackPlugin([
       {
@@ -192,7 +201,7 @@ const config = {
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
-    port: 3000,
+    port: 8002,
     overlay: true,
     stats: 'errors-only',
     clientLogLevel: 'none',
