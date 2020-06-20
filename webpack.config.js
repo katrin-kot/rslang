@@ -28,6 +28,7 @@ const config = {
     main: './src/pages/main/main.js',
     login: './src/pages/login/login.js',
     speakIt: './src/pages/speakIt/speakIt.js',
+    settings: './src/pages/settings/settings.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -187,6 +188,13 @@ const config = {
       favicon: './assets/images/favicon.ico',
       chunks: ['speakIt'],
       filename: './speakIt.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['settings'],
+      template: 'src/pages/settings/settings.html',
+      filename: './settings.html',
     }),
     new CopyWebpackPlugin([
       {
