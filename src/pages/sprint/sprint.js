@@ -1,8 +1,23 @@
 import difficultOptions from '../../components/main/difficultOptions/difficultOptions';
 import './sprint.css';
 //import './reset.css';
-class Result {
+class GameWindow {
+  constructor() {}
+
+  getButton(description) {
+    const button = description.reduce((hypertext, option) => {
+      return (
+        hypertext + `<button class="${option.class}">${option.text}</button>`
+      );
+    }, '');
+
+    return button;
+  }
+}
+
+class Result extends GameWindow {
   constructor() {
+    super();
     this.buttonList = [
       { class: 'back-button', text: 'к списку заданий' },
       { class: 'repeat-button', text: 'повторить' },
@@ -40,16 +55,6 @@ class Result {
     );
   }
 
-  getButton(description) {
-    const button = description.reduce((hypertext, option) => {
-      return (
-        hypertext + `<button class="${option.class}">${option.text}</button>`
-      );
-    }, ''); //`<button class="${buttonClass}">${buttonText}</button>`;
-
-    return button;
-  }
-
   getResult(score = 0, statistic = []) {
     const result = `
       <div class="score">Ваш результат: ${score}</div>
@@ -58,7 +63,6 @@ class Result {
 
     return result;
   }
-  // Продолжить здесь!!!!!!
   getSortedStatistic(statistic = []) {
     const convertedStatistic = statistic.sort((firstWord, secondWord) => {
       return firstWord.wasCorrect < secondWord.wasCorrect ? 1 : -1;
@@ -66,7 +70,6 @@ class Result {
 
     const correctWords = convertedStatistic.filter((word) => word.wasCorrect);
     const wrongWords = convertedStatistic.filter((word) => !word.wasCorrect);
-    console.log(correctWords, wrongWords);
 
     const hyperText = `<div>${this.getCorrectWordsBlock(
       correctWords
@@ -100,12 +103,17 @@ class Result {
   }
 }
 
-class Game {
-  constructor() {}
+class Game extends GameWindow {
+  constructor() {
+    super();
+  }
+
+  getPage() {}
 }
 
-class StartPage {
+class StartPage extends GameWindow {
   constructor() {
+    super();
     this.additionOption = [
       {
         id: 'studied-words',
@@ -117,10 +125,11 @@ class StartPage {
       {
         id: 'use-cartoon',
         value: 'cartoon',
-        text: ' упрощённый с изображениями',
+        text: ' с изображениями',
         hint: 'В задании будут использоваться изображения английских слов.',
       },
     ];
+    this.buttonList = [{ class: 'start-button', text: 'START' }];
   }
 
   getPage() {
@@ -136,18 +145,7 @@ class StartPage {
       'beforeEnd',
       this.getOptionField(this.additionOption)
     );
-    gameField.insertAdjacentHTML(
-      'beforeEnd',
-      this.getButton('start-button', 'START')
-    );
-
-    console.log(this.getOptionField(this.additionOption));
-  }
-
-  getButton(buttonClass, buttonText) {
-    const button = `<button class="${buttonClass}">${buttonText}</button>`;
-
-    return button;
+    gameField.insertAdjacentHTML('beforeEnd', this.getButton(this.buttonList));
   }
 
   getOptionField(description) {
@@ -177,7 +175,7 @@ class Builder {
   }
 
   initialize() {
-    //this.startPage.getPage();
+    this.startPage.getPage();
     this.result.getPage();
   }
 }

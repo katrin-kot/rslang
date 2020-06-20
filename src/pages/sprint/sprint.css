@@ -16,7 +16,6 @@ body {
   font-family: 'Poppins', sans-serif;
   font-size: 15px;
   line-height: 1.2;
-  text-transform: uppercase;
   font-weight: 500;
 
   border-radius: 25px;
@@ -119,13 +118,14 @@ input[type='checkbox']:checked + label:before {
   right: 0;
   bottom: 5px;
   z-index: 5;
-  background: rgba(0, 42, 167, 0.6);
+  background: rgba(0, 42, 167, 0.8);
   color: #fff;
   text-align: center;
   font-family: Arial, sans-serif;
   font-size: 16px;
   padding: 5px 10px;
   border: 1px solid #333;
+  border-radius: 5px;
 }
 
 /* Result */
