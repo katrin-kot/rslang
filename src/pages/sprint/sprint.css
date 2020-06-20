@@ -13,6 +13,12 @@ body {
   justify-content: center;
   padding: 25px;
 
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  font-weight: 500;
+
   border-radius: 25px;
 
   background-color: rgba(250, 245, 196, 0.753);
@@ -28,7 +34,6 @@ body {
   width: 100%;
   display: block;
   position: relative;
-  z-index: 1;
   border-radius: 25px;
   overflow: hidden;
   margin: 10px auto;
@@ -43,7 +48,6 @@ body {
   justify-content: center;
   align-items: center;
   padding: 0 20px;
-  width: 100%;
   height: 50px;
 
   cursor: pointer;
@@ -122,4 +126,110 @@ input[type='checkbox']:checked + label:before {
   font-size: 16px;
   padding: 5px 10px;
   border: 1px solid #333;
+}
+
+/* Result */
+
+.score {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 20px;
+  text-align: center;
+}
+
+.statistic {
+  width: 100%;
+  margin: 25px;
+  max-height: 200px;
+  overflow: auto;
+  text-transform: none;
+}
+
+.correct-words-count,
+.wrong-words-count {
+  display: inline-flex;
+  border-radius: 10px;
+  padding: 2px 8px;
+}
+
+.correct-words-count {
+  background-color: yellowgreen;
+  border-top-right-radius: 2px;
+}
+
+.wrong-words-count {
+  background-color: orangered;
+  border-bottom-left-radius: 2px;
+}
+
+.word-audio {
+  display: inline-flex;
+  width: 20px;
+  height: 20px;
+  padding-right: 20px;
+  background-image: url('/assets/images/speaker.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+.word {
+  font-weight: 700;
+}
+
+.word-translation {
+  color: #aaa;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+.buttons-block {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.back-button,
+.repeat-button,
+.parameters-button {
+  width: 60%;
+  display: block;
+  position: relative;
+  border-radius: 25px;
+  overflow: hidden;
+  margin: 10px auto;
+
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+  font-weight: 500;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  height: 50px;
+
+  cursor: pointer;
+  outline: none;
+  background: linear-gradient(to right, #0f7183, #21caaa);
+}
+
+.repeat-button,
+.parameters-button {
+  width: 45%;
 }
