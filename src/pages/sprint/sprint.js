@@ -1,6 +1,53 @@
 import difficultOptions from '../../components/main/difficultOptions/difficultOptions';
 import './sprint.css';
 
+class CountdownTimer {
+  constructor() {}
+
+  renderTimer() {
+    const canvas = document.querySelector('.countdown-timer');
+    canvas.width = 150;
+    canvas.height = 150;
+    const ctx = canvas.getContext('2d');
+
+    ctx.beginPath();
+    ctx.arc(75, 75, 50, 0, 2 * Math.PI);
+    ctx.lineWidth = 8;
+    ctx.strokeStyle = 'blue';
+    ctx.stroke();
+    ctx.font = '30px Arial';
+    ctx.fillText('60', canvas.width / 2 - 15, canvas.height / 2 + 10);
+  }
+
+  updateTimer(seconds) {
+    const canvas = document.querySelector('.countdown-timer');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = 150;
+    canvas.height = 150;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.beginPath();
+    ctx.arc(75, 75, 50, 0, 2 * Math.PI);
+    ctx.lineWidth = 8;
+    ctx.strokeStyle = 'blue';
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.arc(
+      75,
+      75,
+      50,
+      -Math.PI / 2,
+      -Math.PI / 2 + (6 * seconds * Math.PI) / 180
+    );
+    ctx.lineWidth = 8;
+    ctx.strokeStyle = 'grey';
+    ctx.stroke();
+    ctx.font = '30px Arial';
+    ctx.fillText(60 - seconds, canvas.width / 2 - 15, canvas.height / 2 + 10);
+  }
+}
 class GameWindow {
   constructor() {}
 
@@ -18,6 +65,17 @@ class GameWindow {
     const div = `<div class="${divClass}">${content}</div>`;
 
     return div;
+  }
+
+  clearGameWindow() {
+    const elements = [
+      document.querySelector('.game-wrapper'),
+      document.querySelector('.game-score'),
+    ];
+
+    elements.forEach((element) => {
+      element.remove();
+    });
   }
 }
 
@@ -112,6 +170,7 @@ class Result extends GameWindow {
 class Game extends GameWindow {
   constructor() {
     super();
+    this.timer = new CountdownTimer();
     this.buttonList = [
       { class: 'wrong-answer-button', text: 'Неверно' },
       { class: 'correct-answer-button', text: 'Верно' },
@@ -131,12 +190,16 @@ class Game extends GameWindow {
       this.addDivByClass('game-score', 0)
     );
 
+    const gameScore = document.querySelector('.game-score');
+
+    gameScore.insertAdjacentHTML('afterbegin', this.getCanvas());
+
     gameField.insertAdjacentHTML(
       'afterbegin',
       this.addDivByClass('game-bonus')
     );
 
-    gameField.insertAdjacentHTML('beforeend', this.addGameImage());
+    gameField.insertAdjacentHTML('beforeend', this.getGameImage());
 
     gameField.insertAdjacentHTML('beforeend', this.addDivByClass('game-word'));
 
@@ -151,12 +214,33 @@ class Game extends GameWindow {
       'beforeEnd',
       this.addDivByClass('buttons-block', this.getButton(this.buttonList))
     );
+
+    this.activateTimer();
   }
 
-  addGameImage() {
+  activateTimer() {
+    let seconds = 0;
+    this.timer.renderTimer();
+    let timerId = setInterval(
+      () => this.timer.updateTimer((seconds += 1)),
+      1000
+    );
+    setTimeout(() => {
+      clearInterval(timerId);
+      //this.clearGameWindow();
+    }, 60000);
+  }
+
+  getGameImage() {
     const image = `<img class="game-image" src="/assets/default-image.png">`;
 
     return image;
+  }
+
+  getCanvas() {
+    const canvas = `<canvas class="countdown-timer"></canvas>`;
+
+    return canvas;
   }
 }
 
