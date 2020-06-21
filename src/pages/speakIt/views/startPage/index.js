@@ -1,24 +1,25 @@
-import View from '../view';
+import createNode from '../createNodeHelper';
 
-class StartPageView extends View {
+class StartPageView {
   constructor() {
-    super();
-    this.startWindow = this.createElement('div', 'speakIt__start-window');
+    this.appContainer = createNode('div', 'app-speakIt');
 
-    this.title = this.createElement('h1', 'speakIt__title');
+    this.startWindow = createNode('div', 'speakIt__start-window');
+
+    this.title = createNode('h1', 'speakIt__title');
     this.title.innerText = 'speakit';
 
-    this.descriptionGame = this.createElement('p', 'speakIt__description');
+    this.descriptionGame = createNode('p', 'speakIt__description');
     this.descriptionGame.innerText = 'Click on the words to hear them sound. Click on the button and speak the words into the microphone.';
 
-    this.startBtn = this.createElement('button', 'btn-start');
+    this.startBtn = createNode('button', 'speakIt__btn-start');
     this.startBtn.innerText = 'Start game';
   }
 
   render() {
-    document.body.append(this.appContainer);
     this.startWindow.append(this.title, this.descriptionGame, this.startBtn);
     this.appContainer.append(this.startWindow);
+    document.body.append(this.appContainer);
     this.hideStartWindow();
   }
 
