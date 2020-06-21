@@ -22,7 +22,7 @@
   pointer-events: none;
 }
 
-.btn-start {
+.speakIt__btn-start {
   animation: blur .75s ease-out infinite;
   width: 150px;
   height: 50px;
@@ -35,15 +35,15 @@
   transition: all .4s;
 }
 
-.btn-start:hover {
+.speakIt__btn-start:hover {
   animation: blurBlack .75s ease-out infinite;
   background: rgba(255, 255, 255, 0.5);
   color: #000;
   border: 1px solid #fff;
 }
 
-.btn-start:focus,
-.btn-start:active {
+.speakIt__btn-start:focus,
+.speakIt__btn-start:active {
   outline: 0;
   outline-offset: 0;
 }
