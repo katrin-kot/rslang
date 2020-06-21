@@ -42,6 +42,7 @@ export default class CountdownTimer {
 
     this.drawSeconds(seconds);
   }
+
   drawSeconds(seconds = 0) {
     const canvas = document.querySelector('.countdown-timer');
     const ctx = canvas.getContext('2d');
@@ -49,7 +50,7 @@ export default class CountdownTimer {
     const coordinateX =
       second < 10 ? canvas.width / 2 - 6 : canvas.width / 2 - 15;
     const coordinateY = canvas.height / 2 + 10;
-    //const
+
     ctx.font = '30px Arial';
     ctx.fillText(second, coordinateX, coordinateY);
   }
