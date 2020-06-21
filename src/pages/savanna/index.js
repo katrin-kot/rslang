@@ -1,20 +1,24 @@
 import View from './view'
-
+import createNode from './createNode'
 class StartPageView extends View {
     constructor() {
       super()
 
-      this.topButtonsWrapper = this.createElement('div', 'wrapper', 'wrapper--top-buttons')
+      this.appContainer = createNode('div', 'savanna');
 
-      this.exitButton = this.createElement('button', 'button', 'button--return')
+      this.app.append(this.appContainer)
+
+      this.topButtonsWrapper = createNode('div', 'wrapper', 'wrapper--top-buttons')
+
+      this.exitButton = createNode('button', 'button', 'button--return')
       
 
-      this.startContainer = this.createElement('div', 'container')
-      this.title = this.createElement('h1', 'savanna__title')
+      this.startContainer = createNode('div', 'container')
+      this.title = createNode('h1', 'savanna__title')
       this.title.textContent = 'Саванна'
-      this.descriptionGame = this.createElement('p', 'savanna__description')
+      this.descriptionGame = createNode('p', 'savanna__description')
       this.descriptionGame.textContent = 'Тренировка Саванна развивает словарный запас. Чем больше слов ты знаешь, тем больше очков опыта получишь'
-      this.buttonStartGame = this.createElement('button', 'button', 'button--start')
+      this.buttonStartGame = createNode('button', 'button', 'button--start')
       this.buttonStartGame.textContent = 'Начать'
     }
   
@@ -46,9 +50,9 @@ class StartPageView extends View {
 
     displayGame() {
         // отображение обратного отсчета
-        this.awaitBlock = this.createElement('div', 'await-block')
-        this.keyboardImage = this.createElement('div', 'keyboard-image')
-        this.promt = this.createElement('p', 'promt-text')
+        this.awaitBlock = createNode('div', 'await-block')
+        this.keyboardImage = createNode('div', 'await-block__keyboard')
+        this.promt = createNode('p', 'await-block__promt')
         this.promt.textContent = 'Используйте клавишы 1, 2, 3 и 4, чтобы дать быстрый ответ'
 
         this.awaitBlock.append(this.keyboardImage, this.promt)
@@ -62,7 +66,7 @@ class StartPageView extends View {
     }
 
     updateBody() {
-        this.soundToggle = this.createElement('button', 'button', 'button--sound')
+        this.soundToggle = createNode('button', 'button', 'button--sound')
 
         this.soundToggle.addEventListener('click', event => {
             event.preventDefault()
@@ -72,21 +76,21 @@ class StartPageView extends View {
             // + добавить отключение/включение звуков
         })
 
-        this.lifesWrapper = this.createElement('div', 'life-wrapper')
+        this.lifesWrapper = createNode('div', 'life-wrapper')
         for (let i = 0; i < 5; i++) {
-            const heartIcon = this.createElement('div', 'heart-icon')
+            const heartIcon = createNode('div', 'heart-icon')
             heartIcon.setAttribute('data-heart', `${i + 1}`)
             this.lifesWrapper.append(heartIcon)
         }
 
         this.topButtonsWrapper.prepend(this.soundToggle, this.lifesWrapper)
 
-        this.gameBlock = this.createElement('div', 'game-block')
-        this.engWord = this.createElement('button', 'button', 'button--english')
+        this.gameBlock = createNode('div', 'game-block')
+        this.engWord = createNode('button', 'button', 'button--english')
 
-        this.rusAnswersSection = this.createElement('div', 'answer-wrapper')
+        this.rusAnswersSection = createNode('div', 'answer-wrapper')
         for (let i = 0; i < 4; i++) {
-            const answerButton = this.createElement('button', 'button', 'button--rus')
+            const answerButton = createNode('button', 'button', 'button--rus')
             answerButton.setAttribute('data-answer', `${i + 1}`)
             this.rusAnswersSection.append(answerButton)
         }

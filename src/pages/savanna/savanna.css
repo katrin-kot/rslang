@@ -1,3 +1,100 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    background-size: cover;
+    background-image: url('/assets/images/savanna-bg.png');
+    background-repeat: no-repeat;
+}
+
+.wrapper {
+    padding: 10px;
+    display: flex;
+}
+
+.button {
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+.button--return {
+    margin-left: auto;
+    width: 40px;
+    height: 40px;
+    background-image: url('/assets/images/cross.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.button--start {
+    margin: 0 auto;
+    padding: 10px 40px;
+    max-width: max-content;
+    font-size: 24px;
+    font-weight: 300;
+    color: #fff;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border-radius: 5px;
+    background-color: #412C84;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #200772;
+}
+
+.savanna__title {
+    margin-top: 200px;
+    font-size: 40px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 13px;
+    text-align: center;
+    opacity: .8;
+}
+
+.savanna__description {
+    margin: 50px auto;
+    max-width: 585px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    opacity: .8;
+}
+
+.await-block {
+    padding-top: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+}
+
+.await-block__keyboard {
+    margin: 0 auto;
+    width: 100px;
+    height: 100px;
+    background-image: url('/assets/images/keyboard.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.await-block__promt {
+    margin: 0 auto;
+    max-width: 260px;
+    text-align: center;
+}
+
 .hidden {
     display: none;
 }
