@@ -1,5 +1,6 @@
 import GameWindow from './gameWindow';
 import CountdownTimer from './timer';
+import Result from './result';
 
 export default class Game extends GameWindow {
   constructor() {
@@ -49,6 +50,7 @@ export default class Game extends GameWindow {
       this.addDivByClass('buttons-block', this.getButton(this.buttonList))
     );
 
+    this.listenToButtonsClick();
     this.activateTimer();
   }
 
@@ -61,7 +63,7 @@ export default class Game extends GameWindow {
     );
     setTimeout(() => {
       clearInterval(timerId);
-      //this.clearGameWindow();
+      this.openResultPage(new Result());
     }, 60000);
   }
 
@@ -75,5 +77,15 @@ export default class Game extends GameWindow {
     const canvas = `<canvas class="countdown-timer"></canvas>`;
 
     return canvas;
+  }
+
+  listenToButtonsClick() {
+    const buttons = document.querySelector('.buttons-block');
+
+    buttons.addEventListener('click', (event) => {
+      if (event.target.tagName === 'BUTTON') {
+        console.log(event.target.classList);
+      }
+    });
   }
 }

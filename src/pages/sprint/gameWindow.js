@@ -1,6 +1,15 @@
 export default class GameWindow {
   constructor() {}
 
+  getPage() {
+    const body = document.querySelector('body');
+    const gameField = document.createElement('div');
+
+    gameField.setAttribute('class', 'game-wrapper');
+
+    body.appendChild(gameField);
+  }
+
   getButton(description) {
     const button = description.reduce((hypertext, option) => {
       return (
@@ -24,7 +33,37 @@ export default class GameWindow {
     ];
 
     elements.forEach((element) => {
-      element.remove();
+      if (element !== null) {
+        element.remove();
+      }
     });
+  }
+
+  getAudio() {
+    const audio = `<audio src="">`;
+  }
+
+  openStartPage(startPage) {
+    this.clearGameWindow();
+
+    startPage.getPage();
+  }
+
+  redirectToMainPage() {
+    this.clearGameWindow();
+
+    location.replace('http://localhost:3000/main.html');
+  }
+
+  openGamePage(game) {
+    this.clearGameWindow();
+
+    game.getPage();
+  }
+
+  openResultPage(result) {
+    this.clearGameWindow();
+
+    result.getPage();
   }
 }

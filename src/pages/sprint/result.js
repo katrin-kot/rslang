@@ -1,4 +1,6 @@
 import GameWindow from './gameWindow';
+import Game from './game';
+import StartPage from './startPage';
 
 export default class Result extends GameWindow {
   constructor() {
@@ -38,6 +40,8 @@ export default class Result extends GameWindow {
       'beforeEnd',
       `<div class="buttons-block">${this.getButton(this.buttonList)}</div>`
     );
+
+    this.listenToButtonsClick();
   }
 
   getResult(score = 0, statistic = []) {
@@ -85,5 +89,25 @@ export default class Result extends GameWindow {
           <span class="word">${word.word}</span>
           <span class="word-translation"> — ${word.translation}</span>
         </div>`;
+  }
+
+  listenToButtonsClick() {
+    const buttons = document.querySelector('.buttons-block');
+
+    buttons.addEventListener('click', (event) => {
+      if (event.target.tagName === 'BUTTON') {
+        if (event.target.classList.contains('parameters-button')) {
+          this.openStartPage(new StartPage());
+        }
+
+        if (event.target.classList.contains('back-button')) {
+          this.redirectToMainPage();
+        }
+
+        if (event.target.classList.contains('repeat-button')) {
+          this.openGamePage(new Game());
+        }
+      }
+    });
   }
 }

@@ -1,5 +1,6 @@
 import difficultOptions from '../../components/main/difficultOptions/difficultOptions';
 import GameWindow from './gameWindow';
+import Game from './game';
 
 export default class StartPage extends GameWindow {
   constructor() {
@@ -35,7 +36,12 @@ export default class StartPage extends GameWindow {
       'beforeEnd',
       this.getOptionField(this.additionOption)
     );
-    gameField.insertAdjacentHTML('beforeEnd', this.getButton(this.buttonList));
+    gameField.insertAdjacentHTML(
+      'beforeEnd',
+      `<div class="buttons-block">${this.getButton(this.buttonList)}</div>`
+    );
+
+    this.listenToButtonsClick();
   }
 
   getOptionField(description) {
@@ -54,5 +60,17 @@ export default class StartPage extends GameWindow {
     }, '');
 
     return additionOptions;
+  }
+
+  listenToButtonsClick() {
+    const buttons = document.querySelector('.buttons-block');
+
+    buttons.addEventListener('click', (event) => {
+      if (event.target.tagName === 'BUTTON') {
+        if (event.target.classList.contains('start-button')) {
+          this.openGamePage(new Game());
+        }
+      }
+    });
   }
 }
