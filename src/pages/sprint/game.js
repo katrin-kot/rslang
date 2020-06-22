@@ -5,6 +5,9 @@ import Result from './result';
 export default class Game extends GameWindow {
   constructor() {
     super();
+    this.difficult = localStorage.difficultSprint;
+    this.useCartoons = localStorage.cartoonSprint;
+    this.useStudied = localStorage.studiedSprint;
     this.timer = new CountdownTimer();
     this.buttonList = [
       { class: 'wrong-answer-button', text: 'Неверно' },
@@ -135,10 +138,10 @@ export default class Game extends GameWindow {
     });
   }
 
-  async getWordsByServer(group = 0) {
+  async getWordsByServer() {
     const randomPage = this.randomNumber();
     const rawResponse = await fetch(
-      `https://afternoon-falls-25894.herokuapp.com/words?page=${randomPage}&group=${group}`
+      `https://afternoon-falls-25894.herokuapp.com/words?page=${randomPage}&group=${this.difficult}`
     );
 
     const content = await rawResponse.json();
