@@ -54,7 +54,7 @@ body {
   background: linear-gradient(to right, #0f7183, #21caaa);
 }
 
-.additonal-option {
+.additional-option {
   position: relative;
   width: 100%;
   margin: 5px 20px;
@@ -66,7 +66,7 @@ input[type='checkbox'] {
   display: none;
 }
 
-.additonal-option label:before {
+.additional-option label:before {
   display: inline-block;
   content: '\2713';
   color: rgba(0, 0, 0, 0);

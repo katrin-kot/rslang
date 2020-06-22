@@ -12,12 +12,14 @@ export default class StartPage extends GameWindow {
         text: ' только изученные слова',
         hint:
           'В задании будут использоваться ранее изученные слова. При их отсутствии или нехватке, вам будут добавлены новые слова того же уровня сложности.',
+        checked: 'checked',
       },
       {
         id: 'use-cartoon',
         value: 'cartoon',
         text: ' с изображениями',
         hint: 'В задании будут использоваться изображения английских слов.',
+        checked: '',
       },
     ];
     this.buttonList = [{ class: 'start-button', text: 'START' }];
@@ -41,7 +43,10 @@ export default class StartPage extends GameWindow {
       `<div class="buttons-block">${this.getButton(this.buttonList)}</div>`
     );
 
+    this.setDefaultOptions();
     this.listenToButtonsClick();
+    this.listenToChangeDifficult();
+    this.listenToAdditionalOptions();
   }
 
   getOptionField(description) {
@@ -49,8 +54,8 @@ export default class StartPage extends GameWindow {
       return (
         hypertext +
         `
-        <div class="additonal-option">
-          <input id="${option.id}" type="checkbox" name="check" value="${option.value}">
+        <div class="additional-option">
+          <input id="${option.id}" type="checkbox" name="check" value="${option.value}" ${option.checked}>
           <label for="${option.id}">${option.text}</label>
           <div class="additonal-option-hint" data-title="${option.hint}">
           </div>
@@ -71,6 +76,42 @@ export default class StartPage extends GameWindow {
           this.openGamePage(new Game());
         }
       }
+    });
+  }
+
+  setDefaultOptions() {
+    localStorage.setItem('difficultSprint', 0);
+    localStorage.setItem('studiedSprint', true);
+    localStorage.setItem('cartoonSprint', false);
+  }
+
+  listenToChangeDifficult() {
+    const form = document.querySelector('.form-difficult');
+
+    form.addEventListener('click', () => {
+      const inputElements = form.querySelectorAll('input');
+
+      inputElements.forEach((item) => {
+        if (item.checked) {
+          localStorage.setItem('difficultSprint', item.value);
+        }
+      });
+    });
+  }
+
+  listenToAdditionalOptions() {
+    const additionalOptions = document.querySelectorAll(
+      '.additional-option input'
+    );
+
+    additionalOptions.forEach((option) => {
+      option.addEventListener('click', (event) => {
+        if (event.target.checked) {
+          localStorage.setItem(`${event.target.value}Sprint`, true);
+        } else {
+          localStorage.setItem(`${event.target.value}Sprint`, false);
+        }
+      });
     });
   }
 }

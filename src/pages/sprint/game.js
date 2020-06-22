@@ -3,10 +3,8 @@ import CountdownTimer from './timer';
 import Result from './result';
 
 export default class Game extends GameWindow {
-  constructor(difficult, options) {
+  constructor() {
     super();
-    this.difficult = difficult;
-    this.options = options;
     this.timer = new CountdownTimer();
     this.buttonList = [
       { class: 'wrong-answer-button', text: 'Неверно' },
