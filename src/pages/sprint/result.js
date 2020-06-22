@@ -3,27 +3,18 @@ import Game from './game';
 import StartPage from './startPage';
 
 export default class Result extends GameWindow {
-  constructor() {
+  constructor(gameScore) {
     super();
+    this.gameScore = gameScore;
     this.buttonList = [
       { class: 'back-button', text: 'к списку заданий' },
       { class: 'repeat-button', text: 'повторить' },
       { class: 'parameters-button', text: 'параметры' },
     ];
-    this.statistic = [
-      { word: 'qwe', translation: 'йцу', wasCorrect: false },
-      { word: 'qwerty', translation: 'йцукен', wasCorrect: true },
-      { word: 'qwer', translation: 'йцук', wasCorrect: false },
-      { word: 'qwe', translation: 'йцу', wasCorrect: false },
-      { word: 'qwerty', translation: 'йцукен', wasCorrect: true },
-      { word: 'qwer', translation: 'йцук', wasCorrect: false },
-      { word: 'qwe', translation: 'йцу', wasCorrect: false },
-      { word: 'qwerty', translation: 'йцукен', wasCorrect: true },
-      { word: 'qwer', translation: 'йцук', wasCorrect: false },
-    ];
   }
 
   getPage() {
+    console.log(this.gameScore);
     const body = document.querySelector('body');
     const gameField = document.createElement('div');
 
@@ -44,50 +35,50 @@ export default class Result extends GameWindow {
     this.listenToButtonsClick();
   }
 
-  getResult(score = 0, statistic = []) {
+  getResult(score = 0) {
     const result = `
         <div class="score">Ваш результат: ${score}</div>
-        <div class="statistic">${this.getSortedStatistic(statistic)}</div>
+        <div class="statistic">${this.getSortedStatistic()}</div>
       `;
 
     return result;
   }
-  getSortedStatistic(statistic = []) {
-    const convertedStatistic = statistic.sort((firstWord, secondWord) => {
-      return firstWord.wasCorrect < secondWord.wasCorrect ? 1 : -1;
-    });
+  getSortedStatistic() {
+    const hyperText = `<div>${this.getCorrectWordsBlock()}<hr>${this.getWrongWordsBlock()}</div>`;
 
-    const correctWords = convertedStatistic.filter((word) => word.wasCorrect);
-    const wrongWords = convertedStatistic.filter((word) => !word.wasCorrect);
-
-    const hyperText = `<div>${this.getCorrectWordsBlock(
-      correctWords
-    )}<hr>${this.getWrongWordsBlock(wrongWords)}</div>`;
     return hyperText;
   }
 
-  getCorrectWordsBlock(words) {
+  getCorrectWordsBlock() {
     return `
         <div class="correct-words">
-          Знаю <span class="correct-words-count">${words.length}</span>
-            ${words.map((word) => this.getWordStatisticLine(word)).join('')}
+          Знаю <span class="correct-words-count">${
+            this.gameScore.correctWords.length
+          }</span>
+            ${this.gameScore.correctWords
+              .map((word) => this.getWordStatisticLine(word))
+              .join('')}
         </div>`;
   }
 
-  getWrongWordsBlock(words) {
+  getWrongWordsBlock() {
     return `
       <div class="wrong-words">
-        Ошибок <span class="wrong-words-count">${words.length}</span>
-          ${words.map((word) => this.getWordStatisticLine(word)).join('')}
+        Ошибок <span class="wrong-words-count">${
+          this.gameScore.wrongWords.length
+        }</span>
+          ${this.gameScore.wrongWords
+            .map((word) => this.getWordStatisticLine(word))
+            .join('')}
       </div>`;
   }
 
   getWordStatisticLine(word) {
     return `
         <div>
-          <span class="word-audio"></span>
+          <span class="word-audio" data-source="${word.audioExample}"></span>
           <span class="word">${word.word}</span>
-          <span class="word-translation"> — ${word.translation}</span>
+          <span class="word-translation"> — ${word.wordTranslate}</span>
         </div>`;
   }
 
@@ -108,6 +99,16 @@ export default class Result extends GameWindow {
           this.openGamePage(new Game());
         }
       }
+    });
+  }
+
+  listenToSpeakerClick() {
+    const speakers = document.querySelectorAll('.word-audio');
+
+    speakers.forEach((speaker) => {
+      speaker.addEventListener('click', (event) => {
+        console.log(event.target.classList);
+      });
     });
   }
 }
