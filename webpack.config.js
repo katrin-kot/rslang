@@ -27,6 +27,7 @@ const config = {
   entry: {
     main: './src/pages/main/main.js',
     login: './src/pages/login/login.js',
+    speakIt: './src/pages/speakIt/speakIt.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -180,6 +181,12 @@ const config = {
       chunks: ['login'],
       template: 'src/pages/login/login.html',
       filename: './index.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang-speakIt',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['speakIt'],
+      filename: './speakIt.html',
     }),
     new CopyWebpackPlugin([
       {
