@@ -22,10 +22,7 @@ export default class Result extends GameWindow {
 
     body.appendChild(gameField);
 
-    gameField.insertAdjacentHTML(
-      'afterbegin',
-      this.getResult(1, this.statistic)
-    );
+    gameField.insertAdjacentHTML('afterbegin', this.getResult());
 
     gameField.insertAdjacentHTML(
       'beforeEnd',
@@ -35,9 +32,9 @@ export default class Result extends GameWindow {
     this.listenToButtonsClick();
   }
 
-  getResult(score = 0) {
+  getResult() {
     const result = `
-        <div class="score">Ваш результат: ${score}</div>
+        <div class="score">Ваш результат: ${this.gameScore.score}</div>
         <div class="statistic">${this.getSortedStatistic()}</div>
       `;
 

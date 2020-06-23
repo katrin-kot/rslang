@@ -21,7 +21,7 @@ export default class GameWindow {
   }
 
   addDivByClass(divClass, content = '') {
-    const div = `<div class="${divClass}">${content}</div>`;
+    const div = `<div class="${divClass}"><span>${content}<span></div>`;
 
     return div;
   }

@@ -156,6 +156,10 @@ export default class Game extends GameWindow {
       (!this.lastResult && answer.contains('wrong-answer-button'))
     ) {
       this.updateCorrectWords();
+      this.correctQueue += 1;
+      this.updateScore();
+    } else {
+      this.correctQueue = 0;
     }
   }
 
@@ -198,5 +202,26 @@ export default class Game extends GameWindow {
 
   updateCorrectWords() {
     this.words.correctWords.push(this.words.wrongWords.pop());
+  }
+
+  updateScore() {
+    const currentScore = document.querySelector('.game-score span');
+
+    this.words.score += this.calculateScore();
+    currentScore.innerText = this.words.score;
+  }
+
+  calculateScore() {
+    const multiply = Math.floor(this.correctQueue / 4);
+
+    let addedScore = 20;
+
+    if (multiply >= 2) {
+      addedScore = 80;
+    } else if (multiply === 1) {
+      addedScore = 40;
+    }
+
+    return addedScore;
   }
 }
