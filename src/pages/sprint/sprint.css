@@ -266,11 +266,17 @@ hr {
 }
 
 .word {
+  vertical-align: top;
   font-weight: 700;
+  display: inline-flex;
+  padding-top: 2px;
 }
 
 .word-translation {
+  vertical-align: top;
   color: #aaa;
+  display: inline-flex;
+  padding-top: 2px;
 }
 
 ::-webkit-scrollbar {
