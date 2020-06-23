@@ -21,7 +21,7 @@ body {
 
   border-radius: 25px;
 
-  background-color: #d6d4e1;
+  background-color: #f6ecee;
 }
 
 .form-difficult {
@@ -49,15 +49,26 @@ body {
   cursor: pointer;
   outline: none;
   background: linear-gradient(to right, #81a4b4, #cde2e9);
+
   border: none;
+}
+
+.start-button:hover {
+  box-shadow: 0px 0px 8px 0px #81a4b4;
 }
 
 .additional-option {
   position: relative;
   width: 100%;
-  margin: 5px 20px;
+  margin: 5px 15px;
+  padding: 5px 5px 2px 5px;
   display: flex;
   justify-content: space-between;
+}
+
+.additional-option:hover {
+  background-color: hsla(0, 0%, 100%, 0.5);
+  border-radius: 5px;
 }
 
 input[type='checkbox'] {
@@ -77,6 +88,7 @@ input[type='checkbox'] {
   font-size: 16px;
   font-size: 900;
   text-align: center;
+  cursor: pointer;
 }
 
 input[type='checkbox']:checked + label:before {
@@ -147,7 +159,7 @@ input[type='checkbox']:checked + label:before {
   background-color: #fff;
   border-top-right-radius: 25px;
   border-top-left-radius: 25px;
-  background-color: yellowgreen;
+  background-color: #d6d4e1;
 }
 
 .countdown-timer {
@@ -200,6 +212,11 @@ hr {
   outline: none;
   background: linear-gradient(to right, #81a4b4, #cde2e9);
   border: none;
+}
+
+.wrong-answer-button:hover,
+.correct-answer-button:hover {
+  box-shadow: 0px 0px 8px 0px #81a4b4;
 }
 
 /* Result */
@@ -301,6 +318,12 @@ hr {
   outline: none;
   background: linear-gradient(to right, #81a4b4, #cde2e9);
   border: none;
+}
+
+.back-button:hover,
+.repeat-button:hover,
+.parameters-button:hover {
+  box-shadow: 0px 0px 8px 0px #81a4b4;
 }
 
 .repeat-button,
