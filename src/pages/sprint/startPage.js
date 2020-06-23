@@ -57,7 +57,7 @@ export default class StartPage extends GameWindow {
         <div class="additional-option">
           <input id="${option.id}" type="checkbox" name="check" value="${option.value}" ${option.checked}>
           <label for="${option.id}">${option.text}</label>
-          <div class="additonal-option-hint" data-title="${option.hint}">
+          <div class="additional-option-hint" data-title="${option.hint}">
           </div>
         </div>
         `
