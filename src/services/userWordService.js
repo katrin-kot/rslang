@@ -26,9 +26,6 @@ export const getAllUserWords = async ({ userId }) => {
       return { ...elem, data };
     }),
   );
-  console.log(
-    resultWithData,
-  );
   return resultWithData;
 };
 
@@ -43,7 +40,6 @@ export async function getAllStudyWords({ userId }) {
 export async function getAllHardWords({ userId }) {
   const content = await getAllUserWords({ userId });
   const hardWords = content.filter((elem) => elem.optional.status === 'hard');
-  console.log(hardWords);
   return hardWords;
 }
 
@@ -70,8 +66,6 @@ export const createUserWord = async ({ userId, wordId, word }) => {
     },
   );
   const content = await rawResponse.json();
-
-  console.log(content);
   return content;
 };
 
@@ -88,7 +82,23 @@ export const getUserWord = async ({ userId, wordId }) => {
     },
   );
   const content = await rawResponse.json();
+  return content;
+};
 
-  console.log(content);
+export const updateUserWord = async ({ userId, wordId, word }) => {
+  const rawResponse = await fetch(
+    `https://afternoon-falls-25894.herokuapp.com/users/${userId}/words/${wordId}`,
+    {
+      method: 'PUT',
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(word),
+    },
+  );
+  const content = await rawResponse.json();
   return content;
 };
