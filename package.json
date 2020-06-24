@@ -5,11 +5,13 @@
   "main": "index.js",
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
+    "chart.js": "^2.9.3",
     "core-js": "^3.6.5",
     "d3": "^5.16.0",
     "file-loader": "^6.0.0",
     "image-webpack-loader": "^6.0.0",
     "postcss-preset-env": "^6.7.0",
+    "svg-path-properties": "^1.0.4",
     "swiper": "^5.4.5"
   },
   "devDependencies": {
