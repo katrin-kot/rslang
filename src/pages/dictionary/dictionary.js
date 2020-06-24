@@ -5,7 +5,7 @@ import {
   getAllStudyWords,
 } from '../../services/userWordService';
 import { renderAllCards } from './renderAllCards';
-
+import { getUserSettings } from '../../services/settingsService';
 import { getUserID } from '../../services/authService';
 
 const body = document.querySelector('body');
@@ -78,20 +78,6 @@ col.appendChild(renderNavTabs());
 const col2 = document.querySelector('.col-9');
 col2.appendChild(renderTabContent());
 
-async function initStartContent(user) {
-  const content = await getAllStudyWords(user);
-  const activeTab = document.querySelector('.show');
-  const settings = {
-    image: true,
-    audio: true,
-  };
-  const wordsContent = await renderAllCards(content, settings);
-  activeTab.innerHTML = '';
-  activeTab.appendChild(wordsContent);
-}
-
-initStartContent({ userId });
-
 const loaders = {
   getAllStudyWords,
   getAllHardWords,
@@ -101,14 +87,14 @@ const loaders = {
 async function initContent(user, name) {
   const content = await loaders[name](user);
   const activeTab = document.querySelector('.show');
-  const settings = {
-    image: true,
-    audio: true,
-  };
+  const allSettings = await getUserSettings({ userId });
+  const settings = allSettings.optional;
   const wordsContent = await renderAllCards(content, settings);
   activeTab.innerHTML = '';
   activeTab.appendChild(wordsContent);
 }
+
+initContent({ userId }, getAllStudyWords);
 
 const navTabs = document.querySelectorAll('.nav-link');
 navTabs.forEach((elem) => elem.addEventListener('click', () => initContent({ userId }, elem.dataset.content)));
