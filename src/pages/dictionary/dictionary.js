@@ -94,7 +94,7 @@ async function initContent(user, name) {
   activeTab.appendChild(wordsContent);
 }
 
-initContent({ userId }, getAllStudyWords);
+initContent({ userId }, 'getAllStudyWords');
 
 const navTabs = document.querySelectorAll('.nav-link');
 navTabs.forEach((elem) => elem.addEventListener('click', () => initContent({ userId }, elem.dataset.content)));
