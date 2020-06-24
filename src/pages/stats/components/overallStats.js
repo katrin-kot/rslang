@@ -1,6 +1,4 @@
 import Chart from 'chart.js';
-import './overallStats.css'
-
 
 export function overallStats(image, repetition) {
     const canvasContainer = document.createElement('div');
@@ -10,10 +8,10 @@ export function overallStats(image, repetition) {
     canvas.height = 400;
 
     document.addEventListener('DOMContentLoaded', function(e) {
-        var ctx = document.getElementById("myChart").getContext("2d");
+        let ctx = document.getElementById("myChart").getContext("2d");
 
-        var data = {
-            labels: ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"],
+        let data = {
+            labels: ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье",],
             datasets: [
                 {
                     label: "Выученных слов за день",
@@ -41,7 +39,7 @@ export function overallStats(image, repetition) {
         };
 
 
-        var myNewChart = new Chart(ctx , {
+        let myNewChart = new Chart(ctx , {
             type: "line",
             data: data,
         });
