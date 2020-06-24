@@ -2,7 +2,8 @@ import Chart from 'chart.js';
 import './overallStats.css'
 
 
-export function overallStats() {
+export function overallStats(image, repetition) {
+    const canvasContainer = document.createElement('div');
     const canvas = document.createElement('canvas');
     canvas.id = 'myChart';
     canvas.width = 600;
@@ -12,27 +13,29 @@ export function overallStats() {
         var ctx = document.getElementById("myChart").getContext("2d");
 
         var data = {
-            labels: ["January", "February", "March", "April", "May", "June", "July"],
+            labels: ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"],
             datasets: [
                 {
-                    label: "My First dataset",
+                    label: "Выученных слов за день",
                     fillColor: "rgba(220,220,220,0.2)",
                     strokeColor: "rgba(220,220,220,1)",
                     pointColor: "rgba(220,220,220,1)",
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    data: [65, 59, 80, 81, 56, 55, 40]
+                    backgroundColor: 'rgba(0,100,120,0.5)',
+                    data: [25, 59, 20, 14, 16, 35, 40]
                 },
                 {
-                    label: "My Second dataset",
-                    fillColor: "rgba(151,187,205,0.2)",
-                    strokeColor: "rgba(151,187,205,1)",
-                    pointColor: "rgba(151,187,205,1)",
+                    label: "Дневная норма",
+                    fillColor: "rgba(220,220,220,0.2)",
+                    strokeColor: "rgba(220,220,220,1)",
+                    pointColor: "rgba(220,220,220,1)",
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "#fff",
-                    pointHighlightStroke: "rgba(151,187,205,1)",
-                    data: [28, 48, 40, 19, 86, 27, 90]
+                    pointHighlightStroke: "rgba(220,220,220,1)",
+                    backgroundColor: 'rgba(34,139,34,0.7)',
+                    data: [40, 40, 40, 40, 40, 40, 40]
                 }
             ]
         };
@@ -44,5 +47,6 @@ export function overallStats() {
         });
 })
 
-    return canvas;
+    canvasContainer.appendChild(canvas)
+    return canvasContainer;
 }
