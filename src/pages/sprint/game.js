@@ -1,13 +1,27 @@
 import GameWindow from './gameWindow';
 import CountdownTimer from './timer';
 import Result from './result';
-
+import {
+  getUserWords,
+  addUserWord,
+  updateUserWord,
+} from '../../services/dataService';
 export default class Game extends GameWindow {
   constructor() {
     super();
+    //this.test();
     this.difficult = localStorage.difficultSprint;
     this.useCartoons = localStorage.cartoonSprint;
     this.useStudied = localStorage.studiedSprint;
+    console.log(this.useStudied);
+    this.userData =
+      this.useStudied === 'true'
+        ? this.getUserData({
+            userID: localStorage.userID,
+            token: localStorage.token,
+          })
+        : '';
+    console.log(this.userData);
     this.timer = new CountdownTimer();
     this.buttonList = [
       { class: 'wrong-answer-button', text: 'Неверно' },
@@ -57,7 +71,50 @@ export default class Game extends GameWindow {
     };
     this.maxPages = 30;
   }
+  /*
+  async test() {
+    const data = await getUserWord({
+      userID: localStorage.userID,
+      token: localStorage.token,
+    });
+    console.log(data);
+    
+    const addedData = await addUserWord({
+      userID: localStorage.userID,
+      token: localStorage.token,
+      wordID: '5e9f5ee35eb9e72bc21af716',
+      word: { optional: { test: 'test123' } },
+    });
+    console.log(addedData);
+    
+    for (let i = 17; i < 50; i++) {
+      await addUserWord({
+        userID: localStorage.userID,
+        token: localStorage.token,
+        wordID: `5e9f5ee35eb9e72bc21af7${i}`,
+        word: { optional: { test: 'test' } },
+      });
+    }
+    const pushData = await updateUserWord({
+      userID: localStorage.userID,
+      token: localStorage.token,
+      wordID: '5e9f5ee35eb9e72bc21af716',
+      word: { optional: { test: 'test' } },
+    });
+    console.log(pushData);
 
+    const data2 = await getUserWord({
+      userID: localStorage.userID,
+      token: localStorage.token,
+    });
+    console.log(data2);
+  }*/
+
+  async getUserData(user) {
+    const userData = await getUserWords(user);
+
+    return userData;
+  }
   getPage() {
     const body = document.querySelector('body');
     const gameField = document.createElement('div');

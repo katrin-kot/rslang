@@ -24,6 +24,11 @@ body {
   background-color: #f6ecee;
 }
 
+.inner-content {
+  width: 100%;
+  display: flex;
+}
+
 .form-difficult {
   margin: 20px;
 }
