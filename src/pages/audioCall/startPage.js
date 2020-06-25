@@ -8,7 +8,7 @@ STARTER.innerHTML = ` <div class="start-page">
   AUDIOCALL
 </div>
 <div class="start-page__description">
-  You will hear the audio of the english word. You task is to find the correct translation from the provided options.
+  You will hear the audio of the english word. Your task is to find the correct translation from the provided options.
 </div>
 <div class="start-page__button">
   Start Game

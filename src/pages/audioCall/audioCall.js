@@ -9,6 +9,7 @@ import questions from './dummyData';
 export default class Game {
   constructor() {
     this.round = 0;
+    this.isAnswered = false;
 
     this.GAME = document.createElement('div');
     this.QUESTION_BUTTON = document.createElement('div');
@@ -64,17 +65,8 @@ export default class Game {
       this.VARIANTS.appendChild(OPTION);
 
       OPTION.addEventListener('click', () => {
-      
-      const options = document.querySelectorAll('.option');
-      options.forEach((option) => {
-        if (option.lastChild.innerText != questions[this.round].rightAnswer) {
-          option.lastChild.classList.add('fade');
-        } 
-        option.firstChild.classList.add('fade');
-      });
-
-        this.GAME.removeChild(this.QUESTION_BUTTON);
-        this.GAME.insertBefore(this.ANSWER, this.GAME.firstChild);
+     if (this.isAnswered == false) {
+      this.showAnswer()
         let sound;
         if (OPTION.lastChild.innerText == questions[this.round].rightAnswer) {
           sound = new Audio('/assets/audios/correct.mp3');
@@ -86,8 +78,8 @@ export default class Game {
         }
         sound.play();
 
-        this.NEXT_BUTTON.innerText = '';
-        this.NEXT_BUTTON.innerHTML = `<img src="/assets/images/right-arrow.png" class="next">`;
+        
+     }
       });
     }
 
@@ -103,14 +95,35 @@ export default class Game {
     });
 
     this.NEXT_BUTTON.addEventListener('click', () => {
-      this.nextRound();
+      if (this.isAnswered) {
+        this.nextRound();
+      } else {
+        this.showAnswer();
+      }
+      
     })
   }
 
+  showAnswer() {
+    this.isAnswered = true;
+    const options = document.querySelectorAll('.option');
+    options.forEach((option) => {
+      if (option.lastChild.innerText != questions[this.round].rightAnswer) {
+        option.lastChild.classList.add('fade');
+      } 
+      option.firstChild.classList.add('fade');
+    });
+
+      this.GAME.removeChild(this.QUESTION_BUTTON);
+      this.GAME.insertBefore(this.ANSWER, this.GAME.firstChild);
+      this.NEXT_BUTTON.innerText = '';
+      this.NEXT_BUTTON.innerHTML = `<img src="/assets/images/right-arrow.png" class="next">`;
+  }
   
 
   nextRound() {
     this.round += 1;
+    this.isAnswered = false;
     const audio = new Audio(questions[this.round].question);
       audio.play();
     this.GAME.removeChild(this.ANSWER);
