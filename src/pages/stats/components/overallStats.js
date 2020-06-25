@@ -21,7 +21,7 @@ export function overallStats(image, repetition) {
                     pointStrokeColor: "#fff",
                     pointHighlightFill: "#fff",
                     pointHighlightStroke: "rgba(220,220,220,1)",
-                    backgroundColor: 'rgba(0,100,120,0.5)',
+                    backgroundColor: 'rgba(0,100,120,0.8)',
                     data: [25, 59, 20, 14, 16, 35, 40]
                 },
                 {
