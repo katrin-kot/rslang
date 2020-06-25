@@ -93,6 +93,10 @@ export default class Game {
       const audio = new Audio(questions[this.round].question);
       audio.play();
     });
+    this.ANSWER_AUDIO.addEventListener('click', () => {
+      const audio = new Audio(questions[this.round].question);
+      audio.play();
+    });
 
     this.NEXT_BUTTON.addEventListener('click', () => {
       if (this.isAnswered) {
