@@ -94,6 +94,9 @@ margin-right: 8px;
   background-color: transparent;
   border-radius: 2px;
 }
+.next{
+  width: 50px;
+}
 
 .answer{
 margin-top: 5%;
@@ -138,4 +141,6 @@ flex-direction: column;
   font-size: 42px;
   color: balck;
 }
-
+.fade{
+  color: rgba(255,255,255,0.2);
+}
