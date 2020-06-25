@@ -103,3 +103,46 @@ export const updateUserWord = async ({ userId, wordId, word }) => {
   const content = await rawResponse.json();
   return content;
 };
+
+const getUserAggregatedWord = async ({
+  userId,
+  group,
+  wordsPerPage,
+  filter,
+}) => {
+  const rawResponse = await fetch(
+    `https://afternoon-falls-25894.herokuapp.com/users/${userId}/aggregatedWords?group=${group}&wordsPerPage=${wordsPerPage}&${filter}`,
+    {
+      method: 'GET',
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    },
+  );
+  const content = await rawResponse.json();
+  return content;
+};
+
+export async function getWordforGame(userId, group, wordsPerPage) {
+  let filter = new window.URLSearchParams({ filter: '{"$and":[{"userWord.optional.status":"to_study"}]}' }).toString();
+  const userWords = await getUserAggregatedWord({
+    userId,
+    group,
+    wordsPerPage,
+    filter,
+  });
+  if (userWords[0].paginatedResults.length < wordsPerPage) {
+    const wordsPage = wordsPerPage - userWords[0].paginatedResults.length;
+    filter = new window.URLSearchParams({ filter: '{"$and":[{"userWord": null }]}' }).toString();
+    const allWords = await getUserAggregatedWord({
+      userId,
+      group,
+      wordsPerPage: wordsPage,
+      filter,
+    });
+    return userWords[0].paginatedResults.concat(allWords[0].paginatedResults);
+  }
+  return userWords[0].paginatedResults;
+}
