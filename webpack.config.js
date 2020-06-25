@@ -27,7 +27,7 @@ const config = {
   entry: {
     //main: './src/pages/main/main.js',
     //login: './src/pages/login/login.js',
-    audioCall: './src/pages/audioCall/audioCall.js',
+    audioCall: './src/pages/audioCall/startPage.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -201,7 +201,7 @@ const config = {
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
-    port: 3000,
+    port: 3001,
     overlay: true,
     stats: 'errors-only',
     clientLogLevel: 'none',
