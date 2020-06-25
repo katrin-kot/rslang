@@ -4,6 +4,11 @@ class StartPageView extends View {
     constructor() {
       super()
 
+      this.Sound = true
+
+      this.trueAnswers = []
+      this.wrongAnswers = []
+
       this.appContainer = createNode('div', 'savanna');
 
       this.app.append(this.appContainer)
@@ -21,30 +26,31 @@ class StartPageView extends View {
       this.buttonStartGame = createNode('button', 'button', 'button--start')
       this.buttonStartGame.textContent = 'Начать'
     }
-  
+
     render() {
         this.topButtonsWrapper.append(this.exitButton)
         this.startContainer.append(this.title, this.descriptionGame, this.buttonStartGame)
         this.appContainer.append(this.topButtonsWrapper, this.startContainer)
 
-      this.startGame()
-      this.exitGame()
+        this.startGame()
+        this.exitGame()
     }
   
     startGame() {
       this.buttonStartGame.addEventListener('click', event => {
-          event.preventDefault()
+        event.preventDefault()
         this.startContainer.classList.add('hidden')
+        new Audio('/assets/audio/startGame.mp3').play()
 
         this.displayGame()
-      });
+      })
     }
 
     exitGame() {
         this.exitButton.addEventListener('click', event => {
-            event.preventDefault()
+            //event.preventDefault()
 
-            // реализовать переход на страницу выбора мини-игр
+            console.log('ПЕРЕХОДИМ НА СТРАНИЦУ ТРЕНИРОВОК')
         })
     }
 
@@ -61,8 +67,19 @@ class StartPageView extends View {
         setTimeout(()=> {
             this.awaitBlock.classList.add('hidden')
 
+            this.startLoading()
             this.updateBody()
+            this.getInfo()
         }, 3000)
+    }
+
+    startLoading() {
+        this.loading = createNode('div', 'loading')
+        this.appContainer.append(this.loading)
+    }
+
+    stopLoading() {
+        this.loading.remove()
     }
 
     updateBody() {
@@ -73,10 +90,10 @@ class StartPageView extends View {
 
             event.target.classList.toggle('sound-disabled')
 
-            // + добавить отключение/включение звуков
+            this.Sound = this.Sound ? false : true
         })
 
-        this.lifesWrapper = createNode('div', 'life-wrapper')
+        this.lifesWrapper = createNode('div', 'lifes-wrapper')
         for (let i = 0; i < 5; i++) {
             const heartIcon = createNode('div', 'heart-icon')
             heartIcon.setAttribute('data-heart', `${i + 1}`)
@@ -88,25 +105,265 @@ class StartPageView extends View {
         this.gameBlock = createNode('div', 'game-block')
         this.engWord = createNode('button', 'button', 'button--english')
 
-        this.rusAnswersSection = createNode('div', 'answer-wrapper')
+        this.rusAnswersSection = createNode('div', 'answers-wrapper')
         for (let i = 0; i < 4; i++) {
             const answerButton = createNode('button', 'button', 'button--rus')
             answerButton.setAttribute('data-answer', `${i + 1}`)
             this.rusAnswersSection.append(answerButton)
         }
         
-        this.gameBlock.append(this.engWord, this.rusWordsSection)
+        this.gameBlock.append(this.engWord, this.rusAnswersSection)
         this.appContainer.append(this.gameBlock)
+    }
+
+    async getInfo() {
+        const url = 'https://afternoon-falls-25894.herokuapp.com/words?page=2&group=0'
+
+        const response = await fetch(url)
+        const dataArray = await response.json()
+        const data = dataArray.filter((item, index) => index < 9)
+
+        let rusAnswers = []
+
+        for (let key of dataArray) {
+            rusAnswers.push(key.wordTranslate)
+        }
+
+        this.updateButtonsContent(data, rusAnswers)
+        this.waitingAnswer(data, rusAnswers)
+        this.stopLoading()
+    }
+
+    updateButtonsContent(data, rusAnswers) {
+        
+        this.engWord.textContent = data[data.length - 1].word
+        this.engWord.setAttribute('data-trans', data[data.length - 1].wordTranslate)
+
+        let answersArray = this.rusAnswersSection.querySelectorAll('button')
+        let answerWords = []
+
+        let dataLength = data.length - 1
+
+        for (let i = 0; i < 4; i++) {
+            if (dataLength - i < 0) {
+                dataLength = data.length + i + 10
+            }
+            answerWords.push(rusAnswers[dataLength - i])
+        }
+        
+        let sortAnsArray = answerWords.sort(() => Math.random() - 0.5)
+
+        answersArray.forEach((item, index) => {
+            item.textContent = sortAnsArray[index]
+        })
+    }
+
+    waitingAnswer(data, rusAnswers) {
+
+        /*let timerId = setTimeout(() => {
+            this.getWrongAnswer(data)
+        }, 4000)*/
 
         this.rusAnswersSection.addEventListener('click', event => {
             event.preventDefault()
 
             if (event.target.tagName !== 'BUTTON') return
             else {
-                console.log('Your answer')
+                //clearTimeout(timerId)
+                if (event.target.textContent == this.engWord.getAttribute('data-trans')) {
+                    this.getRightAnswer(data, rusAnswers)
+                } else {
+                    this.getWrongAnswer(data, rusAnswers) 
+                }
+            }
+        })
+
+        document.addEventListener('keydown', event => {
+            event.preventDefault()
+
+            let answers = this.rusAnswersSection.querySelectorAll('button')
+
+            if (event.code == 'Digit1' || event.code == 'Numpad1') {
+                //clearTimeout(timerId)
+                
+                if (answers[0].textContent == this.engWord.getAttribute('data-trans')) {
+                    this.getRightAnswer(data, rusAnswers)
+                } else {
+                    this.getWrongAnswer(data, rusAnswers)
+                }
+            }
+            
+            if (event.code == 'Digit2' || event.code == 'Numpad2') {
+                //clearTimeout(timerId)
+
+                if (answers[1].textContent == this.engWord.getAttribute('data-trans')) {
+                    this.getRightAnswer(data, rusAnswers)
+                } else {
+                    this.getWrongAnswer(data, rusAnswers)
+                }
+            }
+
+            if (event.code == 'Digit3' || event.code == 'Numpad3') {
+                //clearTimeout(timerId)
+
+                if (answers[2].textContent == this.engWord.getAttribute('data-trans')) {
+                    this.getRightAnswer(data, rusAnswers)
+                } else {
+                    this.getWrongAnswer(data, rusAnswers)
+                }
+            }
+
+            if (event.code == 'Digit4' || event.code == 'Numpad4') {
+                //clearTimeout(timerId)
+
+                if (answers[3].textContent == this.engWord.getAttribute('data-trans')) {
+                    this.getRightAnswer(data, rusAnswers)
+                } else {
+                    this.getWrongAnswer(data, rusAnswers)
+                }
+            }
+        })
+    }
+
+    getRightAnswer(data, rusAnswers) {
+        this.trueAnswers.push(data.pop())
+        
+        if (this.Sound) new Audio('/assets/audio/correct.mp3').play()
+
+        if (data.length == 0) return this.showResults()
+                    
+        this.updateButtonsContent(data, rusAnswers)
+    }
+
+    getWrongAnswer(data, rusAnswers) {
+        this.wrongAnswers.push(data.pop())
+
+        if (this.Sound) new Audio('/assets/audio/error.mp3').play()
+
+        this.lifesWrapper.querySelector('.heart-icon').classList.add('heart-icon--disabled')
+        this.lifesWrapper.querySelector('.heart-icon').classList.remove('heart-icon')
+
+        let lostLifes = this.lifesWrapper.querySelectorAll('.heart-icon')
+        
+        if (lostLifes.length == 0 || data.length == 0) return this.showResults()
+
+        this.updateButtonsContent(data, rusAnswers)
+    }
+
+    showResults() {
+        new Audio('/assets/audio/endGame.mp3').play()       
+
+        this.appContainer.innerHTML = ''
+        this.overlay = createNode('div', 'overlay')
+
+        this.resultsModal = createNode('div', 'game-results')
+
+        this.resultsText = createNode('p', 'game-results__text')
+
+        if (this.wrongAnswers.length == 0) {
+            this.resultsText.textContent = 'Молодец! Отличный результат!'
+        } else if (this.wrongAnswers.length < 4) {
+            this.resultsText.textContent = 'Неплохо, но есть над чем поработать'
+        } else this.resultsText.textContent = 'Слабо! Попробуй еще раз!'
+            
+        
+        this.resultsLink = createNode('p', 'game-results__result')
+
+        if (this.wrongAnswers.length == 0) {
+            this.resultsLink.textContent = `${this.trueAnswers.length} слов изучено, ${this.wrongAnswers.length} слов на изучении`
+        } else if (this.wrongAnswers.length == 1) {
+            this.resultsLink.textContent = `${this.trueAnswers.length} слов изучено, ${this.wrongAnswers.length} слово на изучении`
+        } else if (this.wrongAnswers.length < 5) {
+            this.resultsLink.textContent = `${this.trueAnswers.length} слов изучено, ${this.wrongAnswers.length} слова на изучении`
+        } else this.resultsLink.textContent = `${this.trueAnswers.length} слова изучено, ${this.wrongAnswers.length} слов на изучении`
+
+        this.resultsDescriptionContainer = createNode('div', 'game-results__description')
+
+
+        this.resultsRightContainer = createNode('div', 'game-results__right-block')
+
+        this.resRightTitle = createNode('p', 'block-title', 'block-title--right')
+        this.resRightTitle.textContent = `Знаю: ${this.trueAnswers.length}`
+
+        this.resultsRightContainer.append(this.resRightTitle)
+
+        if (this.trueAnswers.length !== 0) {
+            this.trueAnswers.map(item => {
+                this.resultsRightContainer.innerHTML += `<div>
+                                                            <p class="game-results__answer">${item.word}  -  ${item.wordTranslate}</p>
+                                                            <audio src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${item.audio}" preload="none"></audio>
+                                                        </div>`
+            })
+        }
+
+
+
+        this.resultsWrongContainer = createNode('div', 'game-results__wrong-block')
+
+        this.resWrongTitle = createNode('p', 'block-title', 'block-title--wrong')
+        this.resWrongTitle.textContent = `Ошибок: ${this.wrongAnswers.length}`
+
+        this.resultsWrongContainer.append(this.resWrongTitle)
+
+        if (this.wrongAnswers.length !== 0) {
+            this.wrongAnswers.map(item => {
+                this.resultsWrongContainer.innerHTML += `<div>
+                                                            <p class="game-results__answer">${item.word}  -  ${item.wordTranslate}</p>
+                                                            <audio src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${item.audio}" preload="none"></audio>
+                                                        </div>`
+            })
+        }
+
+        this.resultsDescriptionContainer.append(this.resultsRightContainer, this.resultsWrongContainer)
+
+        
+        
+        this.tryAgain = createNode('p', 'game-results__try')
+        this.tryAgain.textContent = 'Продолжить тренировку'
+
+        this.backToAnotherTrain = createNode('p', 'game-results__back')
+        this.backToAnotherTrain.textContent = 'К списку тренировок'
+
+        this.resultsModal.append(this.resultsText, this.resultsLink, this.resultsDescriptionContainer, this.tryAgain, this.backToAnotherTrain)
+
+
+        this.appContainer.append(this.overlay, this.resultsModal)
+
+        this.resultsListener()
+        this.playAudioResults()
+        console.log(this.trueAnswers, this.wrongAnswers)
+    }
+
+    resultsListener() {
+        this.appContainer.addEventListener('click', event => {
+            event.preventDefault()
+
+            if (event.target.tagName !== 'P') return
+            else {
+                if (event.target == this.resultsLink) {
+                    this.resultsDescriptionContainer.classList.toggle('game-results__description--click')
+                }
+
+                if (event.target == this.tryAgain) {
+                    window.location.reload()
+                }
+
+                if (event.target == this.backToAnotherTrain) {
+                    console.log('ПЕРЕХОДИМ НА СТРАНИЦУ ТРЕНИРОВОК')
+                }
+            }
+        })
+    }
+
+    playAudioResults() {
+        this.resultsDescriptionContainer.addEventListener('click', event => {
+
+            if (event.target.classList.value !== 'game-results__answer') return 
+            else {
+                event.target.closest('div').querySelector('audio').play()
             }
         })
     }
   }
   
-  export default new StartPageView()
+  export default new StartPageView() 
