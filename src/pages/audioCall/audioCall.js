@@ -3,32 +3,10 @@ import questions from './dummyData';
 
 
 
-// let BODY = document.createElement('div');
-// BODY.innerHTML = ` <div class="start-page">
-// <div class="start-page__title">
-//   AUDIOCALL
-// </div>
-// <div class="start-page__description">
-//   You will hear the audio of the english word. You task is to find the correct translation from the provided options.
-// </div>
-// <div class="start-page__button">
-//   Start Game
-// </div>
-// </div>`;
-// document.body.append(BODY);
-
-// document.querySelector('.start-page__button').addEventListener('click', () => {
-//   BODY.innerHTML = '';
-//   startGame();
-// });
 
 
-// function startGame() {
 
-// }
-
-
-class Game {
+export default class Game {
   constructor() {
     this.round = 0;
 
@@ -158,5 +136,4 @@ class Game {
 
 
 
-const game = new Game();
-game.render();
+
