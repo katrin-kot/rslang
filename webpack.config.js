@@ -29,6 +29,8 @@ const config = {
     login: './src/pages/login/login.js',
     speakIt: './src/pages/speakIt/speakIt.js',
     settings: './src/pages/settings/settings.js',
+    SRgame: './src/pages/SRgame/SRgame.js',
+
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -195,6 +197,13 @@ const config = {
       chunks: ['settings'],
       template: 'src/pages/settings/settings.html',
       filename: './settings.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang SR game',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['SRgame'],
+      template: 'src/pages/SRgame/SRgame.html',
+      filename: './SRgame.html',
     }),
     new CopyWebpackPlugin([
       {
