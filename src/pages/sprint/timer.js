@@ -1,5 +1,7 @@
 export default class CountdownTimer {
-  constructor() {}
+  constructor() {
+    this.topCorner = -Math.PI / 2;
+  }
 
   renderTimer() {
     const canvas = document.querySelector('.countdown-timer');
@@ -33,8 +35,8 @@ export default class CountdownTimer {
       75,
       75,
       50,
-      -Math.PI / 2,
-      -Math.PI / 2 + (6 * seconds * Math.PI) / 180
+      this.topCorner,
+      -Math.PI / 2 + (6 * seconds * Math.PI) / 180,
     );
     ctx.lineWidth = 8;
     ctx.strokeStyle = 'grey';
@@ -47,8 +49,7 @@ export default class CountdownTimer {
     const canvas = document.querySelector('.countdown-timer');
     const ctx = canvas.getContext('2d');
     const second = 60 - seconds;
-    const coordinateX =
-      second < 10 ? canvas.width / 2 - 6 : canvas.width / 2 - 15;
+    const coordinateX = second < 10 ? canvas.width / 2 - 6 : canvas.width / 2 - 15;
     const coordinateY = canvas.height / 2 + 10;
 
     ctx.font = '30px Arial';

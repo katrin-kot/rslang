@@ -1,6 +1,5 @@
 import difficultOptions from '../../components/main/difficultOptions/difficultOptions';
 import GameWindow from './gameWindow';
-import Game from './game';
 
 export default class StartPage extends GameWindow {
   constructor() {
@@ -25,6 +24,14 @@ export default class StartPage extends GameWindow {
     this.buttonList = [{ class: 'start-button', text: 'START' }];
   }
 
+  initPage(startPage, gamePage, resultPage) {
+    this.startPage = startPage;
+    this.gamePage = gamePage;
+    this.resultPage = resultPage;
+
+    this.getPage();
+  }
+
   getPage() {
     const body = document.querySelector('body');
     const gameField = document.createElement('div');
@@ -36,11 +43,11 @@ export default class StartPage extends GameWindow {
     gameField.insertAdjacentHTML('afterbegin', difficultOptions());
     gameField.insertAdjacentHTML(
       'beforeEnd',
-      this.getOptionField(this.additionOption)
+      this.getOptionField(this.additionOption),
     );
     gameField.insertAdjacentHTML(
       'beforeEnd',
-      `<div class="buttons-block">${this.getButton(this.buttonList)}</div>`
+      `<div class="buttons-block">${this.getButton(this.buttonList)}</div>`,
     );
 
     this.setDefaultOptions();
@@ -50,19 +57,17 @@ export default class StartPage extends GameWindow {
   }
 
   getOptionField(description) {
-    const additionOptions = description.reduce((hypertext, option) => {
-      return (
-        hypertext +
-        `
+    const additionOptions = description.reduce(
+      (hypertext, option) => `${hypertext}
         <div class="additional-option">
           <input id="${option.id}" type="checkbox" name="check" value="${option.value}" ${option.checked}>
           <label for="${option.id}">${option.text}</label>
           <div class="additional-option-hint" data-title="${option.hint}">
           </div>
         </div>
-        `
-      );
-    }, '');
+        `,
+      '',
+    );
 
     return additionOptions;
   }
@@ -73,7 +78,7 @@ export default class StartPage extends GameWindow {
     buttons.addEventListener('click', (event) => {
       if (event.target.tagName === 'BUTTON') {
         if (event.target.classList.contains('start-button')) {
-          this.openGamePage(new Game());
+          this.openGamePage(this.startPage, this.gamePage, this.resultPage);
         }
       }
     });
@@ -101,7 +106,7 @@ export default class StartPage extends GameWindow {
 
   listenToAdditionalOptions() {
     const additionalOptions = document.querySelectorAll(
-      '.additional-option input'
+      '.additional-option input',
     );
 
     additionalOptions.forEach((option) => {

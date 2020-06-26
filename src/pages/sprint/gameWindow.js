@@ -1,6 +1,4 @@
 export default class GameWindow {
-  constructor() {}
-
   getPage() {
     const body = document.querySelector('body');
     const gameField = document.createElement('div');
@@ -11,11 +9,10 @@ export default class GameWindow {
   }
 
   getButton(description) {
-    const button = description.reduce((hypertext, option) => {
-      return (
-        hypertext + `<button class="${option.class}">${option.text}</button>`
-      );
-    }, '');
+    const button = description.reduce(
+      (hypertext, option) => `${hypertext}<button class="${option.class}">${option.text}</button>`,
+      '',
+    );
 
     return button;
   }
@@ -40,13 +37,13 @@ export default class GameWindow {
   }
 
   getAudio() {
-    const audio = `<audio src="">`;
+    const audio = '<audio src="">';
   }
 
-  openStartPage(startPage) {
+  openStartPage(startPage, gamePage, resultPage) {
     this.clearGameWindow();
 
-    startPage.getPage();
+    startPage.initPage(startPage, gamePage, resultPage);
   }
 
   redirectToMainPage() {
@@ -55,15 +52,15 @@ export default class GameWindow {
     location.replace('http://localhost:3000/main.html');
   }
 
-  openGamePage(game) {
+  openGamePage(startPage, gamePage, resultPage) {
     this.clearGameWindow();
 
-    game.getPage();
+    gamePage.initPage(startPage, gamePage, resultPage);
   }
 
-  openResultPage(result) {
+  openResultPage(startPage, gamePage, resultPage, score) {
     this.clearGameWindow();
 
-    result.getPage();
+    resultPage.initPage(startPage, gamePage, resultPage, score);
   }
 }

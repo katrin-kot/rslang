@@ -1,27 +1,23 @@
 import GameWindow from './gameWindow';
 import CountdownTimer from './timer';
-import Result from './result';
 import {
   getUserWords,
   addUserWord,
   updateUserWord,
-} from '../../services/dataService';
+} from '../../services/wordDataService';
+import { getFileUrl } from '../../services/multiDataService';
+import {} from '../../services/userWordService';
+
 export default class Game extends GameWindow {
   constructor() {
     super();
-    //this.test();
     this.difficult = localStorage.difficultSprint;
     this.useCartoons = localStorage.cartoonSprint;
     this.useStudied = localStorage.studiedSprint;
-    console.log(this.useStudied);
-    this.userData =
-      this.useStudied === 'true'
-        ? this.getUserData({
-            userID: localStorage.userID,
-            token: localStorage.token,
-          })
-        : '';
-    console.log(this.userData);
+    this.userData = this.getUserData({
+      userID: localStorage.userID,
+      token: localStorage.token,
+    });
     this.timer = new CountdownTimer();
     this.buttonList = [
       { class: 'wrong-answer-button', text: 'Неверно' },
@@ -78,7 +74,7 @@ export default class Game extends GameWindow {
       token: localStorage.token,
     });
     console.log(data);
-    
+
     const addedData = await addUserWord({
       userID: localStorage.userID,
       token: localStorage.token,
@@ -86,7 +82,7 @@ export default class Game extends GameWindow {
       word: { optional: { test: 'test123' } },
     });
     console.log(addedData);
-    
+
     for (let i = 17; i < 50; i++) {
       await addUserWord({
         userID: localStorage.userID,
@@ -108,13 +104,22 @@ export default class Game extends GameWindow {
       token: localStorage.token,
     });
     console.log(data2);
-  }*/
+  } */
 
   async getUserData(user) {
     const userData = await getUserWords(user);
 
     return userData;
   }
+
+  initPage(startPage, gamePage, resultPage) {
+    this.startPage = startPage;
+    this.gamePage = gamePage;
+    this.resultPage = resultPage;
+
+    this.getPage();
+  }
+
   getPage() {
     const body = document.querySelector('body');
     const gameField = document.createElement('div');
@@ -125,7 +130,7 @@ export default class Game extends GameWindow {
 
     gameField.insertAdjacentHTML(
       'beforebegin',
-      this.addDivByClass('game-score', 0)
+      this.addDivByClass('game-score', 0),
     );
 
     const gameScore = document.querySelector('.game-score');
@@ -134,7 +139,7 @@ export default class Game extends GameWindow {
 
     gameField.insertAdjacentHTML(
       'afterbegin',
-      this.addDivByClass('game-bonus')
+      this.addDivByClass('game-bonus'),
     );
 
     gameField.insertAdjacentHTML('beforeend', this.getGameImage());
@@ -143,14 +148,14 @@ export default class Game extends GameWindow {
 
     gameField.insertAdjacentHTML(
       'beforeend',
-      this.addDivByClass('game-translation')
+      this.addDivByClass('game-translation'),
     );
 
     gameField.insertAdjacentHTML('beforeend', '<hr>');
 
     gameField.insertAdjacentHTML(
       'beforeEnd',
-      this.addDivByClass('buttons-block', this.getButton(this.buttonList))
+      this.addDivByClass('buttons-block', this.getButton(this.buttonList)),
     );
 
     this.listenToButtonsClick();
@@ -160,26 +165,34 @@ export default class Game extends GameWindow {
   }
 
   activateTimer() {
+    const MILLISECONDS_IN_MINUTE = 60000;
+    const MILLISECONDS_IN_SECOND = 1000;
     let seconds = 0;
+
     this.timer.renderTimer();
-    let timerId = setInterval(
+    const timerId = setInterval(
       () => this.timer.updateTimer((seconds += 1)),
-      1000
+      MILLISECONDS_IN_SECOND,
     );
     setTimeout(() => {
       clearInterval(timerId);
-      this.openResultPage(new Result(this.words));
-    }, 60000);
+      this.openResultPage(
+        this.startPage,
+        this.gamePage,
+        this.resultPage,
+        this.words,
+      );
+    }, MILLISECONDS_IN_MINUTE);
   }
 
   getGameImage() {
-    const image = `<img class="game-image" src="/assets/default-image.png">`;
+    const image = '<img class="game-image" src="https://cdn.discordapp.com/attachments/720535785622995023/721061601393770546/Octopus_-_Opt_2.png">';
 
     return image;
   }
 
   getCanvas() {
-    const canvas = `<canvas class="countdown-timer"></canvas>`;
+    const canvas = '<canvas class="countdown-timer"></canvas>';
 
     return canvas;
   }
@@ -198,7 +211,7 @@ export default class Game extends GameWindow {
   async getWordsByServer() {
     const randomPage = this.randomNumber();
     const rawResponse = await fetch(
-      `https://afternoon-falls-25894.herokuapp.com/words?page=${randomPage}&group=${this.difficult}`
+      `https://afternoon-falls-25894.herokuapp.com/words?page=${randomPage}&group=${this.difficult}`,
     );
 
     const content = await rawResponse.json();
@@ -209,8 +222,8 @@ export default class Game extends GameWindow {
 
   checkAnswer(answer) {
     if (
-      (this.lastResult && answer.contains('correct-answer-button')) ||
-      (!this.lastResult && answer.contains('wrong-answer-button'))
+      (this.lastResult && answer.contains('correct-answer-button'))
+      || (!this.lastResult && answer.contains('wrong-answer-button'))
     ) {
       this.updateCorrectWords();
       this.correctQueue += 1;
@@ -250,7 +263,16 @@ export default class Game extends GameWindow {
     wordDiv.innerHTML = wordObj.word;
     translationDiv.innerHTML = currentTranslate;
 
+    this.showImage(wordObj.image);
     this.updateWrongWords(wordObj);
+  }
+
+  showImage(source) {
+    const image = document.querySelector('.game-image');
+
+    if (this.useCartoons === 'true') {
+      image.setAttribute('src', getFileUrl(source));
+    }
   }
 
   updateWrongWords(word) {
