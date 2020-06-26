@@ -224,7 +224,7 @@ const config = {
       title: 'RS lang',
       favicon: './assets/images/favicon.ico',
       chunks: ['memory'],
-      template: 'src/pages/dictionary/memory.html',
+      template: 'src/pages/memoryGame/memory.html',
       filename: './memory.html',
     }),
     new CopyWebpackPlugin([

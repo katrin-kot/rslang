@@ -1,0 +1,82 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: url(https://image.freepik.com/free-vector/cute-seamless-pattern-with-octopus-jellyfish-starfish-crab_76147-182.jpg);
+}
+
+h3 {
+    color: #10467b;
+    font-weight: 600;
+}
+
+.form-difficult label:first-child:before {
+  display: none;
+}
+
+body .form-difficult {
+  width: 300px;
+}
+
+.memory-card {
+  width: calc(25% - 10px);
+  height: calc(33.333% - 10px);
+  margin: 5px;
+  position: relative;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
+  transform: scale(1);
+  transform-style: preserve-3d;
+  transition: transform 0.5s;
+}
+
+.mainCard {
+  width: 400px;
+  height: 380px;
+}
+
+.memory-card:active {
+  transform: scale(0.97);
+  transition: transform 0.2s;
+}
+
+.front-face,
+.back-face {
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  position: absolute;
+  border-radius: 5px;
+  background: #81a4b4;
+  backface-visibility: hidden;
+}
+
+.front-face {
+  transform: rotateY(180deg);
+}
+
+.memory-card.flip {
+  transform: rotateY(180deg);
+}
+
+.btn-secondary {
+  margin-left: 10px;
+}
+
+.btn-sm {
+  margin-left: 250px;
+  margin-top: 10px;
+}
