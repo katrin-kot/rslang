@@ -30,7 +30,7 @@ const config = {
     speakIt: './src/pages/speakIt/speakIt.js',
     settings: './src/pages/settings/settings.js',
     SRgame: './src/pages/SRgame/SRgame.js',
-
+    dictionary: './src/pages/dictionary/dictionary.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -204,6 +204,13 @@ const config = {
       chunks: ['SRgame'],
       template: 'src/pages/SRgame/SRgame.html',
       filename: './SRgame.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['dictionary'],
+      template: 'src/pages/dictionary/dictionary.html',
+      filename: './dictionary.html',
     }),
     new CopyWebpackPlugin([
       {
