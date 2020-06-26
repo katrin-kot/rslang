@@ -244,6 +244,13 @@ const config = {
       template: 'src/pages/memoryGame/memory.html',
       filename: './memory.html',
     }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['memory'],
+      template: 'src/pages/dictionary/memory.html',
+      filename: './memory.html',
+    }),
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, 'assets'),
