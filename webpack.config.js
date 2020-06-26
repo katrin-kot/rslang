@@ -31,6 +31,7 @@ const config = {
     settings: './src/pages/settings/settings.js',
     SRgame: './src/pages/SRgame/SRgame.js',
     dictionary: './src/pages/dictionary/dictionary.js',
+    memory: './src/pages/memoryGame/memory.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -211,6 +212,13 @@ const config = {
       chunks: ['dictionary'],
       template: 'src/pages/dictionary/dictionary.html',
       filename: './dictionary.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['memory'],
+      template: 'src/pages/dictionary/memory.html',
+      filename: './memory.html',
     }),
     new CopyWebpackPlugin([
       {
