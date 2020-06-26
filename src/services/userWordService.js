@@ -1,5 +1,6 @@
 import { getToken } from './authService';
-import { getImageUrl, getWordbyId, getAudioUrl } from './wordService';
+import { getWordbyId } from './wordService';
+import { getImageUrl, getAudioUrl } from '../helpers/urls';
 
 const token = getToken();
 

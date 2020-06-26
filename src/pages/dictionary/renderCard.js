@@ -1,156 +1,121 @@
-import { msToTime, playAudio } from './sideFunctions';
+import { msToTime, playAudio, renderIcon } from './helpers';
 import { updateUserWord } from '../../services/userWordService';
 import { getUserID } from '../../services/authService';
 
+
 export function renderCard(content, settings) {
   const userId = getUserID();
+  const changeStatus = (status) => (event) => {
+    event.target.closest('.word-card').remove();
+    const word = {
+      difficulty: content.difficulty,
+      optional: {
+        ...content.optional,
+        status,
+      },
+    };
+    updateUserWord({ userId, wordId: content.wordId, word });
+  };
   const fragment = document.createDocumentFragment();
+  const {
+    word, transcription, audio, wordTranslate, textExample, audioExample,
+    textExampleTranslate, textMeaning, audioMeaning, textMeaningTranslate, image,
+  } = content.data;
   const englishWord = document.createElement('h5');
   englishWord.classList.add('english-word');
-  englishWord.innerHTML = content.data.word;
+  englishWord.innerHTML = word;
   const explanation = document.createElement('div');
-  explanation.classList.add('explanation');
-  explanation.classList.add('col-12');
-  explanation.classList.add('col-sm-8');
+  explanation.classList.add('explanation', 'col-12', 'col-sm-8');
   explanation.appendChild(englishWord);
   fragment.appendChild(explanation);
-  if (settings.transcription === true) {
-    const transcription = document.createElement('p');
-    transcription.classList.add('transcription');
-    transcription.innerHTML = content.data.transcription;
-    explanation.appendChild(transcription);
+  if (settings.transcription) {
+    const transcript = document.createElement('p');
+    transcript.classList.add('transcription');
+    transcript.innerHTML = transcription;
+    explanation.appendChild(transcript);
   }
-  if (settings.showDelete === true) {
+  if (settings.showDelete) {
     const deleteBtn = document.createElement('span');
     deleteBtn.classList.add('btn-delete');
-    const deleteIcon = document.createElement('span');
-    deleteIcon.classList.add('material-icons');
+    let nameIcon;
     if (content.optional.status === 'delete') {
-      deleteIcon.innerHTML = 'restore_from_trash';
-      deleteBtn.addEventListener('click', (event) => {
-        event.target.closest('.word-card').remove();
-        // eslint-disable-next-line no-param-reassign
-        content.optional.status = 'to_study';
-        const word = {
-          difficulty: content.difficulty,
-          optional: content.optional,
-        };
-        updateUserWord({ userId, wordId: content.wordId, word });
-      });
+      nameIcon = 'restore_from_trash';
+      deleteBtn.addEventListener('click', changeStatus('to_study'));
     } else {
-      deleteIcon.innerHTML = 'delete';
-      deleteBtn.addEventListener('click', (event) => {
-        event.target.closest('.word-card').remove();
-        // eslint-disable-next-line no-param-reassign
-        content.optional.status = 'delete';
-        const word = {
-          difficulty: content.difficulty,
-          optional: content.optional,
-        };
-        updateUserWord({ userId, wordId: content.wordId, word });
-      });
+      nameIcon = 'delete';
+      deleteBtn.addEventListener('click', changeStatus('delete'));
     }
-    deleteBtn.appendChild(deleteIcon);
+    deleteBtn.appendChild(renderIcon(nameIcon));
     explanation.appendChild(deleteBtn);
   }
-  if (settings.moveinHard === true) {
+  if (settings.moveinHard) {
     const hardBtn = document.createElement('button');
-    hardBtn.classList.add('btn');
-    hardBtn.classList.add('btn-outline-secondary');
-    hardBtn.classList.add('btn-sm');
+    hardBtn.classList.add('btn', 'btn-outline-secondary', 'btn-sm');
     hardBtn.setAttribute('type', 'button');
     if (content.optional.status === 'hard') {
       hardBtn.innerHTML = 'На изучение';
-      hardBtn.addEventListener('click', (event) => {
-        event.target.closest('.word-card').remove();
-        // eslint-disable-next-line no-param-reassign
-        content.optional.status = 'to_study';
-        const word = {
-          difficulty: content.difficulty,
-          optional: content.optional,
-        };
-        updateUserWord({ userId, wordId: content.wordId, word });
-      });
+      hardBtn.addEventListener('click', changeStatus('to_study'));
     } else {
       hardBtn.innerHTML = 'В сложные';
-      hardBtn.addEventListener('click', (event) => {
-        event.target.closest('.word-card').remove();
-        // eslint-disable-next-line no-param-reassign
-        content.optional.status = 'hard';
-        const word = {
-          difficulty: content.difficulty,
-          optional: content.optional,
-        };
-        updateUserWord({ userId, wordId: content.wordId, word });
-      });
+      hardBtn.addEventListener('click', changeStatus('hard'));
     }
     explanation.appendChild(hardBtn);
   }
 
-  if (settings.audio === true) {
+  if (settings.audio) {
     const playBtn = document.createElement('span');
     playBtn.classList.add('btn-play');
-    playBtn.addEventListener('click', () => playAudio(content.data.audio));
-    const audio = document.createElement('span');
-    audio.classList.add('material-icons');
-    audio.innerHTML = 'volume_up';
-    playBtn.appendChild(audio);
+    playBtn.addEventListener('click', () => playAudio(audio));
+    playBtn.appendChild(renderIcon('volume_up'));
     explanation.appendChild(playBtn);
   }
-  if (settings.wordTranslate === true) {
+  if (settings.wordTranslate) {
     const translate = document.createElement('p');
-    translate.innerHTML = content.data.wordTranslate;
+    translate.innerHTML = wordTranslate;
     explanation.appendChild(translate);
   }
-  if (settings.textExample === true) {
-    const textExample = document.createElement('p');
-    textExample.innerHTML = content.data.textExample;
-    explanation.appendChild(textExample);
+  if (settings.textExample) {
+    const exampleText = document.createElement('p');
+    exampleText.innerHTML = textExample;
+    explanation.appendChild(exampleText);
   }
-  if (settings.audioExample === true) {
+  if (settings.audioExample) {
     const playBtn = document.createElement('span');
     playBtn.classList.add('btn-play');
-    playBtn.addEventListener('click', () => playAudio(content.data.audioExample));
-    const audioExample = document.createElement('span');
-    audioExample.classList.add('material-icons');
-    audioExample.innerHTML = 'volume_up';
-    playBtn.appendChild(audioExample);
+    playBtn.addEventListener('click', () => playAudio(audioExample));
+    playBtn.appendChild(renderIcon('volume_up'));
     explanation.appendChild(playBtn);
   }
-  if (settings.textExampleTranslate === true) {
-    const textExampleTranslate = document.createElement('p');
-    textExampleTranslate.innerHTML = content.data.textExampleTranslate;
-    explanation.appendChild(textExampleTranslate);
+  if (settings.textExampleTranslate) {
+    const exampleTranslate = document.createElement('p');
+    exampleTranslate.innerHTML = textExampleTranslate;
+    explanation.appendChild(exampleTranslate);
   }
-  if (settings.textMeaning === true) {
-    const textMeaning = document.createElement('p');
-    textMeaning.innerHTML = content.data.textMeaning;
-    explanation.appendChild(textMeaning);
+  if (settings.textMeaning) {
+    const meaning = document.createElement('p');
+    meaning.innerHTML = textMeaning;
+    explanation.appendChild(meaning);
   }
-  if (settings.audioMeaning === true) {
+  if (settings.audioMeaning) {
     const playBtn = document.createElement('span');
     playBtn.classList.add('btn-play');
-    playBtn.addEventListener('click', () => playAudio(content.data.audioMeaning));
-    const audioMeaning = document.createElement('span');
-    audioMeaning.classList.add('material-icons');
-    audioMeaning.innerHTML = 'volume_up';
-    playBtn.appendChild(audioMeaning);
+    playBtn.addEventListener('click', () => playAudio(audioMeaning));
+    playBtn.appendChild(renderIcon('volume_up'));
     explanation.appendChild(playBtn);
   }
-  if (settings.textMeaningTranslate === true) {
-    const textMeaningTranslate = document.createElement('p');
-    textMeaningTranslate.innerHTML = content.data.textMeaningTranslate;
-    explanation.appendChild(textMeaningTranslate);
+  if (settings.textMeaningTranslate) {
+    const meaningTranslate = document.createElement('p');
+    meaningTranslate.innerHTML = textMeaningTranslate;
+    explanation.appendChild(meaningTranslate);
   }
   const wrapper = document.createElement('div');
-  wrapper.classList.add('col-12');
-  wrapper.classList.add('col-sm-4');
+  wrapper.classList.add('col-12', 'col-sm-4');
   fragment.appendChild(wrapper);
   if (settings.image === true) {
-    const image = document.createElement('img');
-    image.setAttribute('src', content.data.image);
-    image.classList.add('card-image');
-    wrapper.appendChild(image);
+    const img = document.createElement('img');
+    img.setAttribute('src', image);
+    img.classList.add('card-image');
+    wrapper.appendChild(img);
   }
   const statistic = document.createElement('div');
   statistic.classList.add('statistic');
@@ -165,11 +130,8 @@ export function renderCard(content, settings) {
   explanation.appendChild(statistic);
   const progress = document.createElement('div');
   progress.classList.add('progress');
-  if (!content.optional.value) {
-    // eslint-disable-next-line no-param-reassign
-    content.optional.value = 0;
-  }
-  progress.innerHTML = `<div class="progress-bar" role="progressbar" style="width: ${content.optional.value}%;" aria-valuenow="${content.optional.value}" aria-valuemin="0" aria-valuemax="100">${content.optional.value}%</div>
+  const progressValue = content.optional.value || 0;
+  progress.innerHTML = `<div class="progress-bar" role="progressbar" style="width: ${progressValue}%;" aria-valuenow="${progressValue}" aria-valuemin="0" aria-valuemax="100">${progressValue}%</div>
   </div>`;
   explanation.appendChild(progress);
   return fragment;

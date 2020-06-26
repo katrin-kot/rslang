@@ -1,13 +1,12 @@
-
 import { renderCard } from './renderCard';
 
-export async function renderAllCards(content, settings) {
+export function renderAllCards(content, settings) {
   const fragment = document.createDocumentFragment();
   const wordsCount = document.createElement('div');
   wordsCount.classList.add('row');
   wordsCount.innerHTML = `<h4>Всего слов: ${content.length}</h4> <a class="btn primary" href="#" role="button">Перейти к изучению</a>`;
   fragment.appendChild(wordsCount);
-  content.forEach(async (elem) => {
+  content.forEach((elem) => {
     const wordCard = document.createElement('div');
     wordCard.classList.add('word-card');
     wordCard.classList.add('row');

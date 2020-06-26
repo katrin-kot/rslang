@@ -14,3 +14,10 @@ export function playAudio(src) {
   myAudio.src = src;
   myAudio.play();
 }
+
+export function renderIcon(name) {
+  const icon = document.createElement('span');
+  icon.classList.add('material-icons');
+  icon.innerHTML = name;
+  return icon;
+}

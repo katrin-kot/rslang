@@ -15,7 +15,6 @@ export const getUserSettings = async ({ userId }) => {
     },
   );
   const content = await rawResponse.json();
-  console.log(content);
   return content;
 };
 
@@ -34,8 +33,6 @@ export const putUserSettings = async ({ userId, wordsPerDay, optional }) => {
     },
   );
   const content = await rawResponse.json();
-
-  console.log(content);
   return content;
 };
 
