@@ -11,100 +11,100 @@ export default class Game {
     this.round = 0;
     this.isAnswered = false;
 
-    this.GAME = document.createElement('div');
-    this.QUESTION_BUTTON = document.createElement('div');
+    this.game = document.createElement('div');
+    this.question_button = document.createElement('div');
     this.volumeIcon = document.createElement('img');
-    this.VARIANTS = document.createElement('div');
-    this.NEXT_BUTTON = document.createElement('div');
-    this.ANSWER = document.createElement('div');
-    this.ANSWER_IMAGE = document.createElement('div');
-    this.ANSWER_AUDIO = document.createElement('div');
-    this.ANSWER_WORD = document.createElement('div');
-    this.ROW = document.createElement('div');
+    this.variants = document.createElement('div');
+    this.next_button = document.createElement('div');
+    this.answer = document.createElement('div');
+    this.answer_image = document.createElement('div');
+    this.answer_audio = document.createElement('div');
+    this.answer_word = document.createElement('div');
+    this.row = document.createElement('div');
   }
 
   render() {
-    
 
-    this.GAME.classList.add('game');
-    this.QUESTION_BUTTON.classList.add('question-button');
+
+    this.game.classList.add('game');
+    this.question_button.classList.add('question-button');
     this.volumeIcon.classList.add('question-button__icon');
-    this.volumeIcon.setAttribute('src','/assets/images/speaker.png');
-    this.VARIANTS.classList.add('variants');
-    this.NEXT_BUTTON.classList.add('next-button');
-    this.NEXT_BUTTON.innerText = 'NE ZNAYU';
+    this.volumeIcon.setAttribute('src', '/assets/images/speaker.png');
+    this.variants.classList.add('variants');
+    this.next_button.classList.add('next-button');
+    this.next_button.innerText = 'NE ZNAYU';
 
-    this.ANSWER.classList.add('answer');
-    this.ANSWER_IMAGE.classList.add('answer__image');
-    this.ROW.classList.add('row');
-    this.ANSWER_AUDIO.classList.add('answer__audio');
-    this.ANSWER_WORD.classList.add('answer__word');
+    this.answer.classList.add('answer');
+    this.answer_image.classList.add('answer__image');
+    this.row.classList.add('row');
+    this.answer_audio.classList.add('answer__audio');
+    this.answer_word.classList.add('answer__word');
 
-    this.ROW.appendChild(this.ANSWER_AUDIO);
-    this.ROW.appendChild(this.ANSWER_WORD);
-    this.ANSWER.appendChild(this.ANSWER_IMAGE);
-    this.ANSWER.appendChild(this.ROW);
-    
-    this.ANSWER_WORD.innerText = questions[this.round].english;
-    this.ANSWER_IMAGE.style.backgroundImage = `url(${questions[this.round].image})`;
+    this.row.appendChild(this.answer_audio);
+    this.row.appendChild(this.answer_word);
+    this.answer.appendChild(this.answer_image);
+    this.answer.appendChild(this.row);
+
+    this.answer_word.innerText = questions[this.round].english;
+    this.answer_image.style.backgroundImage = `url(${questions[this.round].image})`;
     new Audio(questions[this.round].question).play();
 
-    this.QUESTION_BUTTON.appendChild(this.volumeIcon);
-    
-    for(let i = 1; i < 7; i += 1) {
-      const OPTION = document.createElement('div');
-      const OPTION_NUMBER = document.createElement('div');
-      const OPTION_WORD = document.createElement('div');
-      OPTION.classList.add('option');
-      OPTION_NUMBER.classList.add('option__number');
-      OPTION_WORD.classList.add('option__word');
-      OPTION_NUMBER.innerText = i;
-      OPTION_WORD.innerText = questions[this.round].options[i - 1];
-      OPTION.appendChild(OPTION_NUMBER);
-      OPTION.appendChild(OPTION_WORD);
-      this.VARIANTS.appendChild(OPTION);
+    this.question_button.appendChild(this.volumeIcon);
 
-      OPTION.addEventListener('click', () => {
-     if (this.isAnswered == false) {
-      this.showAnswer()
-        let sound;
-        if (OPTION.lastChild.innerText == questions[this.round].rightAnswer) {
-          sound = new Audio('/assets/audios/correct.mp3');
-          OPTION.firstChild.innerHTML = `<img src="/assets/images/24.png" alt="">`;
-        } else {
-          sound = new Audio('/assets/audios/wrong.mp3');
-          const temp = OPTION.lastChild.innerText;
-          OPTION.lastChild.innerHTML = `<s>${temp}</s>`
+    for (let i = 1; i < 7; i += 1) {
+      const option = document.createElement('div');
+      const option_number = document.createElement('div');
+      const option_word = document.createElement('div');
+      option.classList.add('option');
+      option_number.classList.add('option__number');
+      option_word.classList.add('option__word');
+      option_number.innerText = i;
+      option_word.innerText = questions[this.round].options[i - 1];
+      option.appendChild(option_number);
+      option.appendChild(option_word);
+      this.variants.appendChild(option);
+
+      option.addEventListener('click', () => {
+        if (this.isAnswered == false) {
+          this.showAnswer()
+          let sound;
+          if (option.lastChild.innerText == questions[this.round].rightAnswer) {
+            sound = new Audio('/assets/audios/correct.mp3');
+            option.firstChild.innerHTML = `<img src="/assets/images/24.png" alt="">`;
+          } else {
+            sound = new Audio('/assets/audios/wrong.mp3');
+            const temp = option.lastChild.innerText;
+            option.lastChild.innerHTML = `<s>${temp}</s>`
+          }
+          sound.play();
+
+
         }
-        sound.play();
-
-        
-     }
       });
     }
 
-    this.GAME.appendChild(this.QUESTION_BUTTON);
-    this.GAME.appendChild(this.VARIANTS);
-    this.GAME.appendChild(this.NEXT_BUTTON);
+    this.game.appendChild(this.question_button);
+    this.game.appendChild(this.variants);
+    this.game.appendChild(this.next_button);
 
-    document.querySelector('.wrapper').appendChild(this.GAME);
+    document.querySelector('.wrapper').appendChild(this.game);
 
-    this.QUESTION_BUTTON.addEventListener('click', () => {
+    this.question_button.addEventListener('click', () => {
       const audio = new Audio(questions[this.round].question);
       audio.play();
     });
-    this.ANSWER_AUDIO.addEventListener('click', () => {
+    this.answer_audio.addEventListener('click', () => {
       const audio = new Audio(questions[this.round].question);
       audio.play();
     });
 
-    this.NEXT_BUTTON.addEventListener('click', () => {
+    this.next_button.addEventListener('click', () => {
       if (this.isAnswered) {
         this.nextRound();
       } else {
         this.showAnswer();
       }
-      
+
     })
   }
 
@@ -114,38 +114,38 @@ export default class Game {
     options.forEach((option) => {
       if (option.lastChild.innerText != questions[this.round].rightAnswer) {
         option.lastChild.classList.add('fade');
-      } 
+      }
       option.firstChild.classList.add('fade');
     });
 
-      this.GAME.removeChild(this.QUESTION_BUTTON);
-      this.GAME.insertBefore(this.ANSWER, this.GAME.firstChild);
-      this.NEXT_BUTTON.innerText = '';
-      this.NEXT_BUTTON.innerHTML = `<img src="/assets/images/right-arrow.png" class="next">`;
+    this.game.removeChild(this.question_button);
+    this.game.insertBefore(this.answer, this.game.firstChild);
+    this.next_button.innerText = '';
+    this.next_button.innerHTML = `<img src="/assets/images/right-arrow.png" class="next">`;
   }
-  
+
 
   nextRound() {
     this.round += 1;
     this.isAnswered = false;
     const audio = new Audio(questions[this.round].question);
-      audio.play();
-    this.GAME.removeChild(this.ANSWER);
-    this.GAME.insertBefore(this.QUESTION_BUTTON, this.GAME.firstChild);
-    this.NEXT_BUTTON.innerHTML = 'NE ZNAYU';
-    this.ANSWER_IMAGE.style.backgroundImage = `url(${questions[this.round].image})`;
-    this.ANSWER_WORD.innerText = questions[this.round].english;
+    audio.play();
+    this.game.removeChild(this.answer);
+    this.game.insertBefore(this.question_button, this.game.firstChild);
+    this.next_button.innerHTML = 'NE ZNAYU';
+    this.answer_image.style.backgroundImage = `url(${questions[this.round].image})`;
+    this.answer_word.innerText = questions[this.round].english;
     const options = document.querySelectorAll('.option');
-      options.forEach((option, i) => {
-        option.lastChild.classList.remove('fade');
-        option.firstChild.classList.remove('fade');
-        option.lastChild.innerHTML = '';
-        option.firstChild.innerHTML = '';
-        option.firstChild.innerText = i + 1;
-        option.lastChild.innerText = questions[this.round].options[i];
-      });
+    options.forEach((option, i) => {
+      option.lastChild.classList.remove('fade');
+      option.firstChild.classList.remove('fade');
+      option.lastChild.innerHTML = '';
+      option.firstChild.innerHTML = '';
+      option.firstChild.innerText = i + 1;
+      option.lastChild.innerText = questions[this.round].options[i];
+    });
 
-    
+
   }
 
 
