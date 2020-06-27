@@ -1,37 +1,45 @@
-body, input {
-  font-size: 26px;
+.card-container body, input, button {
+  font-size: 16px;
+  font-family: "Poppins" "Comic Sans MS";
+  color: rgb(75, 69, 69);
 }
-
-input {
+.card-container button {
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+}
+.card-container input {
   font-family: "Poppins" "Comic Sans MS";
   padding: 5px 20px;
   margin: 0 15px;
   font-family: inherit;
 }
 
-label {
+.card-container label {
   position: absolute;
   left: 36.5px;
-  top: 1.5px;
+  top: 0;
 }
 
 .game-card {
+  position: relative;
   font-family: "Poppins" "Comic Sans MS";
   width: 700px;
-  border: 2px solid grey;
   border-radius: 25px;
   text-align: center;
-  padding: 50px;
+  padding: 10px;
   margin: auto;
-  background-color: #D6D4E1;
+
+  background: linear-gradient(#D6D4E1, #9198e5);
 }
 
 .game-card div {
-  padding: 10px 0;
+  padding: 5px 0;
 }
 
 .image {
   border-radius: 25px;
+  width: 300px;
 }
 
 .zero-opacity {
@@ -48,4 +56,132 @@ label {
 
 .color-correct {
   color: green;
+}
+
+#audio-control {
+  width: 50px;
+  height: 50px;
+  background-repeat: no-repeat;
+  position: absolute;
+  right: 50px;
+  top: 30px;
+  cursor: pointer;
+  background-size: contain;
+  z-index: 2;
+}
+
+#translation-control {
+  width: 50px;
+  height: 50px;
+  background-repeat: no-repeat;
+  position: absolute;
+  right: 50px;
+  top: 100px;
+  cursor: pointer;
+  background-size: contain;
+  z-index: 2;
+}
+
+.sound-on {
+  background-image: url('/assets/images/soundOn.png');
+}
+
+.sound-off {
+  background-image: url('/assets/images/soundOff.png');
+}
+
+.translation-on {
+  background-image: url('/assets/images/translationOn.png');
+}
+
+.translation-off {
+  background-image: url('/assets/images/translationOff.png');
+}
+.card-container {
+  width: 800px;
+  margin: auto;
+}
+
+/* btns */
+.difficulty-btns {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+.difficulty-btns button {
+  font-size: 26px;
+  width: 23%;
+  padding: 10px;
+}
+.card-btns {
+  display: flex;
+  justify-content: space-between;
+}
+.card-btns button {
+   margin-left: 5px;
+  padding: 10px;
+  background: linear-gradient(#dbdbdb, #b4b2b2);
+}
+
+.show-answer-btn {
+  margin-right: auto;
+}
+.easy-btn {
+  background: linear-gradient(#f1eb89, #ffd102);
+}
+.hard-btn {
+  background: linear-gradient(#ff8d6a, #da0a0a);
+}
+.good-btn {
+  background: linear-gradient(#6aff7e, #0ada0a);
+}
+.again-btn {
+  background: linear-gradient(#f69648, #ff7300);
+}
+
+/* StartScreen */
+.games-container {
+  display: flex;
+}
+
+.words-to-practice {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 400px;
+}
+
+.words-to-practice, .hard-words, .new-words, .learning-words {
+  margin: 10px;
+  border-radius: 25px;
+  background: linear-gradient(#D6D4E1, #9198e5);
+  padding: 20px;
+  cursor: pointer;
+}
+
+.games-title {
+  padding-left: 20px;
+}
+
+.start-screen-container h2, h3 {
+  color: rgb(62, 12, 143);
+}
+
+.new-number {
+  color: rgb(74, 173, 16);
+}
+.learning-number {
+  color: rgb(102, 16, 173);
+}
+.hard-number {
+  color: rgb(173, 16, 29);
+}
+
+.translucent {
+  color: grey;
+  opacity: 0.7;
+}
+
+.display-none {
+  display: none;
 }
