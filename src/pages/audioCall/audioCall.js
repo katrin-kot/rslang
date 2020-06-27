@@ -6,16 +6,16 @@ export default class Game {
     this.round = 0;
     this.isAnswered = false;
 
-    this.game = document.createElement("div");
-    this.question_button = document.createElement("div");
-    this.volumeIcon = document.createElement("img");
-    this.variants = document.createElement("div");
-    this.next_button = document.createElement("div");
-    this.answer = document.createElement("div");
-    this.answer_image = document.createElement("div");
-    this.answer_audio = document.createElement("div");
-    this.answer_word = document.createElement("div");
-    this.row = document.createElement("div");
+    this.game = document.createElement('div');
+    this.question_button = document.createElement('div');
+    this.volumeIcon = document.createElement('img');
+    this.variants = document.createElement('div');
+    this.next_button = document.createElement('div');
+    this.answer = document.createElement('div');
+    this.answer_image = document.createElement('div');
+    this.answer_audio = document.createElement('div');
+    this.answer_word = document.createElement('div');
+    this.row = document.createElement('div');
   }
 
   render() {
@@ -47,12 +47,12 @@ export default class Game {
     this.question_button.appendChild(this.volumeIcon);
 
     for (let i = 1; i < 7; i += 1) {
-      const option = document.createElement("div");
-      const option_number = document.createElement("div");
-      const option_word = document.createElement("div");
-      option.classList.add("option");
-      option_number.classList.add("option__number");
-      option_word.classList.add("option__word");
+      const option = document.createElement('div');
+      const option_number = document.createElement('div');
+      const option_word = document.createElement('div');
+      option.classList.add('option');
+      option_number.classList.add('option__number');
+      option_word.classList.add('option__word');
       option_number.innerText = i;
       option_word.innerText = questions[this.round].options[i - 1];
       option.appendChild(option_number);
@@ -69,7 +69,7 @@ export default class Game {
             sound = new Audio('/assets/audios/correct.mp3');
             option.firstChild.innerHTML = '<img src="/assets/images/24.png" alt="">';
           } else {
-            sound = new Audio("/assets/audios/wrong.mp3");
+            sound = new Audio('/assets/audios/wrong.mp3');
             const temp = option.lastChild.innerText;
             option.lastChild.innerHTML = `<s>${temp}</s>`;
           }
@@ -82,18 +82,18 @@ export default class Game {
     this.game.appendChild(this.variants);
     this.game.appendChild(this.next_button);
 
-    document.querySelector(".wrapper").appendChild(this.game);
+    document.querySelector('.wrapper').appendChild(this.game);
 
-    this.question_button.addEventListener("click", () => {
+    this.question_button.addEventListener('click', () => {
       const audio = new Audio(questions[this.round].question);
       audio.play();
     });
-    this.answer_audio.addEventListener("click", () => {
+    this.answer_audio.addEventListener('click', () => {
       const audio = new Audio(questions[this.round].question);
       audio.play();
     });
 
-    this.next_button.addEventListener("click", () => {
+    this.next_button.addEventListener('click', () => {
       if (this.isAnswered) {
         this.nextRound();
       } else {
@@ -104,12 +104,12 @@ export default class Game {
 
   showAnswer() {
     this.isAnswered = true;
-    const options = document.querySelectorAll(".option");
+    const options = document.querySelectorAll('.option');
     options.forEach((option) => {
       if (option.lastChild.innerText !== questions[this.round].rightAnswer) {
         option.lastChild.classList.add('fade');
       }
-      option.firstChild.classList.add("fade");
+      option.firstChild.classList.add('fade');
     });
 
     this.game.removeChild(this.question_button);
@@ -131,14 +131,15 @@ export default class Game {
       `background-image:url(${questions[this.round].image})`,
     );
     this.answer_word.innerText = questions[this.round].english;
-    const options = document.querySelectorAll(".option");
+    const options = document.querySelectorAll('.option');
     options.forEach((option, i) => {
-      option.lastChild.classList.remove("fade");
-      option.firstChild.classList.remove("fade");
-      option.lastChild.innerHTML = "";
-      option.firstChild.innerHTML = "";
+      option.lastChild.classList.remove('fade');
+      option.firstChild.classList.remove('fade');
+      option.lastChild.innerHTML = '';
+      option.firstChild.innerHTML = '';
       option.firstChild.innerText = i + 1;
       option.lastChild.innerText = questions[this.round].options[i];
     });
   }
 }
+
