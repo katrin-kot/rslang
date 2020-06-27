@@ -100,11 +100,11 @@ margin-right: 8px;
 }
 
 .answer{
-margin-top: 5%;
-display: flex;
-justify-content: center;
-align-items: center;
-flex-direction: column;
+  margin-top: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 .answer__image{
   width: 120px;
