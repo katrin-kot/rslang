@@ -5,7 +5,8 @@
   background: -webkit-linear-gradient(to top, #49a09d, #5f2c82); 
   background: linear-gradient(to top, #49a09d, #5f2c82);
 }
-body{
+
+body {
   margin: 0;
   padding: 0;
 }
