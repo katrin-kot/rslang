@@ -8,11 +8,11 @@ export const loginUser = async (user) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(user),
-    },
+    }
   );
   const content = await rawResponse.json();
   localStorage.setItem('token', content.token);
-  localStorage.setItem('userID', content.userID);
+  localStorage.setItem('userID', content.userId);
 };
 
 export const createUser = async (user) => {
@@ -25,7 +25,7 @@ export const createUser = async (user) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(user),
-    },
+    }
   );
   const content = await rawResponse.json();
   localStorage.setItem('email', content.email);
@@ -42,4 +42,9 @@ export function getUserID() {
 
 export function getUserEmail() {
   return localStorage.getItem('email');
+}
+
+export function logoutUser() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('userID');
 }
