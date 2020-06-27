@@ -133,7 +133,7 @@ export default class Game {
     this.game.removeChild(this.answer);
     this.game.insertBefore(this.question_button, this.game.firstChild);
     this.next_button.innerHTML = 'NE ZNAYU';
-    this.answer_image.style.backgroundImage = `url(${questions[this.round].image})`;
+    this.answer_image.setAttribute('style',`background-image:url(${questions[this.round].image})`);
     this.answer_word.innerText = questions[this.round].english;
     const options = document.querySelectorAll('.option');
     options.forEach((option, i) => {
