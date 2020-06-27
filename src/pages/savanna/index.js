@@ -40,7 +40,6 @@ class StartPageView extends View {
       this.buttonStartGame.addEventListener('click', event => {
         event.preventDefault()
         this.startContainer.classList.add('hidden')
-        new Audio('/assets/audio/startGame.mp3').play()
 
         this.displayGame()
       })
@@ -60,17 +59,59 @@ class StartPageView extends View {
         this.keyboardImage = createNode('div', 'await-block__keyboard')
         this.promt = createNode('p', 'await-block__promt')
         this.promt.textContent = 'Используйте клавишы 1, 2, 3 и 4, чтобы дать быстрый ответ'
+        
 
-        this.awaitBlock.append(this.keyboardImage, this.promt)
+        this.form = createNode('form', 'await-block__form')
+
+        this.inputField = createNode('input', 'form__input')
+        this.inputField.setAttribute('placeholder', 'Введите число от 5 до 20')
+        this.inputField.setAttribute('autofocus', 'true')
+        this.inputField.setAttribute('required', 'true')
+
+        this.submitButton = createNode('button', 'button', 'form__button', 'button--start')
+        this.submitButton.setAttribute('type', 'submit')
+        this.submitButton.setAttribute('id', 'submitButton')
+        this.submitButton.textContent = 'Продолжить'
+
+        this.form.append(this.inputField, this.submitButton)
+
+        this.awaitBlock.append(this.keyboardImage, this.promt, this.form)
         this.appContainer.append(this.awaitBlock)
 
-        setTimeout(()=> {
+        /*setTimeout(()=> {
             this.awaitBlock.classList.add('hidden')
 
             this.startLoading()
             this.updateBody()
             this.getInfo()
-        }, 3000)
+        }, 3000)*/
+
+        this.continueListener()
+    }
+
+    continueListener() {
+        this.form.addEventListener('submit', event => {
+            event.preventDefault()
+
+            if (this.error) this.error.remove()
+
+            if (!Number.isInteger(Number(this.inputField.value)) || this.inputField.value > 20 || this.inputField.value < 5) return this.showError()
+            else {
+                new Audio('/assets/audio/startGame.mp3').play()
+                this.awaitBlock.classList.add('hidden')
+
+                this.startLoading()
+                this.updateBody()
+                this.getInfo(this.inputField.value)
+            }
+        })
+    }
+
+    showError() {
+        this.error = createNode('p', 'form__error')
+        this.error.textContent = 'Внимание! Введите число от 5 до 20'
+        this.form.prepend(this.error)
+        this.inputField.value = ''
     }
 
     startLoading() {
@@ -116,22 +157,33 @@ class StartPageView extends View {
         this.appContainer.append(this.gameBlock)
     }
 
-    async getInfo() {
-        const url = 'https://afternoon-falls-25894.herokuapp.com/words?page=2&group=0'
+    async getInfo(numberOfWords) {
+        try {
+            const url = 'https://afternoon-falls-25894.herokuapp.com/words?page=2&group=0'
 
-        const response = await fetch(url)
-        const dataArray = await response.json()
-        const data = dataArray.filter((item, index) => index < 9)
+            const response = await fetch(url)
+            const dataArray = await response.json()
 
-        let rusAnswers = []
+            if (dataArray.Error) {
+                this.stopLoading()
+                throw new Error(dataArray.Error)
+            }
 
-        for (let key of dataArray) {
-            rusAnswers.push(key.wordTranslate)
+            const data = dataArray.filter((item, index) => index < numberOfWords)
+
+            let rusAnswers = []
+
+            for (let key of dataArray) {
+                rusAnswers.push(key.wordTranslate)
+            }
+
+            this.updateButtonsContent(data, rusAnswers)
+            this.waitingAnswer(data, rusAnswers)
+            this.stopLoading()
+
+        } catch (e){
+            alert(e)
         }
-
-        this.updateButtonsContent(data, rusAnswers)
-        this.waitingAnswer(data, rusAnswers)
-        this.stopLoading()
     }
 
     updateButtonsContent(data, rusAnswers) {

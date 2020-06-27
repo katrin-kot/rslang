@@ -74,15 +74,14 @@ body {
 }
 
 .await-block {
-    padding-top: 300px;
+    padding-top: 100px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    align-items: center;
     
 }
 
 .await-block__keyboard {
-    margin: 0 auto;
     width: 100px;
     height: 100px;
     background-image: url('/assets/images/keyboard.png');
@@ -91,11 +90,41 @@ body {
 }
 
 .await-block__promt {
-    margin: 0 auto;
     max-width: 300px;
     font-size: 18px;
     font-weight: 700;
     text-align: center;
+}
+
+.await-block__form {
+    margin-top: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form__input {
+    padding: 1rem .5rem;
+    height: 3.5rem;
+    color: #fff;
+    border: 1px solid #fff;
+    outline: none;
+    background-color: transparent;
+}
+
+.form__input::placeholder {
+    color: #fff;
+}
+
+.form__button {
+    margin-top: 10px;
+}
+
+.form__error {
+    margin: 5px 0;
+    color: red;
+    font-weight: 700;
+    font-size: 18px;
 }
 
 .button--sound {
@@ -199,6 +228,8 @@ body {
 
 .game-results__description {
     margin-top: 0;
+    display: flex;
+    justify-content: space-between;
     width: 0;
     height: 0;
     font-size: 0;
@@ -210,9 +241,9 @@ body {
 .game-results__description--click {
     margin-top: 15px;
     padding: 15px 20px;
-    font-size: 18px;
+    font-size: 12px;
     width: 60%;
-    height: 400px;
+    height: max-content;
 }
 
 .block-title {
@@ -224,12 +255,11 @@ body {
 }
 
 .block-title--wrong {
-    margin-top: 20px;
     color: red;
 }
 
 .game-results__answer {
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 .game-results__answer:hover {
