@@ -5,13 +5,13 @@ WRAPPER.classList.add('wrapper');
 let STARTER = document.createElement('div');
 STARTER.innerHTML = ` <div class="start-page">
 <div class="start-page__title">
-  AUDIOCALL
+  Аудиовызов
 </div>
 <div class="start-page__description">
-  You will hear the audio of the english word. Your task is to find the correct translation from the provided options.
+  Вы услышите аудио слова на английском, ваша задача заключается в нахождении перевода слова из перечисленных вариантов.
 </div>
 <div class="start-page__button">
-  Start Game
+  Начать игру
 </div>
 </div>`;
 WRAPPER.append(STARTER);
@@ -23,3 +23,4 @@ document.querySelector('.start-page__button').addEventListener('click', () => {
   const game = new Game();
   game.render();
 });
+
