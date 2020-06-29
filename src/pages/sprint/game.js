@@ -67,44 +67,6 @@ export default class Game extends GameWindow {
     };
     this.maxPages = 30;
   }
-  /*
-  async test() {
-    const data = await getUserWord({
-      userID: localStorage.userID,
-      token: localStorage.token,
-    });
-    console.log(data);
-
-    const addedData = await addUserWord({
-      userID: localStorage.userID,
-      token: localStorage.token,
-      wordID: '5e9f5ee35eb9e72bc21af716',
-      word: { optional: { test: 'test123' } },
-    });
-    console.log(addedData);
-
-    for (let i = 17; i < 50; i++) {
-      await addUserWord({
-        userID: localStorage.userID,
-        token: localStorage.token,
-        wordID: `5e9f5ee35eb9e72bc21af7${i}`,
-        word: { optional: { test: 'test' } },
-      });
-    }
-    const pushData = await updateUserWord({
-      userID: localStorage.userID,
-      token: localStorage.token,
-      wordID: '5e9f5ee35eb9e72bc21af716',
-      word: { optional: { test: 'test' } },
-    });
-    console.log(pushData);
-
-    const data2 = await getUserWord({
-      userID: localStorage.userID,
-      token: localStorage.token,
-    });
-    console.log(data2);
-  } */
 
   async getUserData(user) {
     const userData = await getUserWords(user);
@@ -130,7 +92,7 @@ export default class Game extends GameWindow {
 
     gameField.insertAdjacentHTML(
       'beforebegin',
-      this.addDivByClass('game-score', 0),
+      this.addDivByClass('game-score', 0)
     );
 
     const gameScore = document.querySelector('.game-score');
@@ -139,7 +101,7 @@ export default class Game extends GameWindow {
 
     gameField.insertAdjacentHTML(
       'afterbegin',
-      this.addDivByClass('game-bonus'),
+      this.addDivByClass('game-bonus')
     );
 
     gameField.insertAdjacentHTML('beforeend', this.getGameImage());
@@ -148,14 +110,14 @@ export default class Game extends GameWindow {
 
     gameField.insertAdjacentHTML(
       'beforeend',
-      this.addDivByClass('game-translation'),
+      this.addDivByClass('game-translation')
     );
 
     gameField.insertAdjacentHTML('beforeend', '<hr>');
 
     gameField.insertAdjacentHTML(
       'beforeEnd',
-      this.addDivByClass('buttons-block', this.getButton(this.buttonList)),
+      this.addDivByClass('buttons-block', this.getButton(this.buttonList))
     );
 
     this.listenToButtonsClick();
@@ -172,7 +134,7 @@ export default class Game extends GameWindow {
     this.timer.renderTimer();
     const timerId = setInterval(
       () => this.timer.updateTimer((seconds += 1)),
-      MILLISECONDS_IN_SECOND,
+      MILLISECONDS_IN_SECOND
     );
     setTimeout(() => {
       clearInterval(timerId);
@@ -180,13 +142,14 @@ export default class Game extends GameWindow {
         this.startPage,
         this.gamePage,
         this.resultPage,
-        this.words,
+        this.words
       );
     }, MILLISECONDS_IN_MINUTE);
   }
 
   getGameImage() {
-    const image = '<img class="game-image" src="https://cdn.discordapp.com/attachments/720535785622995023/721061601393770546/Octopus_-_Opt_2.png">';
+    const image =
+      '<img class="game-image" src="https://cdn.discordapp.com/attachments/720535785622995023/721061601393770546/Octopus_-_Opt_2.png">';
 
     return image;
   }
@@ -211,7 +174,7 @@ export default class Game extends GameWindow {
   async getWordsByServer() {
     const randomPage = this.randomNumber();
     const rawResponse = await fetch(
-      `https://afternoon-falls-25894.herokuapp.com/words?page=${randomPage}&group=${this.difficult}`,
+      `https://afternoon-falls-25894.herokuapp.com/words?page=${randomPage}&group=${this.difficult}`
     );
 
     const content = await rawResponse.json();
@@ -222,8 +185,8 @@ export default class Game extends GameWindow {
 
   checkAnswer(answer) {
     if (
-      (this.lastResult && answer.contains('correct-answer-button'))
-      || (!this.lastResult && answer.contains('wrong-answer-button'))
+      (this.lastResult && answer.contains('correct-answer-button')) ||
+      (!this.lastResult && answer.contains('wrong-answer-button'))
     ) {
       this.updateCorrectWords();
       this.correctQueue += 1;

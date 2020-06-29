@@ -10,8 +10,9 @@ export default class GameWindow {
 
   getButton(description) {
     const button = description.reduce(
-      (hypertext, option) => `${hypertext}<button class="${option.class}">${option.text}</button>`,
-      '',
+      (hypertext, option) =>
+        `${hypertext}<button class="${option.class}">${option.text}</button>`,
+      ''
     );
 
     return button;
