@@ -30,6 +30,10 @@ const config = {
     main: './src/pages/main/main.js',
     login: './src/pages/login/login.js',
     savanna: './src/pages/savanna/savanna.js',
+    speakIt: './src/pages/speakIt/speakIt.js',
+    settings: './src/pages/settings/settings.js',
+    SRgame: './src/pages/SRgame/SRgame.js',
+    dictionary: './src/pages/dictionary/dictionary.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -188,10 +192,39 @@ const config = {
       chunks: ['savanna'],
       filename: './savanna.html',
     }),
-    new CopyWebpackPlugin([{
-      from: path.join(__dirname, 'assets'),
-      to: path.join(__dirname, 'dist', 'assets'),
-    }]),
+   new HtmlWebPackPlugin({
+      title: 'RS lang-speakIt',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['speakIt'],
+      filename: './speakIt.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['settings'],
+      template: 'src/pages/settings/settings.html',
+      filename: './settings.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang SR game',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['SRgame'],
+      template: 'src/pages/SRgame/SRgame.html',
+      filename: './SRgame.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['dictionary'],
+      template: 'src/pages/dictionary/dictionary.html',
+      filename: './dictionary.html',
+    }),
+    new CopyWebpackPlugin([
+      {
+        from: path.join(__dirname, 'assets'),
+        to: path.join(__dirname, 'dist', 'assets'),
+      },
+    ]),
   ],
 
   devServer: {
