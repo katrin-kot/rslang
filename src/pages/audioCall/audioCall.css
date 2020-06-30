@@ -2,7 +2,6 @@
   width: 100vw;
   height: 100vh;
   background: #5f2c82;  
-  background: -webkit-linear-gradient(to top, #49a09d, #5f2c82); 
   background: linear-gradient(to top, #49a09d, #5f2c82);
 }
 body{
