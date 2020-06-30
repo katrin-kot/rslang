@@ -3,6 +3,7 @@ import { createUser, loginUser } from '../../services/authService';
 import { validate, showValidate, hideValidate } from './validate';
 import { renderLogIn, renderSignUp } from './sign-up';
 import { renderError } from './errors';
+import { putDefaultSettings } from '../../services/settingsService';
 
 const body = document.querySelector('body');
 body.innerHTML = `
@@ -56,7 +57,7 @@ document.querySelector('.validate-form').addEventListener('submit', (event) => {
       createUser({
         email: `${input[0].value}`,
         password: `${input[1].value}`,
-      }).catch((err) => renderError(err));
+      }).then((res) => putDefaultSettings(res.id)).catch((err) => renderError(err));
       renderLogIn();
     }
   } else if (check) {

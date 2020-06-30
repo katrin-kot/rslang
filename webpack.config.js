@@ -28,6 +28,11 @@ const config = {
     main: './src/pages/main/main.js',
     login: './src/pages/login/login.js',
     audioCall: './src/pages/audioCall/startPage.js',
+    speakIt: './src/pages/speakIt/speakIt.js',
+    settings: './src/pages/settings/settings.js',
+    SRgame: './src/pages/SRgame/SRgame.js',
+    dictionary: './src/pages/dictionary/dictionary.js',
+
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -181,14 +186,47 @@ const config = {
       chunks: ['login'],
       template: 'src/pages/login/login.html',
       filename: './index.html',
+<<<<<<< HEAD
     }),
 
+=======
+    }),    
+>>>>>>> 53744a5e9ce63598bd5244081dabb5e4859292dd
     new HtmlWebPackPlugin({
       title: 'RS lang-audioCall',
       favicon: './assets/images/favicon.ico',
       chunks: ['audioCall'],
       template: 'src/pages/audioCall/audioCall.html',
       filename: './audioCall.html',
+<<<<<<< HEAD
+=======
+    new HtmlWebPackPlugin({
+      title: 'RS lang-speakIt',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['speakIt'],
+      filename: './speakIt.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['settings'],
+      template: 'src/pages/settings/settings.html',
+      filename: './settings.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang SR game',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['SRgame'],
+      template: 'src/pages/SRgame/SRgame.html',
+      filename: './SRgame.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['dictionary'],
+      template: 'src/pages/dictionary/dictionary.html',
+      filename: './dictionary.html',
+>>>>>>> 53744a5e9ce63598bd5244081dabb5e4859292dd
     }),
     new CopyWebpackPlugin([
       {
@@ -201,7 +239,11 @@ const config = {
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
+<<<<<<< HEAD
     port: 3000,
+=======
+    port: 8000,
+>>>>>>> 53744a5e9ce63598bd5244081dabb5e4859292dd
     overlay: true,
     stats: 'errors-only',
     clientLogLevel: 'none',

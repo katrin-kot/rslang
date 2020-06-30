@@ -1,0 +1,62 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+  }
+  
+  body,
+  html {
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+  }
+  
+  p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    color: #666666;
+    margin: 0px;
+    font-weight: 400;
+  }
+  
+  input {
+    outline: none;
+    border: none;
+  }
+  
+  input:focus {
+    border-color: transparent;
+  }
+  
+  button {
+      outline: none;
+      border: none;
+      background: transparent;
+  }
+  
+  button:hover {
+      cursor: pointer;
+  }
+
+  h2 {
+    color: #738795;
+  }
+
+  .container {
+   background-color:#FAF8EF;
+  }
+
+  main {
+    padding: 40px;
+    background: linear-gradient(62deg, rgba(205,226,233,1) 0%, rgba(214,212,225,1) 37%, rgba(115,135,149,1) 100%);
+  }
+
+  .primary {
+    color:#FAF8EF;
+    background: #81A4B4;
+  }
+
+  .error-text {
+    color:#c80000;
+  }
