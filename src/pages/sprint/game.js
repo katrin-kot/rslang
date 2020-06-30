@@ -74,8 +74,8 @@ export default class Game extends GameWindow {
     console.log('anyHard:');
     const obj = {
       userId: localStorage.userID,
-      group: 5,
-      wordsPerPage: 30,
+      group: 0,
+      wordsPerPage: 3,
     };
     const userFilteredData = await getWordforGame(
       obj.userId,

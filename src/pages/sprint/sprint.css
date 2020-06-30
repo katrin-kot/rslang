@@ -23,6 +23,8 @@ body {
 
   background-color: #f6ecee;
   box-sizing: border-box;
+
+  /*animation: shadow 1s 1;*/
 }
 
 .buttons-block .inner-content {
@@ -341,4 +343,13 @@ hr {
 .repeat-button,
 .parameters-button {
   width: 45%;
+}
+
+@keyframes shadow {
+  from {
+    box-shadow: 0 0 55px 10px black;
+  }
+  to {
+    box-shadow: 0 0 90px 20px black;
+  }
 }
