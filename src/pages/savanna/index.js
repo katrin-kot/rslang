@@ -1,5 +1,9 @@
 import View from './view'
 import createNode from './createNode'
+
+import diffLevel from './../../components/main/difficultOptions/difficultOptions'
+import {getWordforGame} from './../../services/userWordService'
+import {getUserID} from './../../services/authService'
 class StartPageView extends View {
     constructor() {
       super()
@@ -59,13 +63,14 @@ class StartPageView extends View {
         this.keyboardImage = createNode('div', 'await-block__keyboard')
         this.promt = createNode('p', 'await-block__promt')
         this.promt.textContent = 'Используйте клавишы 1, 2, 3 и 4, чтобы дать быстрый ответ'
-        
+
+        this.diffLevel = createNode('div')
+        this.diffLevel.innerHTML = diffLevel()
 
         this.form = createNode('form', 'await-block__form')
 
         this.inputField = createNode('input', 'form__input')
         this.inputField.setAttribute('placeholder', 'Введите число от 5 до 20')
-        this.inputField.setAttribute('autofocus', 'true')
         this.inputField.setAttribute('required', 'true')
 
         this.submitButton = createNode('button', 'button', 'form__button', 'button--start')
@@ -73,18 +78,19 @@ class StartPageView extends View {
         this.submitButton.setAttribute('id', 'submitButton')
         this.submitButton.textContent = 'Продолжить'
 
-        this.form.append(this.inputField, this.submitButton)
+        this.form.append(this.inputField, this.diffLevel, this.submitButton)
 
         this.awaitBlock.append(this.keyboardImage, this.promt, this.form)
         this.appContainer.append(this.awaitBlock)
 
-        /*setTimeout(()=> {
-            this.awaitBlock.classList.add('hidden')
-
-            this.startLoading()
-            this.updateBody()
-            this.getInfo()
-        }, 3000)*/
+        this.form.addEventListener('click', () => {
+            const inputElements = this.form.querySelectorAll('input[type="radio"]')
+            inputElements.forEach(item => {
+                if (item.checked) {
+                    localStorage.setItem('difficultSprint', item.value)
+                } 
+            })
+        })
 
         this.continueListener()
     }
@@ -92,17 +98,18 @@ class StartPageView extends View {
     continueListener() {
         this.form.addEventListener('submit', event => {
             event.preventDefault()
+            let inputValue = this.form.querySelector('input').value
 
             if (this.error) this.error.remove()
-
-            if (!Number.isInteger(Number(this.inputField.value)) || this.inputField.value > 20 || this.inputField.value < 5) return this.showError()
+            if (!Number.isInteger(Number(inputValue)) || inputValue > 20 || inputValue < 5) return this.showError()
             else {
                 new Audio('/assets/audio/startGame.mp3').play()
                 this.awaitBlock.classList.add('hidden')
 
+
                 this.startLoading()
                 this.updateBody()
-                this.getInfo(this.inputField.value)
+                this.getInfo(inputValue)
             }
         })
     }
@@ -111,7 +118,7 @@ class StartPageView extends View {
         this.error = createNode('p', 'form__error')
         this.error.textContent = 'Внимание! Введите число от 5 до 20'
         this.form.prepend(this.error)
-        this.inputField.value = ''
+        this.form.querySelector('input').value = ''
     }
 
     startLoading() {
@@ -158,12 +165,9 @@ class StartPageView extends View {
     }
 
     async getInfo(numberOfWords) {
+
         try {
-            const url = 'https://afternoon-falls-25894.herokuapp.com/words?page=2&group=0'
-
-            const response = await fetch(url)
-            const dataArray = await response.json()
-
+            let dataArray = await getWordforGame(getUserID(), localStorage.getItem('difficultSprint'), numberOfWords)
             if (dataArray.Error) {
                 this.stopLoading()
                 throw new Error(dataArray.Error)
