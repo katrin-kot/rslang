@@ -173,19 +173,19 @@ const config = {
     new MiniCssExtractPlugin({
       filename: '[name].css',
     }),
-    // new HtmlWebPackPlugin({
-    //   title: 'RS lang-main',
-    //   favicon: './assets/images/favicon.ico',
-    //   chunks: ['main'],
-    //   filename: './main.html',
-    // }),
-    // new HtmlWebPackPlugin({
-    //   title: 'RS lang',
-    //   favicon: './assets/images/favicon.ico',
-    //   chunks: ['login'],
-    //   template: 'src/pages/login/login.html',
-    //   filename: './index.html',
-    // }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang-main',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['main'],
+      filename: './main.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['login'],
+      template: 'src/pages/login/login.html',
+      filename: './index.html',
+    }),
 
     new HtmlWebPackPlugin({
       //title: 'RS lang-audioCall',
@@ -238,7 +238,7 @@ const config = {
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
-    port: 3002,
+    port: 3000,
     overlay: true,
     stats: 'errors-only',
     clientLogLevel: 'none',
