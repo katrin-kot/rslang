@@ -1,5 +1,5 @@
 import './savanna.css';
 
-import StartPageView from './index';
+import Game from './index';
 
-StartPageView.render();
+Game.render();

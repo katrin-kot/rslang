@@ -3,7 +3,7 @@ import './difficultOptions.css';
 export default () => {
   const form = `
     <form class="form-difficult" action="difficult">
-    <b>Выберите уровень сложности слов:</b>
+    <p><b>Выберите уровень сложности слов:</b></p>
      <input id="radio-difficult-1" name="difficult" type="radio" value="0" checked>
      <label class="label-difficult" for="radio-difficult-1">Базовый</label>
      <br>
