@@ -1,0 +1,51 @@
+body, input {
+  font-size: 26px;
+}
+
+input {
+  font-family: "Poppins" "Comic Sans MS";
+  padding: 5px 20px;
+  margin: 0 15px;
+  font-family: inherit;
+}
+
+label {
+  position: absolute;
+  left: 36.5px;
+  top: 1.5px;
+}
+
+.game-card {
+  font-family: "Poppins" "Comic Sans MS";
+  width: 700px;
+  border: 2px solid grey;
+  border-radius: 25px;
+  text-align: center;
+  padding: 50px;
+  margin: auto;
+  background-color: #D6D4E1;
+}
+
+.game-card div {
+  padding: 10px 0;
+}
+
+.image {
+  border-radius: 25px;
+}
+
+.zero-opacity {
+  opacity: 0;
+}
+
+.color-error-few {
+  color: orange;
+}
+
+.color-error-many {
+  color: red;
+}
+
+.color-correct {
+  color: green;
+}

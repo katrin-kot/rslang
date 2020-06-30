@@ -1,0 +1,185 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+body,
+html {
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+}
+
+main {
+  background:linear-gradient(62deg, rgba(64,180,189,1) 0%,
+   rgba(214,212,225,1) 61%, rgba(255,255,255,1) 100%);
+}
+
+a {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #666666;
+  margin: 0px;
+  font-weight: 400;
+  transition: all 0.4s;
+}
+
+a:focus,
+button:focus {
+  outline: none;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #6a7dfe;
+  color: linear-gradient(to right, #21d4fd, #b721ff);
+}
+
+p {
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #666666;
+  margin: 0px;
+  font-weight: 400;
+}
+
+.statistic {
+  color: #738795;
+  font-size: 18px;
+}
+
+.col-3 {
+  background:linear-gradient(62deg, rgba(64,180,189,1) 0%,
+   rgba(214,212,225,1) 61%, rgba(255,255,255,1) 100%);
+}
+
+.col-9 {
+  background: #f6ecee;
+}
+
+.tab-content {
+  margin-left: 10px;
+}
+
+.word-card {
+  height: 200px;
+  border-bottom: 2px solid #666666;
+  padding: 0 5px 5px 5px;
+}
+
+.english-word {
+  display: inline;
+  color: #738795;
+  margin-right: 10px;
+}
+
+.transcription {
+  display: inline;
+}
+
+.explanation {
+  height: inherit;
+  overflow-y: scroll;
+  padding: 8px 5px 8px 5px;
+}
+
+.card-image {
+  width: inherit;
+  max-height: 190px;
+}
+
+.btn-play,
+.btn-delete {
+  font-size: 24px;
+  color: #999999;
+  display: flex;
+  align-items: center;
+  padding-right: 5px;
+  cursor: pointer;
+  transition: all 0.4s;
+}
+
+.btn-delete {
+  position: absolute;
+  top: 5px;
+  left: 90%;
+}
+
+.btn-play:hover,
+.btn-delete:hover {
+  color: #6a7dfe;
+  color: linear-gradient(to right, #21d4fd, #b721ff);
+}
+
+.primary {
+  margin-left: 30px;
+  color: #ffffff;
+  background-color: #6a7dfe;
+}
+
+.primary:hover {
+  background-color: #21d4fd;
+}
+
+.btn-outline-secondary {
+  position: absolute;
+  top: 5px;
+  left: 70%;
+}
+
+@media (max-width: 880px) {
+  .btn-outline-secondary {
+    top: 30px;
+    left: 67%;
+  }
+}
+
+@media (max-width: 575px) {
+  .word-card {
+    margin-bottom: 200px;
+    margin-right: 10px;
+  }
+  .nav-link,
+  .primary {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 460px) {
+  .btn-outline-secondary {
+    top: 35px;
+    font-size: 10px;
+  }
+  .nav-link,
+  .primary {
+    font-size: 12px;
+  }
+  h4 {
+    font-size: 1.2rem;
+    margin-left: 5px;
+  }
+}
+
+@media (max-width: 380px) {
+  .primary {
+    margin-left: 10px;
+  }
+  h4 {
+    margin-left: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  h4 {
+    font-size: 1.4rem;
+  }
+  .word-card {
+    margin-bottom: 140px;
+  }
+  h5 {
+    font-size: 1.1rem;
+  }
+}
