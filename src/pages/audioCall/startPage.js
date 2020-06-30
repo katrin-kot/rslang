@@ -1,9 +1,9 @@
 import Game from "./audioCall";
 
-const WRAPPER = document.createElement("div");
-WRAPPER.classList.add("wrapper");
-let STARTER = document.createElement("div");
-STARTER.innerHTML = ` <div class="start-page">
+const wrapper = document.createElement("div");
+wrapper.classList.add("wrapper");
+let starter = document.createElement("div");
+starter.innerHTML = ` <div class="start-page">
 <div class="start-page__title">
   AUDIOCALL
 </div>
@@ -14,11 +14,11 @@ STARTER.innerHTML = ` <div class="start-page">
   Start Game
 </div>
 </div>`;
-WRAPPER.append(STARTER);
-document.body.append(WRAPPER);
+wrapper.append(starter);
+document.body.append(wrapper);
 
 document.querySelector(".start-page__button").addEventListener("click", () => {
-  WRAPPER.innerHTML = "";
+  wrapper.innerHTML = "";
   const game = new Game();
   game.render();
 });
