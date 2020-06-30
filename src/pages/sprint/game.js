@@ -1,12 +1,16 @@
 import GameWindow from './gameWindow';
 import CountdownTimer from './timer';
 import {
-  getUserWords,
-  addUserWord,
+  getAllUserWords,
+  getAllStudyWords,
+  getAllHardWords,
+  getAllDeleteWords,
+  createUserWord,
+  getUserWord,
   updateUserWord,
-} from '../../services/wordDataService';
-import { getFileUrl } from '../../services/multiDataService';
-import {} from '../../services/userWordService';
+  getUserAggregatedWord,
+  getWordforGame,
+} from '../../services/userWordService';
 
 export default class Game extends GameWindow {
   constructor() {
@@ -14,11 +18,9 @@ export default class Game extends GameWindow {
     this.difficult = localStorage.difficultSprint;
     this.useCartoons = localStorage.cartoonSprint;
     this.useStudied = localStorage.studiedSprint;
-    this.userData = this.getUserData({
-      userID: localStorage.userID,
-      token: localStorage.token,
-    });
-    this.timer = new CountdownTimer();
+    this.userId = localStorage.userID;
+    this.getUserData({ userId: this.userId }); //this.getUserData(this.userId);
+    /*this.userData = */ this.timer = new CountdownTimer();
     this.buttonList = [
       { class: 'wrong-answer-button', text: 'Неверно' },
       { class: 'correct-answer-button', text: 'Верно' },
@@ -68,10 +70,20 @@ export default class Game extends GameWindow {
     this.maxPages = 30;
   }
 
-  async getUserData(user) {
-    const userData = await getUserWords(user);
+  async getUserData() {
+    console.log('anyHard:');
+    const obj = {
+      userId: localStorage.userID,
+      group: 5,
+      wordsPerPage: 30,
+    };
+    const userFilteredData = await getWordforGame(
+      obj.userId,
+      obj.group,
+      obj.wordsPerPage
+    );
 
-    return userData;
+    console.log(userFilteredData);
   }
 
   initPage(startPage, gamePage, resultPage) {
@@ -138,6 +150,7 @@ export default class Game extends GameWindow {
     );
     setTimeout(() => {
       clearInterval(timerId);
+      this.clearLastWord();
       this.openResultPage(
         this.startPage,
         this.gamePage,
@@ -240,6 +253,10 @@ export default class Game extends GameWindow {
 
   updateWrongWords(word) {
     this.words.wrongWords.push(word);
+  }
+
+  clearLastWord() {
+    this.words.wrongWords.pop();
   }
 
   updateCorrectWords() {
