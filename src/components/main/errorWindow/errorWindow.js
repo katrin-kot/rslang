@@ -1,6 +1,6 @@
 import './errorWindow.css';
 
-export default errorWindow = (
+export const errorWindow = (
   errorText = 'Ошибка авторизации. Необходимо войти в учётную запись.',
   buttonText = 'Авторизоваться',
   listener = defaultListener
