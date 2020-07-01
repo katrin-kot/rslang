@@ -303,9 +303,9 @@ class Game {
     if (this.trueAnswers.length !== 0) {
       this.trueAnswers.map((item) => {
         this.resultsRightContainer.innerHTML += `<div>
-													<p class="game-results__answer">${item.word}  -  ${item.wordTranslate}</p>
-													<audio src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${item.audio}" preload="none"></audio>
-												</div>`;
+                                                  <p class="game-results__answer">${item.word}  -  ${item.wordTranslate}</p>
+                                                  <audio src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${item.audio}" preload="none"></audio>
+												                        </div>`;
       });
     }
 
@@ -319,9 +319,9 @@ class Game {
     if (this.wrongAnswers.length !== 0) {
       this.wrongAnswers.map((item) => {
         this.resultsWrongContainer.innerHTML += `<div>
-													<p class="game-results__answer">${item.word}  -  ${item.wordTranslate}</p>
-													<audio src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${item.audio}" preload="none"></audio>
-												</div>`;
+                                                    <p class="game-results__answer">${item.word}  -  ${item.wordTranslate}</p>
+                                                    <audio src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${item.audio}" preload="none"></audio>
+												                          </div>`;
       });
     }
 
