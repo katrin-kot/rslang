@@ -5,27 +5,27 @@ import { getUserID } from '../../services/authService';
 
 class Game {
   constructor() {
-	this.app = document.querySelector('body');
-	this.isSoundEnabled = true;
+    this.app = document.querySelector('body');
+    this.isSoundEnabled = true;
 
-	this.trueAnswers = [];
-	this.wrongAnswers = [];
+    this.trueAnswers = [];
+    this.wrongAnswers = [];
 
-	this.appContainer = createNode('div', 'savanna');
+    this.appContainer = createNode('div', 'savanna');
 
-	this.app.append(this.appContainer);
+    this.app.append(this.appContainer);
 
-	this.topButtonsWrapper = createNode('div', 'wrapper', 'wrapper--top-buttons');
+    this.topButtonsWrapper = createNode('div', 'wrapper', 'wrapper--top-buttons');
 
-	this.exitButton = createNode('button', 'button', 'button--return');
+    this.exitButton = createNode('button', 'button', 'button--return');
 
-	this.startContainer = createNode('div', 'container');
-	this.title = createNode('h1', 'savanna__title');
-	this.title.textContent = 'Саванна';
-	this.descriptionGame = createNode('p', 'savanna__description');
-	this.descriptionGame.textContent = 'Тренировка Саванна развивает словарный запас. Чем больше слов ты знаешь, тем больше очков опыта получишь';
-	this.buttonStartGame = createNode('button', 'button', 'button--start');
-	this.buttonStartGame.textContent = 'Начать';
+    this.startContainer = createNode('div', 'container');
+    this.title = createNode('h1', 'savanna__title');
+    this.title.textContent = 'Саванна';
+    this.descriptionGame = createNode('p', 'savanna__description');
+    this.descriptionGame.textContent = 'Тренировка Саванна развивает словарный запас. Чем больше слов ты знаешь, тем больше очков опыта получишь';
+    this.buttonStartGame = createNode('button', 'button', 'button--start');
+    this.buttonStartGame.textContent = 'Начать';
   }
 
   render() {
@@ -38,12 +38,12 @@ class Game {
   }
 
   startGame() {
-	this.buttonStartGame.addEventListener('click', (event) => {
-    event.preventDefault();
-    this.startContainer.classList.add('hidden');
+    this.buttonStartGame.addEventListener('click', (event) => {
+      event.preventDefault();
+      this.startContainer.classList.add('hidden');
 
-    this.displayGame();
-	});
+      this.displayGame();
+    });
   }
 
   exitGame() {
@@ -93,15 +93,15 @@ class Game {
       event.preventDefault();
 
       if (this.error) this.error.remove();
-      if (!Number.isInteger(Number(this.inputField.value)) || this.inputField.value > 20 || this.inputField.value < 5) return this.showError();
+      if (!Number.isInteger(Number(this.inputField.value))
+      || this.inputField.value > 20
+      || this.inputField.value < 5) return this.showError();
 
       new Audio('/assets/audio/startGame.mp3').play();
       this.awaitBlock.classList.add('hidden');
-
-
       this.startLoading();
       this.updateBody();
-      this.getInfo(this.inputField.value);
+      return this.getInfo(this.inputField.value);
     });
   }
 
@@ -133,7 +133,7 @@ class Game {
     });
 
     this.lifesWrapper = createNode('div', 'lifes-wrapper');
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 5; i += 1) {
       const heartIcon = createNode('div', 'heart-icon');
       heartIcon.setAttribute('data-heart', `${i + 1}`);
       this.lifesWrapper.append(heartIcon);
@@ -145,7 +145,7 @@ class Game {
     this.engWord = createNode('button', 'button', 'button--english');
 
     this.rusAnswersSection = createNode('div', 'answers-wrapper');
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i += 1) {
       const answerButton = createNode('button', 'button', 'button--rus');
       answerButton.setAttribute('data-answer', `${i + 1}`);
       this.rusAnswersSection.append(answerButton);
@@ -165,9 +165,9 @@ class Game {
 
       const rusAnswers = [];
 
-      for (const key of data) {
-        rusAnswers.push(key.wordTranslate);
-      }
+      data.forEach((item) => {
+        rusAnswers.push(item.wordTranslate);
+      });
 
       this.updateButtonsContent(data, rusAnswers);
       this.waitingAnswer(data, rusAnswers);
@@ -186,7 +186,7 @@ class Game {
 
     let dataLength = data.length - 1;
 
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 4; i += 1) {
       if (dataLength - i < 0) {
         dataLength = data.length + i;
       }
@@ -196,7 +196,8 @@ class Game {
     const sortAnsArray = answerWords.sort(() => Math.random() - 0.5);
 
     answersArray.forEach((item, index) => {
-      item.textContent = sortAnsArray[index];
+      const answer = item;
+      answer.textContent = sortAnsArray[index];
     });
   }
 
@@ -255,7 +256,7 @@ class Game {
     this.trueAnswers.push(data.pop());
     if (this.isSoundEnabled) new Audio('/assets/audio/correct.mp3').play();
     if (data.length === 0) return this.showResults();
-    this.updateButtonsContent(data, rusAnswers);
+    return this.updateButtonsContent(data, rusAnswers);
   }
 
   getWrongAnswer(data, rusAnswers) {
@@ -265,33 +266,33 @@ class Game {
     this.lifesWrapper.querySelector('.heart-icon').classList.remove('heart-icon');
     const lostLifes = this.lifesWrapper.querySelectorAll('.heart-icon');
     if (lostLifes.length === 0 || data.length === 0) return this.showResults();
-    this.updateButtonsContent(data, rusAnswers);
+    return this.updateButtonsContent(data, rusAnswers);
   }
 
   showResults() {
     new Audio('/assets/audio/endGame.mp3').play();
     this.appContainer.innerHTML = '';
     this.overlay = createNode('div', 'overlay');
-    this.resultsModal = createNode('div', 'game-results');
-    this.resultsText = createNode('p', 'game-results__text');
+    this.resModal = createNode('div', 'game-results');
+    this.resText = createNode('p', 'game-results__text');
 
     if (this.wrongAnswers.length === 0) {
-      this.resultsText.textContent = 'Молодец! Отличный результат!';
+      this.resText.textContent = 'Молодец! Отличный результат!';
     } else if (this.wrongAnswers.length < 4) {
-      this.resultsText.textContent = 'Неплохо, но есть над чем поработать';
-    } else this.resultsText.textContent = 'Слабо! Попробуй еще раз!';
+      this.resText.textContent = 'Неплохо, но есть над чем поработать';
+    } else this.resText.textContent = 'Слабо! Попробуй еще раз!';
 
-    this.resultsLink = createNode('p', 'game-results__result');
+    this.resLink = createNode('p', 'game-results__result');
 
     if (this.wrongAnswers.length === 0) {
-      this.resultsLink.textContent = `${this.trueAnswers.length} слов изучено, ${this.wrongAnswers.length} слов на изучении`;
+      this.resLink.textContent = `${this.trueAnswers.length} слов изучено, ${this.wrongAnswers.length} слов на изучении`;
     } else if (this.wrongAnswers.length === 1) {
-      this.resultsLink.textContent = `${this.trueAnswers.length} слов изучено, ${this.wrongAnswers.length} слово на изучении`;
+      this.resLink.textContent = `${this.trueAnswers.length} слов изучено, ${this.wrongAnswers.length} слово на изучении`;
     } else if (this.wrongAnswers.length < 5) {
-      this.resultsLink.textContent = `${this.trueAnswers.length} слов изучено, ${this.wrongAnswers.length} слова на изучении`;
-    } else this.resultsLink.textContent = `${this.trueAnswers.length} слова изучено, ${this.wrongAnswers.length} слов на изучении`;
+      this.resLink.textContent = `${this.trueAnswers.length} слов изучено, ${this.wrongAnswers.length} слова на изучении`;
+    } else this.resLink.textContent = `${this.trueAnswers.length} слова изучено, ${this.wrongAnswers.length} слов на изучении`;
 
-    this.resultsDescriptionContainer = createNode('div', 'game-results__description');
+    this.resDescContainer = createNode('div', 'game-results__description');
 
     this.resultsRightContainer = createNode('div', 'game-results__right-block');
 
@@ -302,10 +303,12 @@ class Game {
 
     if (this.trueAnswers.length !== 0) {
       this.trueAnswers.map((item) => {
-        this.resultsRightContainer.innerHTML += `<div>
-                                                  <p class="game-results__answer">${item.word}  -  ${item.wordTranslate}</p>
-                                                  <audio src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${item.audio}" preload="none"></audio>
-												                        </div>`;
+        this.resultsRightContainer.innerHTML += `
+        <div>
+          <p class="game-results__answer">${item.word}  -  ${item.wordTranslate}</p>
+          <audio src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${item.audio}" preload="none"></audio>
+        </div>`;
+        return this.trueAnswers;
       });
     }
 
@@ -318,24 +321,27 @@ class Game {
 
     if (this.wrongAnswers.length !== 0) {
       this.wrongAnswers.map((item) => {
-        this.resultsWrongContainer.innerHTML += `<div>
-                                                    <p class="game-results__answer">${item.word}  -  ${item.wordTranslate}</p>
-                                                    <audio src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${item.audio}" preload="none"></audio>
-												                          </div>`;
+        this.resultsWrongContainer.innerHTML += `
+        <div>
+          <p class="game-results__answer">${item.word}  -  ${item.wordTranslate}</p>
+          <audio src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${item.audio}" preload="none"></audio>
+        </div>`;
+        return this.wrongAnswers;
       });
     }
 
-    this.resultsDescriptionContainer.append(this.resultsRightContainer, this.resultsWrongContainer);
+    this.resDescContainer.append(this.resultsRightContainer, this.resultsWrongContainer);
 
     this.tryAgain = createNode('p', 'game-results__try');
     this.tryAgain.textContent = 'Продолжить тренировку';
 
-    this.backToAnotherTrain = createNode('p', 'game-results__back');
-    this.backToAnotherTrain.textContent = 'К списку тренировок';
+    this.backToTrain = createNode('p', 'game-results__back');
+    this.backToTrain.textContent = 'К списку тренировок';
 
-    this.resultsModal.append(this.resultsText, this.resultsLink, this.resultsDescriptionContainer, this.tryAgain, this.backToAnotherTrain);
+    this.resModal.append(this.resText, this.resLink);
+    this.resModal.append(this.resDescContainer, this.tryAgain, this.backToTrain);
 
-    this.appContainer.append(this.overlay, this.resultsModal);
+    this.appContainer.append(this.overlay, this.resModal);
 
     this.resultsListener();
     this.playAudioResults();
@@ -348,8 +354,8 @@ class Game {
 
       if (event.target.tagName !== 'P') return;
 
-      if (event.target === this.resultsLink) {
-        this.resultsDescriptionContainer.classList.toggle('game-results__description--click');
+      if (event.target === this.resLink) {
+        this.resDescContainer.classList.toggle('game-results__description--click');
       }
 
       if (event.target === this.tryAgain) {
@@ -363,7 +369,7 @@ class Game {
   }
 
   playAudioResults() {
-    this.resultsDescriptionContainer.addEventListener('click', (event) => {
+    this.resDescContainer.addEventListener('click', (event) => {
       if (event.target.classList.value !== 'game-results__answer') return;
 
       event.target.closest('div').querySelector('audio').play();
