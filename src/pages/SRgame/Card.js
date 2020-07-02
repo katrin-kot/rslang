@@ -132,8 +132,6 @@ export default class Card {
     if (audioExampleSetting) template += this.createAudioExample();
     if (audioMeaningSetting) template += this.createAudioMeaning();
 
-    template += '</div>';
-
     card.innerHTML = template;
 
     const container = createElement('div', 'card-container swiper-slide');
