@@ -156,6 +156,7 @@ class Game {
   }
 
   async getInfo(numberOfWords) {
+    this.numberOfWords = numberOfWords;
     try {
       const data = await getWordforGame(getUserID(), localStorage.getItem('difficultSprint'), numberOfWords);
       if (data.Error) {
@@ -346,6 +347,8 @@ class Game {
     this.resultsListener();
     this.playAudioResults();
     console.log(this.trueAnswers, this.wrongAnswers);
+
+    this.getStatsInfo(this.trueAnswers);
   }
 
   resultsListener() {
@@ -374,6 +377,19 @@ class Game {
 
       event.target.closest('div').querySelector('audio').play();
     });
+  }
+
+  getStatsInfo(trueAnsArray) {
+    const res = `${(trueAnsArray.length / this.numberOfWords) * 100}%`;
+    const statsInfo = {
+      stats: [{
+        date: '30.06.2020',
+        score: [],
+        learnedWords: 60,
+      }],
+    };
+    statsInfo.stats[0].score.push(res);
+    console.log(statsInfo);
   }
 }
 
