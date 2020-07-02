@@ -1,6 +1,10 @@
-export function unflipCards(firstCard, secondCard) {
-  setTimeout(() => {
-    firstCard.classList.remove('flip');
-    secondCard.classList.remove('flip');
-  }, 1500);
+export function unique(arr) {
+  const result = [];
+
+  arr.forEach((str) => {
+    if (!result.includes(str)) {
+      result.push(str);
+    }
+  });
+  return result;
 }
