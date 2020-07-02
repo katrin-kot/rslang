@@ -192,7 +192,7 @@ const config = {
       chunks: ['savanna'],
       filename: './savanna.html',
     }),
-   new HtmlWebPackPlugin({
+    new HtmlWebPackPlugin({
       title: 'RS lang-speakIt',
       favicon: './assets/images/favicon.ico',
       chunks: ['speakIt'],
