@@ -103,18 +103,28 @@ export default class Game extends GameWindow {
     body.appendChild(gameField);
 
     gameField.insertAdjacentHTML(
-      'beforebegin',
+      'afterbegin',
+      this.addDivByClass('game-bonus')
+    );
+
+    const gameBonus = document.querySelector('.game-bonus');
+
+    gameBonus.insertAdjacentHTML(
+      'afterbegin',
       this.addDivByClass('game-score', 0)
     );
 
     const gameScore = document.querySelector('.game-score');
 
-    gameScore.insertAdjacentHTML('afterbegin', this.getCanvas());
+    gameScore.insertAdjacentHTML('afterbegin', `<div class="speaker"></div>`);
 
-    gameField.insertAdjacentHTML(
+    const speaker = document.querySelector('.speaker');
+
+    speaker.insertAdjacentHTML(
       'afterbegin',
-      this.addDivByClass('game-bonus')
+      '<img src="https://cdn.discordapp.com/attachments/624997901248233505/728348020193886218/speaker.svg">'
     );
+    gameScore.insertAdjacentHTML('afterbegin', this.getCanvas());
 
     gameField.insertAdjacentHTML('beforeend', this.getGameImage());
 
@@ -204,8 +214,10 @@ export default class Game extends GameWindow {
       this.updateCorrectWords();
       this.correctQueue += 1;
       this.updateScore();
+      this.showAnswer(true);
     } else {
       this.correctQueue = 0;
+      this.showAnswer(false);
     }
   }
 
@@ -282,5 +294,26 @@ export default class Game extends GameWindow {
     }
 
     return addedScore;
+  }
+
+  showAnswer(result) {
+    const bonus = document.querySelector('.game-bonus');
+    let queue = 1;
+
+    if (this.correctQueue > 6) {
+      queue = 3;
+    } else if (this.correctQueue > 3) {
+      queue = 2;
+    }
+
+    for (let i = 1; i < 4; i += 1) {
+      bonus.classList.remove(`correct-shadow-${i}`);
+    }
+
+    bonus.classList.remove('wrong-shadow');
+
+    result
+      ? bonus.classList.add(`correct-shadow-${queue}`)
+      : bonus.classList.add('wrong-shadow');
   }
 }
