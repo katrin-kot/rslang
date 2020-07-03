@@ -7,7 +7,6 @@ class Game {
   constructor() {
     this.app = document.querySelector('body');
     this.isSoundEnabled = true;
-
     this.trueAnswers = [];
     this.wrongAnswers = [];
 
@@ -64,15 +63,21 @@ class Game {
     this.form = createNode('form', 'await-block__form');
 
     this.inputField = createNode('input', 'form__input');
-    this.inputField.setAttribute('placeholder', 'Введите число от 5 до 20');
+    this.inputField.setAttribute('placeholder', 'Введите количество слов');
     this.inputField.setAttribute('required', 'true');
+
+    this.selectRound = createNode('input', 'form__round');
+    this.selectRound.setAttribute('type', 'number');
+    this.selectRound.setAttribute('min', '0');
+    this.selectRound.setAttribute('max', '29');
+    this.selectRound.setAttribute('required', 'true');
 
     this.submitButton = createNode('button', 'button', 'form__button', 'button--start');
     this.submitButton.setAttribute('type', 'submit');
     this.submitButton.setAttribute('id', 'submitButton');
     this.submitButton.textContent = 'Продолжить';
 
-    this.form.append(this.inputField, this.diffLevel, this.submitButton);
+    this.form.append(this.inputField, this.selectRound, this.diffLevel, this.submitButton);
 
     this.awaitBlock.append(this.keyboardImage, this.promt, this.form);
     this.appContainer.append(this.awaitBlock);
@@ -101,7 +106,7 @@ class Game {
       this.awaitBlock.classList.add('hidden');
       this.startLoading();
       this.updateBody();
-      return this.getInfo(this.inputField.value);
+      return this.getInfo(this.inputField.value, this.selectRound.value);
     });
   }
 
@@ -155,10 +160,10 @@ class Game {
     this.appContainer.append(this.gameBlock);
   }
 
-  async getInfo(numberOfWords) {
+  async getInfo(numberOfWords, roundNumber) {
     this.numberOfWords = numberOfWords;
     try {
-      const data = await getWordforGame(getUserID(), localStorage.getItem('difficultSprint'), numberOfWords);
+      const data = await getWordforGame(getUserID(), localStorage.getItem('difficultSprint'), numberOfWords, roundNumber);
       if (data.Error) {
         this.stopLoading();
         throw new Error(data.Error);
@@ -273,7 +278,6 @@ class Game {
   showResults() {
     new Audio('/assets/audio/endGame.mp3').play();
     this.appContainer.innerHTML = '';
-    this.overlay = createNode('div', 'overlay');
     this.resModal = createNode('div', 'game-results');
     this.resText = createNode('p', 'game-results__text');
 
@@ -342,7 +346,7 @@ class Game {
     this.resModal.append(this.resText, this.resLink);
     this.resModal.append(this.resDescContainer, this.tryAgain, this.backToTrain);
 
-    this.appContainer.append(this.overlay, this.resModal);
+    this.appContainer.append(this.resModal);
 
     this.resultsListener();
     this.playAudioResults();
