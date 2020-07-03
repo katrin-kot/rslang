@@ -13,6 +13,7 @@ export const loginUser = async (user) => {
   const content = await rawResponse.json();
   localStorage.setItem('token', content.token);
   localStorage.setItem('userID', content.userId);
+  return content;
 };
 
 export const createUser = async (user) => {
@@ -35,6 +36,23 @@ export const createUser = async (user) => {
 export function getToken() {
   return localStorage.getItem('token');
 }
+
+export const getNewUserToken = async ({ userId }) => {
+  const rawResponse = await fetch(
+    `https://afternoon-falls-25894.herokuapp.com/users/${userId}/tokens`,
+    {
+      method: 'GET',
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${getToken()}`,
+        Accept: 'application/json',
+      },
+    },
+  );
+  const content = await rawResponse.json();
+  return content;
+};
+
 
 export function getUserID() {
   return localStorage.getItem('userID');

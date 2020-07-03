@@ -16,7 +16,7 @@ body.innerHTML = `
 <span class="focus-input" data-placeholder="Электронная почта"></span>
 </div><div class="wrap-input validate-input" data-validate="Ошибка в пароле">
 <span class="btn-show-pass"><span class="material-icons">visibility</span>
-</span><input class="input" type="password" name="pass">
+</span><input class="input" type="password" name="pass" data-toggle="tooltip" data-placement="bottom" title="Пароль должен содержать не менее 8 символов,\n как минимум одну прописную букву, одну заглавную букву, \n одну цифру и один спецсимвол из +-_@$!%*?&#.,;:[]{}">
 <span class="focus-input" data-placeholder="Пароль"></span>
 </div><div class="container-login-form-btn">
 <div class="wrap-login-form-btn"><div class="login-form-bgbtn"></div>
@@ -57,7 +57,10 @@ document.querySelector('.validate-form').addEventListener('submit', (event) => {
       createUser({
         email: `${input[0].value}`,
         password: `${input[1].value}`,
-      }).then((res) => putDefaultSettings(res.id)).catch((err) => renderError(err));
+      }).then(() => loginUser({
+        email: `${input[0].value}`,
+        password: `${input[1].value}`,
+      })).then((res) => putDefaultSettings(res.userId)).catch((err) => renderError(err));
       renderLogIn();
     }
   } else if (check) {

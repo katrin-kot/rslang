@@ -43,7 +43,8 @@
     color: #738795;
   }
 
-  .container {
+  .shadow-lg {
+  padding:3rem;
    background-color:#FAF8EF;
   }
 
@@ -60,3 +61,63 @@
   .error-text {
     color:#c80000;
   }
+
+  @media (max-width: 560px) {
+    .container {
+      padding: 1rem;
+    }
+
+    .input-group-text {
+      margin-bottom: 1rem;
+    }
+    
+    .input-group {
+      padding-left: 0rem;
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+ 
+    .input-group-text {
+      font-size: 0.9rem;
+    }
+    .form-control {
+      font-size: 0.9rem;
+    }
+  }
+  @media (max-width: 450px) {
+  .container {
+    padding: 1rem;
+  }
+.main-title {
+  font-size: 1.4rem;
+}
+
+.input-group {
+  padding-left: 0rem;
+  font-size: 0.9rem;
+}
+
+.section-title {
+  font-size: 1rem;
+}
+
+.form-control {
+  font-size: 1.1rem;
+}
+
+.input-group-text {
+  white-space: pre-wrap;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.btn-outline-secondary {
+  font-size: 1rem;
+}
+
+  }
+
+  
+
