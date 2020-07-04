@@ -174,21 +174,30 @@ body {
 }
 
 .game-block {
+  position: relative;
+  min-height: 250px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
+  align-items: flex-end;
 }
 
 .answers-wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   flex-wrap: wrap;
+  min-width: 60%;
 }
 
 .button--english {
-  margin: 10px auto;
-  padding: 10px 15px;
-  width: max-content;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin-left: -90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 180px;
+  padding: 10px 0;
   font-size: 20px;
   text-transform: uppercase;
   background-color: #2f2f61d4;
@@ -197,7 +206,6 @@ body {
 }
 
 .button--rus {
-  margin: 15px;
   padding: 10px 15px;
   width: max-content;
   font-size: 16px;
@@ -309,11 +317,31 @@ body {
   display: none;
 }
 
+.dropped {
+  animation: fluidDrop 5s linear;
+}
+
+@keyframes fluidDrop {
+  from {
+    top: 0;
+  }
+  to {
+    top: 160px;
+  }
+}
 
 @media (max-width: 900px) {
   body {
     background-size: 100% 100%;
     min-height: 620px;
+  }
+
+  .await-block__promt {
+    display: none;
+  }
+
+  .await-block__keyboard {
+    display: none;
   }
 }
 
@@ -350,6 +378,11 @@ body {
 
   .game-results__text {
     font-size: 20px;
+    text-align: center;
+  }
+
+  .game-results__result {
+    text-align: center;
   }
 
   .game-results__description--click {

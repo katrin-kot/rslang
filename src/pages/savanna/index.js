@@ -176,7 +176,6 @@ class Game {
       });
 
       this.updateButtonsContent(data, rusAnswers);
-      this.waitingAnswer(data, rusAnswers);
       this.stopLoading();
     } catch (e) {
       alert(e);
@@ -194,7 +193,7 @@ class Game {
 
     for (let i = 0; i < 4; i += 1) {
       if (dataLength - i < 0) {
-        dataLength = data.length + i;
+        dataLength = data.length + i + 1;
       }
       answerWords.push(rusAnswers[dataLength - i]);
     }
@@ -205,74 +204,96 @@ class Game {
       const answer = item;
       answer.textContent = sortAnsArray[index];
     });
+
+    this.waitingAnswer(data, rusAnswers);
   }
 
   waitingAnswer(data, rusAnswers) {
-    this.rusAnswersSection.addEventListener('click', (event) => {
+    this.engWord.classList.add('dropped');
+
+    const timer = setTimeout(() => {
+      this.engWord.classList.remove('dropped');
+      this.getWrongAnswer(data, rusAnswers);
+    }, 5000);
+
+    const clickListener = (event) => {
       event.preventDefault();
 
       if (event.target.tagName !== 'BUTTON') return;
       if (event.target.textContent === this.engWord.getAttribute('data-trans')) {
-        this.getRightAnswer(data, rusAnswers);
+        this.getRightAnswer(data, rusAnswers, timer, clickListener);
       } else {
-        this.getWrongAnswer(data, rusAnswers);
+        this.getWrongAnswer(data, rusAnswers, timer, clickListener);
       }
-    });
+    };
 
-    document.addEventListener('keydown', (event) => {
+    this.rusAnswersSection.addEventListener('click', clickListener);
+
+    const keydownListener = (event) => {
       event.preventDefault();
 
       const answers = this.rusAnswersSection.querySelectorAll('button');
 
       if (event.code === 'Digit1' || event.code === 'Numpad1') {
         if (answers[0].textContent === this.engWord.getAttribute('data-trans')) {
-          this.getRightAnswer(data, rusAnswers);
+          this.getRightAnswer(data, rusAnswers, timer, clickListener, keydownListener);
         } else {
-          this.getWrongAnswer(data, rusAnswers);
+          this.getWrongAnswer(data, rusAnswers, timer, clickListener, keydownListener);
         }
       }
 
       if (event.code === 'Digit2' || event.code === 'Numpad2') {
         if (answers[1].textContent === this.engWord.getAttribute('data-trans')) {
-          this.getRightAnswer(data, rusAnswers);
+          this.getRightAnswer(data, rusAnswers, timer, clickListener, keydownListener);
         } else {
-          this.getWrongAnswer(data, rusAnswers);
+          this.getWrongAnswer(data, rusAnswers, timer, clickListener, keydownListener);
         }
       }
 
       if (event.code === 'Digit3' || event.code === 'Numpad3') {
         if (answers[2].textContent === this.engWord.getAttribute('data-trans')) {
-          this.getRightAnswer(data, rusAnswers);
+          this.getRightAnswer(data, rusAnswers, timer, clickListener, keydownListener);
         } else {
-          this.getWrongAnswer(data, rusAnswers);
+          this.getWrongAnswer(data, rusAnswers, timer, clickListener, keydownListener);
         }
       }
 
       if (event.code === 'Digit4' || event.code === 'Numpad4') {
         if (answers[3].textContent === this.engWord.getAttribute('data-trans')) {
-          this.getRightAnswer(data, rusAnswers);
+          this.getRightAnswer(data, rusAnswers, timer, clickListener, keydownListener);
         } else {
-          this.getWrongAnswer(data, rusAnswers);
+          this.getWrongAnswer(data, rusAnswers, timer, clickListener, keydownListener);
         }
       }
-    });
+    };
+
+    document.addEventListener('keydown', keydownListener);
   }
 
-  getRightAnswer(data, rusAnswers) {
+  getRightAnswer(data, rusAnswers, timer, clickListener, keydownListener) {
+    clearTimeout(timer);
+    this.rusAnswersSection.removeEventListener('click', clickListener, false);
+    document.removeEventListener('keydown', keydownListener, false);
+    this.engWord.classList.remove('dropped');
     this.trueAnswers.push(data.pop());
     if (this.isSoundEnabled) new Audio('/assets/audio/correct.mp3').play();
-    if (data.length === 0) return this.showResults();
-    return this.updateButtonsContent(data, rusAnswers);
+    if (data.length === 0) return setTimeout(() => this.showResults(), 1500);
+    return setTimeout(() => this.updateButtonsContent(data, rusAnswers), 1000);
   }
 
-  getWrongAnswer(data, rusAnswers) {
+  getWrongAnswer(data, rusAnswers, timer, clickListener, keydownListener) {
+    clearTimeout(timer);
+    this.rusAnswersSection.removeEventListener('click', clickListener, false);
+    document.removeEventListener('keydown', keydownListener, false);
+    this.engWord.classList.remove('dropped');
     this.wrongAnswers.push(data.pop());
     if (this.isSoundEnabled) new Audio('/assets/audio/error.mp3').play();
     this.lifesWrapper.querySelector('.heart-icon').classList.add('heart-icon--disabled');
     this.lifesWrapper.querySelector('.heart-icon').classList.remove('heart-icon');
     const lostLifes = this.lifesWrapper.querySelectorAll('.heart-icon');
-    if (lostLifes.length === 0 || data.length === 0) return this.showResults();
-    return this.updateButtonsContent(data, rusAnswers);
+    if (lostLifes.length === 0
+      || data.length === 0) return setTimeout(() => this.showResults(), 1500);
+    return setTimeout(() => this.updateButtonsContent(data, rusAnswers), 1000);
   }
 
   showResults() {
@@ -350,7 +371,6 @@ class Game {
 
     this.resultsListener();
     this.playAudioResults();
-    console.log(this.trueAnswers, this.wrongAnswers);
 
     this.getStatsInfo(this.trueAnswers);
   }
@@ -384,15 +404,17 @@ class Game {
   }
 
   getStatsInfo(trueAnsArray) {
-    const res = `${(trueAnsArray.length / this.numberOfWords) * 100}%`;
+    const res = `${Math.round((trueAnsArray.length / this.numberOfWords) * 100)}%`;
+    const date = `${new Date().getDay()}.${new Date().getMonth() + 1}.${new Date().getFullYear()}`;
     const statsInfo = {
       stats: [{
-        date: '30.06.2020',
+        date: '',
         score: [],
-        learnedWords: 60,
+        learnedWords: trueAnsArray.length,
       }],
     };
     statsInfo.stats[0].score.push(res);
+    statsInfo.stats[0].date = date;
     console.log(statsInfo);
   }
 }
