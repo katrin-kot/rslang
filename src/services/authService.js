@@ -8,7 +8,7 @@ export const loginUser = async (user) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(user),
-    }
+    },
   );
   const content = await rawResponse.json();
   localStorage.setItem('token', content.token);
@@ -26,7 +26,7 @@ export const createUser = async (user) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(user),
-    }
+    },
   );
   const content = await rawResponse.json();
   localStorage.setItem('email', content.email);
