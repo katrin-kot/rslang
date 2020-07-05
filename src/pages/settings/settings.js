@@ -14,21 +14,21 @@ const main = document.createElement('main');
 body.appendChild(main);
 
 main.innerHTML = `
-<div class ="container shadow-lg p-5 mb-5 mt-10 rounded">
+<div class ="container shadow-lg mb-5 mt-10 rounded">
 <h2 class="main-title">Мои настройки</h2>
 <form>
-<div class ="section-wrapper row"><div class="col-10"><h4 class ="section-title mt-1 ml-1" >Настройки изучения слов</h4>
-<div class="input-group mb-3">
+<div class ="section-wrapper row"><div class="col-auto"><h4 class ="section-title mt-1 ml-1" >Настройки изучения слов</h4>
+<div class="input-group col-auto mb-3">
   <div class="input-group-prepend">
     <span class="input-group-text text-break" id="basic-addon1">Всего карточек в день (максимум 50)</span>
   </div>
-  <input type="number" class="form-control all col-1 col-sm-2" min="0" max="50" value="50">
+  <input type="number" class="form-control all" min="0" max="50" value="50">
 </div>
-<div class="input-group mb-3">
+<div class="input-group col-auto mb-3">
   <div class="input-group-prepend">
     <span class="input-group-text text-break" id="basic-addon1">Количество новых карточек в день</span>
   </div>
-  <input type="number" class="form-control new col-1 col-sm-2" min="0" max="50" value="50">
+  <input type="number" class="form-control new" min="0" max="50" value="50">
 </div>
 </div></div>
 <h4 class ="section-title mt-1" >Настройка кнопок</h4>
@@ -69,9 +69,8 @@ form.addEventListener('submit', (event) => {
       optional[elem.dataset.name] = false;
     }
   });
-  if (Object.values(optional).indexOf(true) === -1) {
-    document
-      .querySelector('.cards-settings')
+  if (Array.from(cardBlock.querySelectorAll('.form-check-input')).some((elem) => elem.checked === true) === false) {
+    cardBlock
       .insertAdjacentHTML(
         'afterend',
         '<p class = "error-text">Нужно отметить хотя бы один пункт</p>',

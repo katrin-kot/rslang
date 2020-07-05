@@ -1,7 +1,5 @@
 import { getToken } from './authService';
 
-const token = getToken();
-
 export const getUserSettings = async ({ userId }) => {
   const rawResponse = await fetch(
     `https://afternoon-falls-25894.herokuapp.com/users/${userId}/settings`,
@@ -9,7 +7,7 @@ export const getUserSettings = async ({ userId }) => {
       method: 'GET',
       withCredentials: true,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
         Accept: 'application/json',
       },
     },
@@ -25,7 +23,7 @@ export const putUserSettings = async ({ userId, wordsPerDay, optional }) => {
       method: 'PUT',
       withCredentials: true,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
