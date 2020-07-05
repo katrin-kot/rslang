@@ -11,7 +11,7 @@ export function msToTime(duration) {
 export function playAudio(src) {
   if (!src) return;
   const myAudio = new Audio();
-  myAudio.src = src;
+  myAudio.src = `data:audio/mpeg;base64,${src}`;
   myAudio.play();
 }
 
