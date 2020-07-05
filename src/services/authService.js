@@ -29,6 +29,7 @@ export const createUser = async (user) => {
     },
   );
   const content = await rawResponse.json();
+  
   localStorage.setItem('email', content.email);
   return content;
 };

@@ -1,6 +1,7 @@
 import { getToken } from './authService';
 import { getWordbyId } from './wordService';
 import { getImageUrl, getAudioUrl } from '../helpers/urls';
+import { randomUserWords } from '../helpers/random';
 
 const token = getToken();
 
@@ -125,8 +126,10 @@ const getUserAggregatedWord = async ({
   return content;
 };
 
-export async function getWordforGame(userId, group, wordsPerPage) {
-  let filter = new window.URLSearchParams({ filter: '{"$and":[{"userWord.optional.status":"to_study"}]}' }).toString();
+export async function getWordforGame(userId, group, wordsPerPage, page) {
+  let filter = new window.URLSearchParams({
+    filter: { $and: [{ 'userWord.optional.status': 'to_study', page }] },
+  }).toString();
   const userWords = await getUserAggregatedWord({
     userId,
     group,
@@ -135,14 +138,26 @@ export async function getWordforGame(userId, group, wordsPerPage) {
   });
   if (userWords[0].paginatedResults.length < wordsPerPage) {
     const wordsPage = wordsPerPage - userWords[0].paginatedResults.length;
-    filter = new window.URLSearchParams({ filter: '{"$and":[{"userWord": null }]}' }).toString();
+    filter = new window.URLSearchParams({
+      filter: { $and: [{ userWord: null, page }] },
+    }).toString();
     const allWords = await getUserAggregatedWord({
       userId,
       group,
-      wordsPerPage: wordsPage,
+      wordsPerPage: 20,
       filter,
     });
-    return userWords[0].paginatedResults.concat(allWords[0].paginatedResults);
+    const arr = allWords[0].paginatedResults;
+    const randomArr = randomUserWords(arr, wordsPage);
+    return userWords[0].paginatedResults.concat(randomArr);
   }
-  return userWords[0].paginatedResults;
+  const getAllUsersWords = await getUserAggregatedWord({
+    userId,
+    group,
+    wordsPerPage: 3600,
+    filter,
+  });
+  const arr = getAllUsersWords[0].paginatedResults;
+
+  return randomUserWords(arr, wordsPerPage);
 }
