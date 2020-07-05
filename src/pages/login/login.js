@@ -57,7 +57,9 @@ document.querySelector('.validate-form').addEventListener('submit', (event) => {
       createUser({
         email: `${input[0].value}`,
         password: `${input[1].value}`,
-      }).then((res) => putDefaultSettings(res.id)).catch((err) => renderError(err));
+      })
+        .then((res) => putDefaultSettings(res.id))
+        .catch((err) => renderError(err));
       renderLogIn();
     }
   } else if (check) {
