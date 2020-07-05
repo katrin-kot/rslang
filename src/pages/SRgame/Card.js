@@ -1,6 +1,9 @@
 /* eslint-disable no-unused-vars */
 // for settings variables
-const fontSize = 26;
+import { countErrors, createElement } from './helpers';
+import swiper from './swiper';
+
+const fontSize = 16;
 const letterLength = fontSize * 0.7;
 
 
@@ -16,93 +19,103 @@ const textExampleTranslateSetting = true;
 const textMeaningTranslateSetting = true;
 const wordTranslateSetting = true;
 
+const showAnswerBtnSetting = true;
+const addToHardBtnSetting = true;
+const deleteWordBtnSetting = true;
+
+const difficultyBtnsSetting = true;
+
 export default class Card {
-  constructor({
-    id, group, page, word, image, audio, audioMeaning, audioExample, textMeaning, textExample,
-    transcription, textExampleTranslate, textMeaningTranslate, wordTranslate,
-    wordsPerExampleSentence,
-  }) {
-    this.id = id;
-    this.group = group;
-    this.page = page;
-    this.word = word;
-    this.image = image;
-    this.audio = audio;
-    this.audioMeaning = audioMeaning;
-    this.audioExample = audioExample;
-    this.textMeaning = textMeaning;
-    this.textExample = textExample;
-    this.transcription = transcription;
-    this.textExampleTranslate = textExampleTranslate;
-    this.textMeaningTranslate = textMeaningTranslate;
-    this.wordTranslate = wordTranslate;
-    this.wordsPerExampleSentence = wordsPerExampleSentence;
+  constructor({ ...wordCard }) {
+    this.wordCard = wordCard;
+
+    this.showAnswerBtn = createElement('button', 'show-answer-btn', 'Показать ответ');
+    this.addToHardBtn = createElement('button', 'add-to-hard-btn', '+ Сложные');
+    this.deleteWordBtn = createElement('button', 'delete-word-btn', 'Удалить');
+
+    this.againBtn = createElement('button', 'again-btn zero-opacity', 'Снова');
+    this.easyBtn = createElement('button', 'easy-btn zero-opacity', 'Легко');
+    this.goodBtn = createElement('button', 'good-btn zero-opacity', 'Нормально');
+    this.hardBtn = createElement('button', 'hard-btn zero-opacity', 'Сложно');
+
+    this.againBtn.addEventListener('click', () => {
+      const card = new Card(this.wordCard);
+      swiper.appendSlide(card.renderCard());
+    });
   }
 
+
   static createCard() {
-    const card = document.createElement('div');
-    card.classList.add('game-card');
+    const card = createElement('div', 'game-card');
     return card;
   }
 
   createWord() {
-    return `<div class="word zero-opacity">${this.word}</div>`;
+    return `<div class="word zero-opacity">${this.wordCard.word}</div>`;
   }
 
   createWordTranslate() {
-    return `<div class="word-translate"><span>${this.wordTranslate}</span></div>`;
+    return `<div class="word-translate"><span>${this.wordCard.wordTranslate}</span></div>`;
   }
 
   createTextMeaning() {
-    const example = this.textMeaning.split(`<i>${this.word}</i>`);
-    const meaningExample = `<div class="text-meaning"><span>${example[0]}</span><input type="text" class="meaning-input" style="width:${this.word.length * letterLength}px" disabled><span>${example[1]}</span></div>`;
+    const tagExp = new RegExp('<s*i[^>]*>(.*?)<s*/s*i>');
+    const example = this.wordCard.textMeaning.split(tagExp);
+    const meaningExample = `<div class="text-meaning"><span>${example[0]}</span><input type="text" class="meaning-input" data-word="${example[1]}" 
+    style="width:${this.wordCard.word.length * letterLength}px" disabled><span>${example[2]}</span></div>`;
     return meaningExample;
   }
 
   createTextMeaningTranslate() {
-    return `<div class="text-meaning-translate zero-opacity">${this.textMeaningTranslate}</div>`;
+    const display = (this.translationMode === 'off') ? 'display-none' : '';
+    return `<div class="text-meaning-translate zero-opacity translation ${display}">${this.wordCard.textMeaningTranslate}</div>`;
   }
 
   createWordInput() {
-    return `<span style="position:relative"><input type="text" class="word-input" id="word-input" style="width:${this.word.length * letterLength}px" autofocus>
-    <label for "word-input" id="word-check"></label></span>`;
+    return `<div><span style="position:relative"><input type="text" class="word-input" data-word="${this.wordCard.word}"
+    style="width:${this.wordCard.word.length * letterLength}px" autofocus>
+    <label for "word-input" class="word-check" id="${this.wordCard.word}-check"></label></span></div>`;
   }
 
   createTextExample() {
-    const example = this.textExample.split(`<b>${this.word}</b>`);
-    const textExample = `<div><span>${example[0]}</span>${this.createWordInput()}<span>${example[1]}</span></div>`;
+    const tagExp = new RegExp('<s*b[^>]*>(.*?)<s*/s*b>');
+    const example = this.wordCard.textExample.split(tagExp);
+    const textExample = `<div><span>${example[0]}</span><input type="text" class="example-input" data-word="${example[1]}"
+    style="width:${this.wordCard.word.length * letterLength}px" disabled><span>${example[2]}</span></div>`;
     return textExample;
   }
 
   createTextExampleTranslate() {
-    return `<div class="text-example-translate zero-opacity">${this.textExampleTranslate}</div>`;
+    return `<div class="text-example-translate zero-opacity translation">${this.wordCard.textExampleTranslate}</div>`;
   }
 
   createTranscription() {
-    return `<div class="transcription zero-opacity">${this.transcription}</div>`;
+    return `<div class="transcription zero-opacity">${this.wordCard.transcription}</div>`;
   }
 
   createImage() {
-    return `<div><img class="image" src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${this.image}" alt="word-image"</div>`;
+    return `<div><img class="image" src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${this.wordCard.image}" alt="word-image"</div>`;
   }
 
   createAudio() {
-    return `<audio class="audio" src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${this.audio}"></audio>`;
+    return `<audio class="audio" src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${this.wordCard.audio}"></audio>`;
   }
 
   createAudioMeaning() {
-    return `<audio class="audio" src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${this.audioMeaning}"></audio>`;
+    return `<audio class="audio" src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${this.wordCard.audioMeaning}"></audio>`;
   }
 
   createAudioExample() {
-    return `<audio class="audio" src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${this.audioExample}"></audio>`;
+    return `<audio class="audio" src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${this.wordCard.audioExample}"></audio>`;
   }
 
   renderCard() {
     const card = Card.createCard();
     let template = '';
+
     if (imageSetting) template += this.createImage();
-    template += this.createWord();
+    template += this.createWordInput();
+
     template += this.createTranscription();
     if (textExampleSetting) {
       template += this.createTextExample();
@@ -115,59 +128,35 @@ export default class Card {
       template += this.createTextMeaning();
       template += this.createTextMeaningTranslate();
     }
+    if (audioSetting) template += this.createAudio();
+    if (audioExampleSetting) template += this.createAudioExample();
+    if (audioMeaningSetting) template += this.createAudioMeaning();
+
+    template += '</div>';
+
     card.innerHTML = template;
-    document.body.append(card);
-    document.querySelector('.word-input').addEventListener('keydown', (e) => {
-      if (e.keyCode === 13) {
-        e.preventDefault();
-        this.renderWordSpelling();
-        // вынести в метод
-        document.querySelectorAll('.zero-opacity').forEach((el) => {
-          el.classList.remove('zero-opacity');
-        });
-        document.querySelector('.meaning-input').value = this.word;
-      }
-    });
-  }
 
-  checkWord() {
-    const input = document.querySelector('.word-input');
-    let template = '';
-    const { value } = input;
-    const valueArr = value.split('');
-    const wordArr = this.word.split('');
+    const container = createElement('div', 'card-container swiper-slide');
+    container.dataset.id = this.wordCard.id;
+    container.append(card);
 
-    const countErrors = () => {
-      let errorCount = 0;
-      valueArr.forEach((el, i) => {
-        if (el !== this.word[i]) {
-          errorCount += 1;
-        }
-      });
-      let color = 'color-error-';
-      if (errorCount < this.word.length / 2) {
-        color += 'few';
-      } else {
-        color += 'many';
-      }
-      return color;
-    };
-    const errorColor = countErrors();
+    const cardsBtns = createElement('div', 'card-btns');
+    if (showAnswerBtnSetting) cardsBtns.append(this.showAnswerBtn);
+    if (addToHardBtnSetting) cardsBtns.append(this.addToHardBtn);
+    if (deleteWordBtnSetting) cardsBtns.append(this.deleteWordBtn);
+    card.append(cardsBtns);
 
-    wordArr.forEach((el, i) => {
-      if (el === valueArr[i]) {
-        template += `<span class="color-correct">${el}</span>`;
-      } else {
-        template += `<span class="${errorColor}">${el}</span>`;
-      }
-    });
-    return template;
-  }
 
-  renderWordSpelling() {
-    const word = this.checkWord();
-    const wordContainer = document.querySelector('#word-check');
-    document.querySelector('.word-input').value = '';
-    wordContainer.innerHTML = word;
+    if (difficultyBtnsSetting) {
+      const difficultyBtnsContainer = createElement('div', 'difficulty-btns');
+
+      difficultyBtnsContainer.append(this.againBtn);
+      difficultyBtnsContainer.append(this.easyBtn);
+      difficultyBtnsContainer.append(this.goodBtn);
+      difficultyBtnsContainer.append(this.hardBtn);
+
+      container.append(difficultyBtnsContainer);
+    }
+    return container;
   }
 }
