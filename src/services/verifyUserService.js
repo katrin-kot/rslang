@@ -6,13 +6,13 @@ export const checkUserLogin = async () => {
   const userId = getUserID();
   const token = getToken();
 
-  if (userId && token) {
-    try {
-      await getAllUserWords({ userId });
-    } catch (error) {
-      errorWindow();
-    }
-  } else {
+  if (!userId || !token) {
+    errorWindow();
+    return;
+  }
+  try {
+    await getAllUserWords({ userId });
+  } catch (error) {
     errorWindow();
   }
 };
