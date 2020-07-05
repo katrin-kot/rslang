@@ -195,6 +195,34 @@ const config = {
       template: 'src/pages/audioCall/audioCall.html',
       filename: './audioCall.html',
     }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang-speakIt',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['speakIt'],
+      filename: './speakIt.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['settings'],
+      template: 'src/pages/settings/settings.html',
+      filename: './settings.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang SR game',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['SRgame'],
+      template: 'src/pages/SRgame/SRgame.html',
+      filename: './SRgame.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['dictionary'],
+      template: 'src/pages/dictionary/dictionary.html',
+      filename: './dictionary.html',
+
+    }),
     new CopyWebpackPlugin([
       {
         from: path.join(__dirname, 'assets'),
