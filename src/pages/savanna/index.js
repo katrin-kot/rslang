@@ -5,6 +5,7 @@ import { getUserID } from '../../services/authService';
 
 class Game {
   constructor() {
+    this.state = {};
     this.app = document.querySelector('body');
     this.isSoundEnabled = true;
     this.trueAnswers = [];
@@ -106,6 +107,8 @@ class Game {
       this.awaitBlock.classList.add('hidden');
       this.startLoading();
       this.updateBody();
+      localStorage.setItem('numberOfWords', this.inputField.value);
+      localStorage.setItem('round', this.selectRound.value);
       return this.getInfo(this.inputField.value, this.selectRound.value);
     });
   }
@@ -158,72 +161,15 @@ class Game {
 
     this.gameBlock.append(this.engWord, this.rusAnswersSection);
     this.appContainer.append(this.gameBlock);
-  }
-
-  async getInfo(numberOfWords, roundNumber) {
-    this.numberOfWords = numberOfWords;
-    try {
-      const data = await getWordforGame(getUserID(), localStorage.getItem('difficultSprint'), numberOfWords, roundNumber);
-      if (data.Error) {
-        this.stopLoading();
-        throw new Error(data.Error);
-      }
-
-      const rusAnswers = [];
-
-      data.forEach((item) => {
-        rusAnswers.push(item.wordTranslate);
-      });
-
-      this.updateButtonsContent(data, rusAnswers);
-      this.stopLoading();
-    } catch (e) {
-      alert(e);
-    }
-  }
-
-  updateButtonsContent(data, rusAnswers) {
-    this.engWord.textContent = data[data.length - 1].word;
-    this.engWord.setAttribute('data-trans', data[data.length - 1].wordTranslate);
-
-    const answersArray = this.rusAnswersSection.querySelectorAll('button');
-    const answerWords = [];
-
-    let dataLength = data.length - 1;
-
-    for (let i = 0; i < 4; i += 1) {
-      if (dataLength - i < 0) {
-        dataLength = data.length + i + 1;
-      }
-      answerWords.push(rusAnswers[dataLength - i]);
-    }
-
-    const sortAnsArray = answerWords.sort(() => Math.random() - 0.5);
-
-    answersArray.forEach((item, index) => {
-      const answer = item;
-      answer.textContent = sortAnsArray[index];
-    });
-
-    this.waitingAnswer(data, rusAnswers);
-  }
-
-  waitingAnswer(data, rusAnswers) {
-    this.engWord.classList.add('dropped');
-
-    const timer = setTimeout(() => {
-      this.engWord.classList.remove('dropped');
-      this.getWrongAnswer(data, rusAnswers);
-    }, 5000);
 
     const clickListener = (event) => {
       event.preventDefault();
 
       if (event.target.tagName !== 'BUTTON') return;
       if (event.target.textContent === this.engWord.getAttribute('data-trans')) {
-        this.getRightAnswer(data, rusAnswers, timer, clickListener);
+        this.getRightAnswer();
       } else {
-        this.getWrongAnswer(data, rusAnswers, timer, clickListener);
+        this.getWrongAnswer();
       }
     };
 
@@ -236,33 +182,33 @@ class Game {
 
       if (event.code === 'Digit1' || event.code === 'Numpad1') {
         if (answers[0].textContent === this.engWord.getAttribute('data-trans')) {
-          this.getRightAnswer(data, rusAnswers, timer, clickListener, keydownListener);
+          this.getRightAnswer();
         } else {
-          this.getWrongAnswer(data, rusAnswers, timer, clickListener, keydownListener);
+          this.getWrongAnswer();
         }
       }
 
       if (event.code === 'Digit2' || event.code === 'Numpad2') {
         if (answers[1].textContent === this.engWord.getAttribute('data-trans')) {
-          this.getRightAnswer(data, rusAnswers, timer, clickListener, keydownListener);
+          this.getRightAnswer();
         } else {
-          this.getWrongAnswer(data, rusAnswers, timer, clickListener, keydownListener);
+          this.getWrongAnswer();
         }
       }
 
       if (event.code === 'Digit3' || event.code === 'Numpad3') {
         if (answers[2].textContent === this.engWord.getAttribute('data-trans')) {
-          this.getRightAnswer(data, rusAnswers, timer, clickListener, keydownListener);
+          this.getRightAnswer();
         } else {
-          this.getWrongAnswer(data, rusAnswers, timer, clickListener, keydownListener);
+          this.getWrongAnswer();
         }
       }
 
       if (event.code === 'Digit4' || event.code === 'Numpad4') {
         if (answers[3].textContent === this.engWord.getAttribute('data-trans')) {
-          this.getRightAnswer(data, rusAnswers, timer, clickListener, keydownListener);
+          this.getRightAnswer();
         } else {
-          this.getWrongAnswer(data, rusAnswers, timer, clickListener, keydownListener);
+          this.getWrongAnswer();
         }
       }
     };
@@ -270,30 +216,80 @@ class Game {
     document.addEventListener('keydown', keydownListener);
   }
 
-  getRightAnswer(data, rusAnswers, timer, clickListener, keydownListener) {
-    clearTimeout(timer);
-    this.rusAnswersSection.removeEventListener('click', clickListener, false);
-    document.removeEventListener('keydown', keydownListener, false);
-    this.engWord.classList.remove('dropped');
-    this.trueAnswers.push(data.pop());
-    if (this.isSoundEnabled) new Audio('/assets/audio/correct.mp3').play();
-    if (data.length === 0) return setTimeout(() => this.showResults(), 1500);
-    return setTimeout(() => this.updateButtonsContent(data, rusAnswers), 1000);
+  async getInfo(numberOfWords, roundNumber) {
+    this.numberOfWords = numberOfWords;
+    try {
+      this.data = await getWordforGame(getUserID(), localStorage.getItem('difficultSprint'), numberOfWords, roundNumber);
+      if (this.data.Error) {
+        this.stopLoading();
+        throw new Error(this.data.Error);
+      }
+
+      this.rusAnswers = [];
+
+      this.data.forEach((item) => {
+        this.rusAnswers.push(item.wordTranslate);
+      });
+
+      this.updateButtonsContent();
+      this.stopLoading();
+    } catch (e) {
+      alert(e);
+    }
   }
 
-  getWrongAnswer(data, rusAnswers, timer, clickListener, keydownListener) {
-    clearTimeout(timer);
-    this.rusAnswersSection.removeEventListener('click', clickListener, false);
-    document.removeEventListener('keydown', keydownListener, false);
+  updateButtonsContent() {
+    this.engWord.classList.add('dropped');
+    const timer = setTimeout(() => {
+      this.engWord.classList.remove('dropped');
+      this.getWrongAnswer();
+    }, 5000);
+
+    this.state.currentTimerId = timer;
+
+    this.engWord.textContent = this.data[this.data.length - 1].word;
+    this.engWord.setAttribute('data-trans', this.data[this.data.length - 1].wordTranslate);
+
+    const answersArray = this.rusAnswersSection.querySelectorAll('button');
+    const answerWords = [];
+
+    let dataLength = this.data.length - 1;
+
+    for (let i = 0; i < 4; i += 1) {
+      if (dataLength - i < 0) {
+        dataLength = this.data.length + i + 1;
+      }
+      answerWords.push(this.rusAnswers[dataLength - i]);
+    }
+
+    const sortAnsArray = answerWords.sort(() => Math.random() - 0.5);
+
+    answersArray.forEach((item, index) => {
+      const answer = item;
+      answer.textContent = sortAnsArray[index];
+    });
+  }
+
+  getRightAnswer() {
+    clearTimeout(this.state.currentTimerId);
     this.engWord.classList.remove('dropped');
-    this.wrongAnswers.push(data.pop());
+    this.trueAnswers.push(this.data.pop());
+    if (this.isSoundEnabled) new Audio('/assets/audio/correct.mp3').play();
+    if (this.data.length === 0) return setTimeout(() => this.showResults(), 1500);
+    return setTimeout(() => this.updateButtonsContent(), 1000);
+  }
+
+  getWrongAnswer() {
+    clearTimeout(this.state.currentTimerId);
+    this.engWord.classList.remove('dropped');
+    this.wrongAnswers.push(this.data.pop());
     if (this.isSoundEnabled) new Audio('/assets/audio/error.mp3').play();
     this.lifesWrapper.querySelector('.heart-icon').classList.add('heart-icon--disabled');
     this.lifesWrapper.querySelector('.heart-icon').classList.remove('heart-icon');
     const lostLifes = this.lifesWrapper.querySelectorAll('.heart-icon');
     if (lostLifes.length === 0
-      || data.length === 0) return setTimeout(() => this.showResults(), 1500);
-    return setTimeout(() => this.updateButtonsContent(data, rusAnswers), 1000);
+      || this.data.length === 0) return setTimeout(() => this.showResults(), 1500);
+    return setTimeout(() => this.updateButtonsContent(), 1000);
   }
 
   showResults() {
@@ -372,7 +368,7 @@ class Game {
     this.resultsListener();
     this.playAudioResults();
 
-    this.getStatsInfo(this.trueAnswers);
+    this.getStatsInfo();
   }
 
   resultsListener() {
@@ -403,14 +399,14 @@ class Game {
     });
   }
 
-  getStatsInfo(trueAnsArray) {
-    const res = `${Math.round((trueAnsArray.length / this.numberOfWords) * 100)}%`;
+  getStatsInfo() {
+    const res = `${Math.round((this.trueAnswers.length / this.numberOfWords) * 100)}%`;
     const date = `${new Date().getDay()}.${new Date().getMonth() + 1}.${new Date().getFullYear()}`;
     const statsInfo = {
       stats: [{
         date: '',
         score: [],
-        learnedWords: trueAnsArray.length,
+        learnedWords: this.trueAnswers.length,
       }],
     };
     statsInfo.stats[0].score.push(res);
