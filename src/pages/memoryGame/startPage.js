@@ -16,19 +16,19 @@ export function renderStartPage() {
   Зная расположение карточек, он сможет переворачивать правильные. Цель игры: 
   перевернуть все карточки, совершив меньше ошибок</p>
   <button type="button" class="btn btn-secondary btn-sm">Настройки игры</button></div>
-  <div class="back-face"></div></div>`
+  <div class="back-face"></div></div>`,
   );
   const settings = document.querySelector('.back-face');
   settings.insertAdjacentHTML('afterbegin', form);
   const card = document.querySelector('.mainCard');
   settings.insertAdjacentHTML(
     'beforeend',
-    '<button type="button" class="btn btn-secondary btn-sm">Правила игры</button>'
+    '<button type="button" class="btn btn-secondary btn-sm">Правила игры</button>',
   );
   card.insertAdjacentHTML(
     'afterend',
     `
-  <button type="button" class="btn btn-secondary btn-lg">Вернуться к тренировкам</button></div>`
+  <button type="button" class="btn btn-secondary btn-lg">Вернуться к тренировкам</button></div>`,
   );
   const formContainer = document.querySelector('form');
   formContainer.insertAdjacentHTML(
@@ -39,17 +39,26 @@ export function renderStartPage() {
   <select class="custom-select" id="inputGroupSelect01" required>
     <option value ="">Выбирай...</option>
     <option value="1">4</option>
-    <option value="2">6</option>
+    <option value="2">44</option>
     <option value="3">8</option>
     <option value="4">10</option>
     <option value="5">12</option>
     <option value="6">14</option>
     <option value="7">16</option>
   </select>
-  </div>`
+  </div> <div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text text-break" id="basic-addon1">Раунд</span>
+  </div>
+  <input type="number" class="form-control new col-3 col-sm-5" min="1" max="30" value="1">
+</div>`,
   );
+  if (localStorage.getItem('memory-page')) {
+    document.querySelector('.form-control').value = Number(localStorage.getItem('memory-page')) + 1;
+  }
+
   formContainer.insertAdjacentHTML(
     'beforeend',
-    '<div><button type="submit" class="btn btn-primary btn-lg">Играть</button>'
+    '<div><button type="submit" class="btn btn-primary btn-lg">Играть</button>',
   );
 }

@@ -15,6 +15,7 @@ export function initHandlers() {
     radio.forEach((elem) => {
       if (elem.checked) {
         group = Number(elem.value);
+        localStorage.setItem('group', group);
       }
     });
 
@@ -23,10 +24,13 @@ export function initHandlers() {
     countCards.forEach((elem) => {
       if (elem.selected) {
         count = Number(elem.textContent);
+        localStorage.setItem('count', count);
       }
     });
     console.log(count);
     console.log(group);
-    renderPlayPage(group, count);
+    const page = Number(document.querySelector('.form-control').value) - 1;
+    localStorage.setItem('memory-page', page);
+    renderPlayPage(group, count, page);
   });
 }

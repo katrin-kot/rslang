@@ -12,7 +12,7 @@ function checkForMatch() {
     disableCards();
     const score = document.querySelector('.score');
     if (document.querySelectorAll('.memory-card:not(.flip)').length === 0) {
-      gameOver(score.textContent, window.words);
+      setTimeout(() => gameOver(score.textContent, window.words), 2000);
     }
   } else {
     const score = document.querySelector('.score');
@@ -22,7 +22,10 @@ function checkForMatch() {
         (elem) => elem.dataset.content,
       );
       const error = unique(arrError);
-      gameOver(score.textContent - 10, window.words, error);
+      setTimeout(
+        () => gameOver(score.textContent - 10, window.words, error),
+        2000,
+      );
     } else {
       score.textContent -= 10;
     }

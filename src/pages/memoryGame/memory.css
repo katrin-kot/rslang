@@ -21,7 +21,7 @@ body {
 h3 {
   color: #10467b;
   font-weight: 600;
-  margin-top: 100px;
+  margin-top: 50px;
 }
 
 .form-difficult label:first-child:before {
@@ -53,7 +53,7 @@ body .form-difficult {
 
 .mainCard {
   width: 400px;
-  height: 380px;
+  height: 440px;
 }
 
 .memory-card:active {
@@ -72,10 +72,19 @@ body .form-difficult {
   backface-visibility: hidden;
 }
 
+.mainCard .front-face {
+  font-size: 1rem;
+  padding-top: 30px;
+}
+
+.front-face .btn-sm {
+  margin-left: 40px;
+}
+
 .front-face {
   transform: rotateY(180deg);
   font-weight: 500;
-  padding-top: 50px;
+  padding-top: 80px;
   font-size: 1.1rem;
   text-align: center;
 }

@@ -1,4 +1,5 @@
 import { getUserID } from '../../services/authService';
+import { renderPlayPage } from './playPage';
 
 export function gameOver(score, words, error) {
   const userId = getUserID();
@@ -23,6 +24,7 @@ export function gameOver(score, words, error) {
     const errortext = error.join();
     final.innerHTML = `Вы набрали 0 баллов. Тренируйтесь больше. Не угаданы слова: ${errortext} `;
   }
+
   //   const statistic = getStatistics({ userId });
   //   const date = new Date();
   //   statistic.optional.memory.push({ date: date.getTime(), score, errors: error });
@@ -35,4 +37,18 @@ export function gameOver(score, words, error) {
 
   //   putStatistic({ userId, optional });
   document.querySelector('.game-over').appendChild(table);
+  table.insertAdjacentHTML('afterend', `
+<button type="button" class="btn btn-outline-secondary">Повторить раунд</button>
+<button type="button" class="btn btn-outline-primary">Следующий раунд</button>
+  `);
+  const group = localStorage.getItem('group');
+  const count = localStorage.getItem('count');
+  let page = localStorage.getItem('page');
+  document.querySelector('.btn-outline-secondary').addEventListener('click', () => {
+    renderPlayPage(group, count, page);
+  });
+  document.querySelector('.btn-outline-primary').addEventListener('click', () => {
+    page += 1;
+    renderPlayPage(group, count, page);
+  });
 }
