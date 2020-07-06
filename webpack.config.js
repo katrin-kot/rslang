@@ -34,6 +34,7 @@ const config = {
     settings: './src/pages/settings/settings.js',
     SRgame: './src/pages/SRgame/SRgame.js',
     dictionary: './src/pages/dictionary/dictionary.js',
+    audioCall: './src/pages/audioCall/startPage.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -188,11 +189,11 @@ const config = {
     }),
 
     new HtmlWebPackPlugin({
-      //title: 'RS lang-audioCall',
-      //favicon: './assets/images/favicon.ico',
-      //chunks: ['audioCall'],
+      title: 'RS lang-audioCall',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['audioCall'],
       template: 'src/pages/audioCall/audioCall.html',
-      //filename: './audioCall.html',
+      filename: './audioCall.html',
     }),
     new HtmlWebPackPlugin({
       title: 'RS lang-savanna',
@@ -238,7 +239,7 @@ const config = {
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
-    port: 3000,
+    port: 3003,
     overlay: true,
     stats: 'errors-only',
     clientLogLevel: 'none',

@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import './audioCall.css';
 import questions from './dummyData';
 
@@ -41,6 +42,7 @@ export default class Game {
     this.answer_word.innerText = questions[this.round].english;
     this.answer_image.style.backgroundImage = `url(${
       questions[this.round].image
+      // eslint-disable-next-line indent
       })`;
     new Audio(questions[this.round].question).play();
 
@@ -48,15 +50,15 @@ export default class Game {
 
     for (let i = 1; i < 7; i += 1) {
       const option = document.createElement('div');
-      const option_number = document.createElement('div');
-      const option_word = document.createElement('div');
+      const optionNumber = document.createElement('div');
+      const optionWord = document.createElement('div');
       option.classList.add('option');
-      option_number.classList.add('option__number');
-      option_word.classList.add('option__word');
-      option_number.innerText = i;
-      option_word.innerText = questions[this.round].options[i - 1];
-      option.appendChild(option_number);
-      option.appendChild(option_word);
+      optionNumber.classList.add('option__number');
+      optionWord.classList.add('option__word');
+      optionNumber.innerText = i;
+      optionWord.innerText = questions[this.round].options[i - 1];
+      option.appendChild(optionNumber);
+      option.appendChild(optionWord);
       this.variants.appendChild(option);
 
       option.addEventListener('click', () => {
@@ -142,4 +144,3 @@ export default class Game {
     });
   }
 }
-

@@ -1,8 +1,8 @@
-import Game from "./audioCall";
+import Game from './audioCall';
 
-const wrapper = document.createElement("div");
-wrapper.classList.add("wrapper");
-let starter = document.createElement("div");
+const wrapper = document.createElement('div');
+wrapper.classList.add('wrapper');
+const starter = document.createElement('div');
 starter.innerHTML = ` <div class="start-page">
 <div class="start-page__title">
   Аудиовызов
@@ -17,8 +17,8 @@ starter.innerHTML = ` <div class="start-page">
 wrapper.append(starter);
 document.body.append(wrapper);
 
-document.querySelector(".start-page__button").addEventListener("click", () => {
-  wrapper.innerHTML = "";
+document.querySelector('.start-page__button').addEventListener('click', () => {
+  wrapper.innerHTML = '';
   const game = new Game();
   game.render();
 });
