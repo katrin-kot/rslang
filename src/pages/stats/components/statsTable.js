@@ -5,7 +5,7 @@ export function statsTable() {
   wrapper.className = 'wrapper';
   const canvasEl = document.createElement('canvas');
   canvasEl.id = 'canvas';
-  document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => {
     const colors = {
       purple: {
         default: 'rgba(149, 76, 233, 1)',
@@ -19,7 +19,7 @@ export function statsTable() {
       },
     };
 
-    const weight = [60.0, 60.2, 59.1, 101.4, 29.9, 80.2, 130.8, 58.6, 59.6, 59.2];
+    const wordsLearned = [232, 170, 120, 101, 123, 180, 280, 65, 100, 99];
 
     const labels = [
       'Неделя 1',
@@ -52,7 +52,7 @@ export function statsTable() {
             backgroundColor: gradient,
             pointBackgroundColor: colors.purple.default,
             borderColor: colors.purple.default,
-            data: weight,
+            data: wordsLearned,
             lineTension: 0.2,
             borderWidth: 2,
             pointRadius: 3,
@@ -105,11 +105,11 @@ export function statsTable() {
       },
     };
 
-    window.onload = function onLoad() {
+      setTimeout(function onLoad() {
       window.myLine = new Chart(ctx, options);
       Chart.defaults.global.defaultFontColor = colors.indigo.default;
       Chart.defaults.global.defaultFontFamily = 'Fira Sans';
-    };
+    });
   });
   wrapper.appendChild(canvasEl);
   return wrapper;

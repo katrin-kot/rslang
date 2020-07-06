@@ -1,7 +1,10 @@
 import './mainBlock.css';
 import * as d3 from 'd3';
+import {getStatistics} from '../../../services/statsService';
+import {parseDate} from "../features/date";
+import {getStatForToday} from "../features/serverData";
 
-export function mainBlock() {
+export function mainBlock(dataFromServer) {
   const mainContainer = document.createElement('div');
   mainContainer.className = 'main-container';
   const courseCompletion = document.createElement('h3');
@@ -13,7 +16,7 @@ export function mainBlock() {
   barChartElem.id = 'bar-chart';
   const pieChartBlock = document.createElement('div');
   pieChartBlock.className = 'pie-chart-block';
-  document.addEventListener('DOMContentLoaded', () => {
+  setTimeout( () => {
     // Course Completion Chart
     const percent = 0.9;
     const text = `${percent * 100}%`;
@@ -105,10 +108,18 @@ export function mainBlock() {
         .text((d) => d.value);
       yAxis.selectAll('text').style('font-size', '12px');
     };
+    function getAnswerPercent(data) {
+      const todayStat = getStatForToday(data);
+      if (todayStat) {
+        return todayStat.score.reduce((acc,cur) => {
+          return acc + parseInt(cur);
+        },0) / todayStat.score.length;
+      }
+    }
     const data = [
       { name: 'Кол-во пройденных карточек', value: 33 },
-      { name: '% Правильных ответов', value: 87 },
-      { name: 'Кол-во новых слов', value: 12 },
+      { name: '% Правильных ответов', value: Math.round(getAnswerPercent(dataFromServer))},
+      { name: 'Кол-во новых слов', value:  getStatForToday(dataFromServer).learnedWords},
       { name: 'Серия правильных ответов', value: 17 },
     ];
     barChart('#bar-chart', data);

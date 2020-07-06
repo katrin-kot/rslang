@@ -7,7 +7,7 @@ export function overallStats() {
   canvas.width = 600;
   canvas.height = 400;
 
-  document.addEventListener('DOMContentLoaded', () => {
+  setTimeout( () => {
     const ctx = document.getElementById('myChart').getContext('2d');
 
     const data = {
