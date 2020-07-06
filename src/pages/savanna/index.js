@@ -402,6 +402,8 @@ class Game {
         this.startLoading();
         this.updateBody();
         this.isSoundEnabled = true;
+        this.trueAnswers = [];
+        this.wrongAnswers = [];
 
         localStorage.setItem('round', Number(localStorage.getItem('round')) + 1);
 
