@@ -5,7 +5,7 @@ import { getWordforGame } from '../../services/userWordService';
 export default class Game extends GameWindow {
   constructor() {
     super();
-    this.difficult = localStorage.difficultSprint;
+    this.difficulty = localStorage.difficultySprint;
     this.useCartoons = localStorage.cartoonSprint;
     this.useStudied = localStorage.studiedSprint;
     this.userId = localStorage.userID;
@@ -157,7 +157,7 @@ export default class Game extends GameWindow {
   async getWordsByServer() {
     const obj = {
       userId: localStorage.userID,
-      group: localStorage.difficultSprint,
+      group: localStorage.difficultySprint,
       wordsPerPage: 20,
     };
 
@@ -169,7 +169,7 @@ export default class Game extends GameWindow {
     /**/
     /* const obj1 = {
       userId: localStorage.userID,
-      group: localStorage.difficultSprint,
+      group: localStorage.difficultySprint,
       wordsPerPage: 20,
       filter: '',
     };
