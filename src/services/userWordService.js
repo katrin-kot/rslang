@@ -1,9 +1,6 @@
 import { getToken } from './authService';
 import { getWordbyId } from './wordService';
-import { getImageUrl, getAudioUrl } from '../helpers/urls';
 import { randomUserWords } from '../helpers/random';
-
-const token = getToken();
 
 export const getAllUserWords = async ({ userId }) => {
   const rawResponse = await fetch(
@@ -12,7 +9,7 @@ export const getAllUserWords = async ({ userId }) => {
       method: 'GET',
       withCredentials: true,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
         Accept: 'application/json',
       },
     },
@@ -21,10 +18,6 @@ export const getAllUserWords = async ({ userId }) => {
   const resultWithData = await Promise.all(
     content.map(async (elem) => {
       const data = await getWordbyId(elem.wordId);
-      data.image = getImageUrl(data.image);
-      data.audio = getAudioUrl(data.audio);
-      data.audioExample = getAudioUrl(data.audioExample);
-      data.audioMeaning = getAudioUrl(data.audioMeaning);
       return { ...elem, data };
     }),
   );
@@ -60,7 +53,7 @@ export const createUserWord = async ({ userId, wordId, word }) => {
       method: 'POST',
       withCredentials: true,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
@@ -78,7 +71,7 @@ export const getUserWord = async ({ userId, wordId }) => {
       method: 'GET',
       withCredentials: true,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
         Accept: 'application/json',
       },
     },
@@ -94,7 +87,7 @@ export const updateUserWord = async ({ userId, wordId, word }) => {
       method: 'PUT',
       withCredentials: true,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
@@ -117,7 +110,7 @@ const getUserAggregatedWord = async ({
       method: 'GET',
       withCredentials: true,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${getToken()}`,
         Accept: 'application/json',
       },
     },
@@ -126,9 +119,10 @@ const getUserAggregatedWord = async ({
   return content;
 };
 
-export async function getWordforGame(userId, group, wordsPerPage, page) {
+export async function getWordforGame(userId, group, rawWordsPerPage, page) {
+  const wordsPerPage = rawWordsPerPage < 20 ? rawWordsPerPage : 20;
   let filter = new window.URLSearchParams({
-    filter: { $and: [{ 'userWord.optional.status': 'to_study', page }] },
+    filter: `{ "$and": [{ "userWord.optional.status": "to_study", "page": ${page}}] }`,
   }).toString();
   const userWords = await getUserAggregatedWord({
     userId,
@@ -139,7 +133,7 @@ export async function getWordforGame(userId, group, wordsPerPage, page) {
   if (userWords[0].paginatedResults.length < wordsPerPage) {
     const wordsPage = wordsPerPage - userWords[0].paginatedResults.length;
     filter = new window.URLSearchParams({
-      filter: { $and: [{ userWord: null, page }] },
+      filter: `{ "$and": [{"userWord": null, "page": ${page} }] }`,
     }).toString();
     const allWords = await getUserAggregatedWord({
       userId,
@@ -154,7 +148,7 @@ export async function getWordforGame(userId, group, wordsPerPage, page) {
   const getAllUsersWords = await getUserAggregatedWord({
     userId,
     group,
-    wordsPerPage: 3600,
+    wordsPerPage: 20,
     filter,
   });
   const arr = getAllUsersWords[0].paginatedResults;
