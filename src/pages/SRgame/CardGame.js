@@ -1,98 +1,56 @@
-import Card from './Card';
+import NewCard from './NewCard';
+import LearningCard from './LearningCard';
 import swiper from './swiper';
+import { getNewWords, filterLearningWordsPerDate } from '../../services/SRgameWordsService';
 import { countErrors, createElement } from './helpers';
 
-const wordsExample = [
-  {
-    id: '5e9f5ee35eb9e72bc21af4a1',
-    group: 0,
-    page: 0,
-    word: 'agree',
-    image: 'files/01_0001.jpg',
-    audio: 'files/01_0001.mp3',
-    audioMeaning: 'files/01_0001_meaning.mp3',
-    audioExample: 'files/01_0001_example.mp3',
-    textMeaning: 'To <i>agree</i> is to have the same opinion or belief as another person.',
-    textExample: 'The students <b>agree</b> they have too much homework.',
-    transcription: '[əgríː]',
-    textExampleTranslate: 'Студенты согласны, что у них слишком много домашней работы',
-    textMeaningTranslate: 'Согласиться - значит иметь то же мнение или убеждение, что и другой человек',
-    wordTranslate: 'согласна',
-    wordsPerExampleSentence: 8,
-  },
-  {
-    id: '5e9f5ee35eb9e72bc21af4a0',
-    group: 0,
-    page: 0,
-    word: 'alcohol',
-    image: 'files/01_0002.jpg',
-    audio: 'files/01_0002.mp3',
-    audioMeaning: 'files/01_0002_meaning.mp3',
-    audioExample: 'files/01_0002_example.mp3',
-    textMeaning: '<i>Alcohol</i> is a type of drink that can make people drunk.',
-    textExample: 'A person should not drive a car after he or she has been drinking <b>alcohol</b>.',
-    transcription: '[ǽlkəhɔ̀ːl]',
-    textExampleTranslate: 'Человек не должен водить машину после того, как он выпил алкоголь',
-    textMeaningTranslate: 'Алкоголь - это тип напитка, который может сделать людей пьяными',
-    wordTranslate: 'алкоголь',
-    wordsPerExampleSentence: 15,
-  },
-  {
-    id: '5e9f5ee35eb9e72bc21af4a2',
-    group: 0,
-    page: 0,
-    word: 'boat',
-    image: 'files/01_0005.jpg',
-    audio: 'files/01_0005.mp3',
-    audioMeaning: 'files/01_0005_meaning.mp3',
-    audioExample: 'files/01_0005_example.mp3',
-    textMeaning: 'A <i>boat</i> is a vehicle that moves across water.',
-    textExample: 'There is a small <b>boat</b> on the lake.',
-    transcription: '[bout]',
-    textExampleTranslate: 'На озере есть маленькая лодка',
-    textMeaningTranslate: 'Лодка - это транспортное средство, которое движется по воде',
-    wordTranslate: 'лодка',
-    wordsPerExampleSentence: 8,
-  },
-  {
-    id: '5e9f5ee35eb9e72bc21af4a3',
-    group: 0,
-    page: 0,
-    word: 'arrive',
-    image: 'files/01_0003.jpg',
-    audio: 'files/01_0003.mp3',
-    audioMeaning: 'files/01_0003_meaning.mp3',
-    audioExample: 'files/01_0003_example.mp3',
-    textMeaning: 'To <i>arrive</i> is to get somewhere.',
-    textExample: 'They <b>arrived</b> at school at 7 a.m.',
-    transcription: '[əráiv]',
-    textExampleTranslate: 'Они прибыли в школу в 7 часов утра',
-    textMeaningTranslate: 'Приехать значит попасть куда-то',
-    wordTranslate: 'прибыть',
-    wordsPerExampleSentence: 7,
-  },
-];
-
 export default class CardGame {
-  static createCards() {
-    const cardsArray = [];
-    wordsExample.forEach((word) => {
-      cardsArray.push(new Card(word));
-    });
-    return cardsArray;
+  constructor() {
+    this.rightAnswers = 0;
+    this.rightAnswersSeries = 0;
+    this.rightAnswersSeriesArr = [];
+    this.newCards = [];
+    this.learningCards = [];
   }
 
-  static renderGame() {
-    document.body.append(this.createAudioControl('on'));
-    document.body.append(this.createTranslationControl('on'));
+  async createCardsForNewCardGame() {
+    const cards = await getNewWords();
+    cards.forEach((word) => {
+      this.newCards.push(new NewCard(word));
+    });
+  }
+
+  async createCardsForLearningCardGame() {
+    let cards = await filterLearningWordsPerDate();
+    cards = cards.slice(0, 3);
+    cards.forEach((word) => {
+      this.learningCards.push(new LearningCard(word));
+    });
+  }
+
+  async renderGame(cards) {
+    document.body.append(CardGame.createAudioControl('on'));
+    document.body.append(CardGame.createTranslationControl('on'));
     swiper.allowSlideNext = false;
-    this.addAudioControl();
-    this.addTranslationControl();
-    const cardsArray = this.createCards();
-    cardsArray.forEach((card) => {
-      swiper.appendSlide(card.renderCard());
+    CardGame.addAudioControl();
+    CardGame.addTranslationControl();
+    cards.forEach((card) => {
+      if (!this.errors) swiper.appendSlide(card.renderCard());
+      card.addErrorsObserver();
+      card.addSettings();
     });
     this.addControl();
+    this.endGame(cards);
+  }
+
+  async renderGameLearningCards() {
+    await this.createCardsForLearningCardGame();
+    this.renderGame(this.learningCards);
+  }
+
+  async renderGameNewCards() {
+    await this.createCardsForNewCardGame();
+    this.renderGame(this.newCards);
   }
 
   static createAudioControl(mode) {
@@ -177,6 +135,17 @@ export default class CardGame {
     });
   }
 
+  countGameErrors(input) {
+    const { value } = input;
+    if (value === input.dataset.word) {
+      this.rightAnswers += 1;
+      this.rightAnswersSeries += 1;
+      this.rightAnswersSeriesArr.push(this.rightAnswersSeries);
+    } else if (value !== input.dataset.word) {
+      this.rightAnswersSeries = 0;
+    }
+  }
+
   static addInputHandler(input) {
     const { value } = input;
     const { word } = input.dataset;
@@ -191,11 +160,17 @@ export default class CardGame {
           swiper.allowSlideNext = false;
         }, 1000);
       } else if (value !== input.dataset.word) {
+        if (!document.querySelector('.swiper-slide-active.card-container').dataset.errors) {
+          document.querySelector('.swiper-slide-active.card-container').dataset.errors = 1;
+        }
         document.querySelectorAll(`.swiper-slide-active #${input.dataset.word}-check span`).forEach((span) => {
           span.classList.add('translucent');
         });
       }
     };
+    if (value !== input.dataset.word) {
+      document.querySelector('.swiper-slide-active .word-input').value = '';
+    }
 
     setTimeout(() => { setInput(); }, 2000);
 
@@ -223,23 +198,22 @@ export default class CardGame {
   }
 
   static renderWordSpelling(word, value) {
-    const input = document.querySelector('.swiper-slide-active .word-input');
     const checkedWord = this.checkWordSpelling(word, value);
     const wordContainer = document.querySelector(`.swiper-slide-active #${word}-check`);
-    input.value = '';
     if (wordContainer) wordContainer.innerHTML = checkedWord;
   }
 
-  static addControl() {
+  addControl() {
     document.addEventListener('keydown', (e) => {
       if (e.keyCode === 13) {
         if (e.target.classList.contains('word-input') && e.target.closest('.card-container').classList.contains('swiper-slide-active')) {
           e.preventDefault();
-          this.addInputHandler(e.target);
+          CardGame.addInputHandler(e.target);
+          this.countGameErrors(e.target);
           document.querySelectorAll('.swiper-slide-active .zero-opacity').forEach((el) => {
             el.classList.remove('zero-opacity');
           });
-          this.playAudio();
+          CardGame.playAudio();
         }
       }
     });
@@ -259,21 +233,35 @@ export default class CardGame {
           swiper.slideNext();
           swiper.allowSlideNext = false;
         }, 1000);
+        this.rightAnswersSeries = 0;
       }
     });
 
     document.querySelector('.swiper-button-next').addEventListener('click', () => {
-      this.addInputHandler(document.querySelector('.swiper-slide-active .word-input'));
+      CardGame.addInputHandler(document.querySelector('.swiper-slide-active .word-input'));
+      this.countGameErrors(document.querySelector('.swiper-slide-active .word-input'));
       document.querySelectorAll('.swiper-slide-active .zero-opacity').forEach((el) => {
         el.classList.remove('zero-opacity');
       });
-      this.playAudio();
+      CardGame.playAudio();
     });
 
     swiper.on('slideChange', () => {
       document.querySelectorAll('.swiper-slide-active audio').forEach((audio) => {
         audio.pause();
       });
+    });
+  }
+
+  async endGame(cards) {
+    document.addEventListener('click', (e) => {
+      if (e.target.tagName === 'BUTTON') {
+        if (swiper.activeIndex === document.querySelectorAll('.swiper-slide').length - 1) {
+          cards.forEach(async (card) => {
+            await card.createUserCard();
+          });
+        }
+      }
     });
   }
 }
