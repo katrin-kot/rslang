@@ -115,11 +115,12 @@ export function mainBlock(dataFromServer) {
           return acc + parseInt(cur);
         },0) / todayStat.score.length;
       }
+      return 0;
     }
     const data = [
       { name: 'Кол-во пройденных карточек', value: 33 },
       { name: '% Правильных ответов', value: Math.round(getAnswerPercent(dataFromServer))},
-      { name: 'Кол-во новых слов', value:  getStatForToday(dataFromServer).learnedWords},
+      { name: 'Кол-во новых слов', value:  (getStatForToday(dataFromServer) || {learnedWords: 0}).learnedWords},
       { name: 'Серия правильных ответов', value: 17 },
     ];
     barChart('#bar-chart', data);

@@ -1,6 +1,6 @@
 import Chart from 'chart.js';
 
-export function overallStats() {
+export function overallStats(dataFromServer) {
   const canvasContainer = document.createElement('div');
   const canvas = document.createElement('canvas');
   canvas.id = 'myChart';
@@ -22,7 +22,7 @@ export function overallStats() {
           pointHighlightFill: '#fff',
           pointHighlightStroke: 'rgba(220,220,220,1)',
           backgroundColor: 'rgba(0,100,120,0.8)',
-          data: [25, 59, 20, 14, 16, 35, 40],
+          data: dataFromServer.optional.stats.map(el => el.learnedWords),
         },
         {
           label: 'Дневная норма',
