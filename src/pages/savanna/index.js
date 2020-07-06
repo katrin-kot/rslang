@@ -10,6 +10,7 @@ class Game {
     this.isSoundEnabled = true;
     this.trueAnswers = [];
     this.wrongAnswers = [];
+    this.keydownListener = '';
 
     this.appContainer = createNode('div', 'savanna');
 
@@ -103,7 +104,6 @@ class Game {
       || this.inputField.value > 20
       || this.inputField.value < 5) return this.showError();
 
-      new Audio('/assets/audio/startGame.mp3').play();
       this.awaitBlock.classList.add('hidden');
       this.startLoading();
       this.updateBody();
@@ -121,6 +121,7 @@ class Game {
   }
 
   startLoading() {
+    new Audio('/assets/audio/startGame.mp3').play();
     this.loading = createNode('div', 'loading');
     this.appContainer.append(this.loading);
   }
@@ -175,7 +176,7 @@ class Game {
 
     this.rusAnswersSection.addEventListener('click', clickListener);
 
-    const keydownListener = (event) => {
+    this.keydownListener = (event) => {
       event.preventDefault();
 
       const answers = this.rusAnswersSection.querySelectorAll('button');
@@ -213,7 +214,7 @@ class Game {
       }
     };
 
-    document.addEventListener('keydown', keydownListener);
+    this.app.addEventListener('keydown', this.keydownListener);
   }
 
   async getInfo(numberOfWords, roundNumber) {
@@ -382,7 +383,38 @@ class Game {
       }
 
       if (event.target === this.tryAgain) {
-        window.location.reload();
+        const oldContainer = this.rusAnswersSection;
+        const container = oldContainer.cloneNode(true);
+        oldContainer.parentNode.replaceChild(container, oldContainer);
+
+        this.app.removeEventListener('keydown', this.keydownListener, false);
+        this.app.innerHTML = '';
+        this.appContainer = createNode('div', 'savanna');
+        this.app.append(this.appContainer);
+
+        this.topButtonsWrapper = createNode('div', 'wrapper', 'wrapper--top-buttons');
+
+        this.exitButton = createNode('button', 'button', 'button--return');
+        this.topButtonsWrapper.append(this.exitButton);
+        this.appContainer.append(this.topButtonsWrapper);
+
+        this.exitGame();
+        this.startLoading();
+        this.updateBody();
+        this.isSoundEnabled = true;
+
+        localStorage.setItem('round', Number(localStorage.getItem('round')) + 1);
+
+        if (Number(localStorage.getItem('round')) === 30) {
+          localStorage.setItem('round', 0);
+          localStorage.setItem('difficultSprint', Number(localStorage.getItem('difficultSprint')) + 1);
+
+          if (Number(localStorage.getItem('difficultSprint')) === 6) {
+            localStorage.setItem('difficultSprint', 0);
+          }
+        }
+
+        this.getInfo(Number(localStorage.getItem('numberOfWords')), Number(localStorage.getItem('round')));
       }
 
       if (event.target === this.backToAnotherTrain) {
