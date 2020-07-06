@@ -239,7 +239,7 @@ const config = {
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
-    port: 3003,
+    port: 3000,
     overlay: true,
     stats: 'errors-only',
     clientLogLevel: 'none',
