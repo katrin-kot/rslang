@@ -1,4 +1,10 @@
 import GameWindow from './gameWindow';
+import {
+  createUserWord,
+  getUserWord,
+  updateUserWord,
+  getAllUserWords,
+} from '../../services/userWordService';
 
 export default class Result extends GameWindow {
   constructor() {
@@ -20,6 +26,8 @@ export default class Result extends GameWindow {
   }
 
   getPage() {
+    this.updateUserWordByResult(this.score.correctWords);
+    this.updateUserWordByResult(this.score.wrongWords);
     console.log(this.score);
     const body = document.querySelector('body');
     const gameField = document.createElement('div');
@@ -36,6 +44,7 @@ export default class Result extends GameWindow {
     );
 
     this.listenToButtonsClick();
+    this.listenToSpeakerClick();
   }
 
   getResult() {
@@ -80,10 +89,70 @@ export default class Result extends GameWindow {
   getWordStatisticLine(word) {
     return `
         <div>
-          <span class="word-audio" data-source="${word.audioExample}"></span>
+          <span class="word-audio" data-source="${word.audio}"></span>
           <span class="word">${word.word}</span>
           <span class="word-translation"> — ${word.wordTranslate}</span>
         </div>`;
+  }
+
+  updateServerStatistic() {
+    const result = this.getUserSprintStatistic() || {};
+
+    const date = new Date().toLocaleDateString();
+  }
+
+  async getUserSprintStatistic(word) {
+    const content = await getUserWord({
+      userId: localStorage.userID,
+      wordId,
+    });
+
+    this.updateUserSprintStatistic();
+  }
+
+  async updateUserSprintStatistic() {
+    const percent = (
+      (this.score.correctWords
+        * (this.score.correctWords.length + this.score.wrongWords.length))
+      / 100
+    ).toFixed();
+  }
+
+  async updateUserWordByResult(words) {
+    words.forEach(async (item) => {
+      try {
+        const content = await getUserWord({
+          userId: localStorage.userID,
+          // eslint-disable-next-line no-underscore-dangle
+          wordId: item._id,
+        });
+
+        /* await updateUserWord({
+          userId: localStorage.userID,
+          wordId: item._id,
+        }); */
+        /* console.log(content); */
+      } catch (err) {
+        try {
+          const wordData = await createUserWord({
+            userId: localStorage.userID,
+            // eslint-disable-next-line no-underscore-dangle
+            wordId: item._id,
+          });
+          console.log(wordData);
+          console.log(123);
+          wordData.optional.status = 'to_study';
+          console.log(wordData);
+
+          const updatedData = await updateUserWord({
+            userId: localStorage.userID,
+            // eslint-disable-next-line no-underscore-dangle
+            wordId: item._id,
+            word: wordData,
+          });
+        } catch (err) {}
+      }
+    });
   }
 
   listenToButtonsClick() {
@@ -111,7 +180,7 @@ export default class Result extends GameWindow {
 
     speakers.forEach((speaker) => {
       speaker.addEventListener('click', (event) => {
-        console.log(event.target.classList);
+        this.playAudio(event.target.getAttribute('data-source'));
       });
     });
   }

@@ -1,16 +1,6 @@
 import GameWindow from './gameWindow';
 import CountdownTimer from './timer';
-import {
-  getAllUserWords,
-  getAllStudyWords,
-  getAllHardWords,
-  getAllDeleteWords,
-  createUserWord,
-  getUserWord,
-  updateUserWord,
-  getUserAggregatedWord,
-  getWordforGame,
-} from '../../services/userWordService';
+import { getWordforGame } from '../../services/userWordService';
 
 export default class Game extends GameWindow {
   constructor() {
@@ -19,8 +9,7 @@ export default class Game extends GameWindow {
     this.useCartoons = localStorage.cartoonSprint;
     this.useStudied = localStorage.studiedSprint;
     this.userId = localStorage.userID;
-    this.getUserData({ userId: this.userId }); //this.getUserData(this.userId);
-    /*this.userData = */ this.timer = new CountdownTimer();
+    this.timer = new CountdownTimer();
     this.buttonList = [
       { class: 'wrong-answer-button', text: 'Неверно' },
       { class: 'correct-answer-button', text: 'Верно' },
@@ -34,56 +23,8 @@ export default class Game extends GameWindow {
       ingameWords: [],
       correctWords: [],
       wrongWords: [],
-      usePages: [
-        0,
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25,
-        26,
-        27,
-        28,
-        29,
-      ],
     };
     this.maxPages = 30;
-  }
-
-  async getUserData() {
-    console.log('anyHard:');
-    const obj = {
-      userId: localStorage.userID,
-      group: 0,
-      wordsPerPage: 3,
-    };
-    const userFilteredData = await getWordforGame(
-      obj.userId,
-      obj.group,
-      obj.wordsPerPage
-    );
-
-    console.log(userFilteredData);
   }
 
   initPage(startPage, gamePage, resultPage) {
@@ -101,38 +42,6 @@ export default class Game extends GameWindow {
     this.words.ingameWords = [];
     this.words.correctWords = [];
     this.words.wrongWords = [];
-    this.words.usePages = [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-      15,
-      16,
-      17,
-      18,
-      19,
-      20,
-      21,
-      22,
-      23,
-      24,
-      25,
-      26,
-      27,
-      28,
-      29,
-    ];
   }
 
   getPage() {
@@ -145,25 +54,25 @@ export default class Game extends GameWindow {
 
     gameField.insertAdjacentHTML(
       'afterbegin',
-      this.addDivByClass('game-bonus')
+      this.addDivByClass('game-bonus'),
     );
 
     const gameBonus = document.querySelector('.game-bonus');
 
     gameBonus.insertAdjacentHTML(
       'afterbegin',
-      this.addDivByClass('game-score', 0)
+      this.addDivByClass('game-score', 0),
     );
 
     const gameScore = document.querySelector('.game-score');
 
-    gameScore.insertAdjacentHTML('afterbegin', `<div class="speaker"></div>`);
+    gameScore.insertAdjacentHTML('afterbegin', '<div class="speaker"></div>');
 
     const speaker = document.querySelector('.speaker');
 
     speaker.insertAdjacentHTML(
       'afterbegin',
-      '<img src="https://cdn.discordapp.com/attachments/624997901248233505/728348020193886218/speaker.svg">'
+      '<img src="https://cdn.discordapp.com/attachments/624997901248233505/728348020193886218/speaker.svg">',
     );
     gameScore.insertAdjacentHTML('afterbegin', this.getCanvas());
 
@@ -173,32 +82,33 @@ export default class Game extends GameWindow {
 
     gameField.insertAdjacentHTML(
       'beforeend',
-      this.addDivByClass('game-translation')
+      this.addDivByClass('game-translation'),
     );
 
     gameField.insertAdjacentHTML('beforeend', '<hr>');
 
     gameField.insertAdjacentHTML(
       'beforeEnd',
-      this.addDivByClass('buttons-block', this.getButton(this.buttonList))
+      this.addDivByClass('buttons-block', this.getButton(this.buttonList)),
     );
 
     this.listenToButtonsClick();
+    this.listenToAudioButtonClick();
     this.activateTimer();
 
     this.checkNewWords();
   }
 
   activateTimer() {
-    const MILLISECONDS_IN_MINUTE = 60000;
+    const MILLISECONDS_IN_MINUTE = 6000;
     const MILLISECONDS_IN_SECOND = 1000;
     let seconds = 0;
 
     this.timer.renderTimer();
-    const timerId = setInterval(
-      () => this.timer.updateTimer((seconds += 1)),
-      MILLISECONDS_IN_SECOND
-    );
+    const timerId = setInterval(() => {
+      seconds += 1;
+      return this.timer.updateTimer(seconds);
+    }, MILLISECONDS_IN_SECOND);
     setTimeout(() => {
       clearInterval(timerId);
       this.clearLastWord();
@@ -206,14 +116,13 @@ export default class Game extends GameWindow {
         this.startPage,
         this.gamePage,
         this.resultPage,
-        this.words
+        this.words,
       );
     }, MILLISECONDS_IN_MINUTE);
   }
 
   getGameImage() {
-    const image =
-      '<img class="game-image" src="https://cdn.discordapp.com/attachments/720535785622995023/721061601393770546/Octopus_-_Opt_2.png">';
+    const image = '<img class="game-image" src="https://cdn.discordapp.com/attachments/720535785622995023/721061601393770546/Octopus_-_Opt_2.png">';
 
     return image;
   }
@@ -235,22 +144,50 @@ export default class Game extends GameWindow {
     });
   }
 
-  async getWordsByServer() {
-    const randomPage = this.randomNumber();
-    const rawResponse = await fetch(
-      `https://afternoon-falls-25894.herokuapp.com/words?page=${randomPage}&group=${this.difficult}`
-    );
+  listenToAudioButtonClick() {
+    const audio = document.querySelector('.speaker');
 
-    const content = await rawResponse.json();
-    this.words.usePages.splice(randomPage, 1);
+    audio.addEventListener('click', () => {
+      this.playAudio(
+        this.words.wrongWords[this.words.wrongWords.length - 1].audio,
+      );
+    });
+  }
+
+  async getWordsByServer() {
+    const obj = {
+      userId: localStorage.userID,
+      group: localStorage.difficultSprint,
+      wordsPerPage: 20,
+    };
+
+    const content = await getWordforGame(
+      obj.userId,
+      obj.group,
+      obj.wordsPerPage,
+    );
+    /**/
+    /* const obj1 = {
+      userId: localStorage.userID,
+      group: localStorage.difficultSprint,
+      wordsPerPage: 20,
+      filter: '',
+    };
+    const content1 = await getUserAggregatedWord(
+      obj1.userId,
+      obj1.group,
+      obj1.wordsPerPage,
+      obj1.filter
+    );
+    console.log(content1); */
     this.words.ingameWords.push(...content);
     this.words.recievedWords.push(...content);
   }
 
   checkAnswer(answer) {
     if (
-      (this.lastResult && answer.contains('correct-answer-button')) ||
-      (!this.lastResult && answer.contains('wrong-answer-button'))
+      (this.lastResult && answer.contains('correct-answer-button'))
+      || (!this.lastResult && answer.contains('wrong-answer-button'))
     ) {
       this.updateCorrectWords();
       this.correctQueue += 1;
@@ -270,7 +207,7 @@ export default class Game extends GameWindow {
     this.showWordData();
   }
 
-  randomNumber(min = 0, max = this.words.usePages.length) {
+  randomNumber(min = 0, max = 30) {
     const rand = Math.round(min - 0.5 + Math.random() * (max - min + 1));
 
     return rand;
@@ -300,7 +237,10 @@ export default class Game extends GameWindow {
     const image = document.querySelector('.game-image');
 
     if (this.useCartoons === 'true') {
-      image.setAttribute('src', getFileUrl(source));
+      image.setAttribute(
+        'src',
+        `https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${source}`,
+      );
     }
   }
 
@@ -353,8 +293,8 @@ export default class Game extends GameWindow {
 
     bonus.classList.remove('wrong-shadow');
 
-    result
-      ? bonus.classList.add(`correct-shadow-${queue}`)
-      : bonus.classList.add('wrong-shadow');
+    const shadowClass = result ? `correct-shadow-${queue}` : 'wrong-shadow';
+
+    bonus.classList.add(shadowClass);
   }
 }

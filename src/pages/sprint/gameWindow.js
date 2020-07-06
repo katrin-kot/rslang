@@ -10,9 +10,8 @@ export default class GameWindow {
 
   getButton(description) {
     const button = description.reduce(
-      (hypertext, option) =>
-        `${hypertext}<button class="${option.class}">${option.text}</button>`,
-      ''
+      (hypertext, option) => `${hypertext}<button class="${option.class}">${option.text}</button>`,
+      '',
     );
 
     return button;
@@ -37,8 +36,12 @@ export default class GameWindow {
     });
   }
 
-  getAudio() {
-    const audio = '<audio src="">';
+  playAudio(source) {
+    const audio = new Audio(
+      `https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${source}`,
+    );
+
+    audio.play();
   }
 
   openStartPage(startPage, gamePage, resultPage) {
@@ -50,7 +53,7 @@ export default class GameWindow {
   redirectToMainPage() {
     this.clearGameWindow();
 
-    location.replace('http://localhost:3000/main.html');
+    window.location.pathname = '/';
   }
 
   openGamePage(startPage, gamePage, resultPage) {
