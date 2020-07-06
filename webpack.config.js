@@ -29,12 +29,12 @@ const config = {
   entry: {
     main: './src/pages/main/main.js',
     login: './src/pages/login/login.js',
+    audioCall: './src/pages/audioCall/startPage.js',
     savanna: './src/pages/savanna/savanna.js',
     speakIt: './src/pages/speakIt/speakIt.js',
     settings: './src/pages/settings/settings.js',
     SRgame: './src/pages/SRgame/SRgame.js',
     dictionary: './src/pages/dictionary/dictionary.js',
-    audioCall: './src/pages/audioCall/startPage.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -227,6 +227,7 @@ const config = {
       chunks: ['dictionary'],
       template: 'src/pages/dictionary/dictionary.html',
       filename: './dictionary.html',
+
     }),
     new CopyWebpackPlugin([
       {
