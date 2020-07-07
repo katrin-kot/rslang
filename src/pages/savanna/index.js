@@ -10,6 +10,9 @@ class Game {
     this.isSoundEnabled = true;
     this.trueAnswers = [];
     this.wrongAnswers = [];
+    this.statsForBack = {
+      Savanna: {},
+    };
     this.keydownListener = '';
 
     this.appContainer = createNode('div', 'savanna');
@@ -327,8 +330,9 @@ class Game {
     if (this.trueAnswers.length !== 0) {
       this.trueAnswers.map((item) => {
         this.resultsRightContainer.innerHTML += `
-        <div>
-          <p class="game-results__answer">${item.word}  -  ${item.wordTranslate}</p>
+        <div class="answer">
+          <span class="answer__sound"></span>
+          <p class="answer__text">${item.word}  -  ${item.wordTranslate}</p>
           <audio src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${item.audio}" preload="none"></audio>
         </div>`;
         return this.trueAnswers;
@@ -345,8 +349,9 @@ class Game {
     if (this.wrongAnswers.length !== 0) {
       this.wrongAnswers.map((item) => {
         this.resultsWrongContainer.innerHTML += `
-        <div>
-          <p class="game-results__answer">${item.word}  -  ${item.wordTranslate}</p>
+        <div class="answer">
+          <span class="answer__sound"></span>
+          <p class="answer__text">${item.word}  -  ${item.wordTranslate}</p>
           <audio src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${item.audio}" preload="none"></audio>
         </div>`;
         return this.wrongAnswers;
@@ -427,25 +432,28 @@ class Game {
 
   playAudioResults() {
     this.resDescContainer.addEventListener('click', (event) => {
-      if (event.target.classList.value !== 'game-results__answer') return;
+      if (event.target.classList.value !== 'answer__sound') return;
 
       event.target.closest('div').querySelector('audio').play();
     });
   }
 
   getStatsInfo() {
-    const res = `${Math.round((this.trueAnswers.length / this.numberOfWords) * 100)}%`;
-    const date = `${new Date().getDay()}.${new Date().getMonth() + 1}.${new Date().getFullYear()}`;
-    const statsInfo = {
-      stats: [{
-        date: '',
-        score: [],
-        learnedWords: this.trueAnswers.length,
-      }],
-    };
-    statsInfo.stats[0].score.push(res);
-    statsInfo.stats[0].date = date;
-    console.log(statsInfo);
+    const date = new Date();
+    const day = `0${date.getDate()}`;
+    const month = `0${date.getMonth() + 1}`;
+    const year = date.getFullYear();
+    const hour = date.getHours();
+    const min = `0${date.getMinutes()}`;
+    const sec = `0${date.getSeconds()}`;
+
+    const fullDate = `${day.substr(-2)}.${month.substr(-2)}.${year}T${hour}:${min.substr(-2)}:${sec.substr(-2)}`;
+    const res = `${this.trueAnswers.length}-${this.wrongAnswers.length}`;
+
+    this.statsForBack.Savanna[`${fullDate}`] = res;
+
+    const state = this.statsForBack;
+    console.log(state);
   }
 }
 
