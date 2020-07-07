@@ -21,6 +21,10 @@ function checkForMatch() {
       const arrError = Array.from(errorCards).map(
         (elem) => elem.dataset.content,
       );
+      const idError = Array.from(errorCards).map(
+        (elem) => elem.dataset.id,
+      );
+      window.idError = unique(idError);
       const error = unique(arrError);
       setTimeout(
         () => gameOver(score.textContent - 10, window.words, error),
