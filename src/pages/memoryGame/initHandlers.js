@@ -27,8 +27,6 @@ export function initHandlers() {
         localStorage.setItem('count', count);
       }
     });
-    console.log(count);
-    console.log(group);
     const page = Number(document.querySelector('.form-control').value) - 1;
     localStorage.setItem('memory-page', page);
     renderPlayPage(group, count, page);

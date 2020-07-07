@@ -1,16 +1,16 @@
 import { getUserID } from '../../services/authService';
 import { flipLittleCard } from './flipCards';
 import { renderStartPage } from './startPage';
-import { getWordforGame } from './bekend';
+import { getWordforGame } from '../../services/userWordService';
 import { initHandlers } from './initHandlers';
+import { renderSpinner, showSpinner } from './spinner';
 
-const body = document.querySelector('body');
-const userId = getUserID();
 export async function renderPlayPage(group, count, page) {
-  if (!userId) {
-    body.innerHTML = '<h2 class="error-text">Вы не авторизованы, перейдите на страницу Авторизации</h2>';
-  }
+  const body = document.querySelector('body');
+  const userId = getUserID();
   body.innerHTML = '';
+  renderSpinner();
+  showSpinner();
   const score = count * 10;
   const wordsPerPage = count / 2;
   const words = await getWordforGame(userId, group, wordsPerPage, page);
@@ -22,12 +22,16 @@ export async function renderPlayPage(group, count, page) {
     </section>`;
   const section = document.querySelector('.memory-game');
   let countCards = count;
-  if (countCards > 20) { countCards = 20; }
+  if (countCards > 20) {
+    countCards = 20;
+  }
   while (countCards > 0) {
     const card = document.createElement('div');
     card.classList.add('memory-card');
     const idx = Math.abs(Math.round(countCards / 2 - 1));
     card.setAttribute('data-content', words[idx].word);
+    // eslint-disable-next-line no-underscore-dangle
+    card.setAttribute('data-id', words[idx]._id);
     if (countCards % 2 === 0) {
       card.innerHTML = `
        <div class="front-face">${words[idx].word}</div>
@@ -47,7 +51,6 @@ export async function renderPlayPage(group, count, page) {
       card.style.order = ramdomPos;
     });
   }(count));
-  console.log(cards);
   cards.forEach((elem) => elem.classList.add('flip'));
   setTimeout(() => {
     document
@@ -62,25 +65,5 @@ export async function renderPlayPage(group, count, page) {
     renderStartPage();
     initHandlers();
   });
-  // const input = document.querySelector('input');
-  // input.addEventListener('click', (event) => {
-  //   console.log(event.target);
-  //   if (document.querySelectorAll('.flip').length > 0) {
-  //     input.disabled = true;
-  //   } else {
-  //     input.disabled = false;
-  //   }
-  // });
-  // input.addEventListener('keydown', async (event) => {
-  //   if (event.key === 'Enter') {
-  //     if (document.querySelectorAll('.flip').length > 0) {
-  //       input.disabled = true;
-  //     } else {
-  //       const newPage = document.querySelector('input').value;
-  //       input.disabled = false;
-  //       renderPlayPage(group, count, newPage);
-  //     }
-  //   }
-  // });
   return body;
 }
