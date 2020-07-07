@@ -216,7 +216,7 @@ body {
 .game-results {
   position: absolute;
   width: 50vw;
-  height: 90vh;
+  height: 75vh;
   top: 5vh;
   left: 50%;
   margin-left: -25vw;
@@ -245,19 +245,18 @@ body {
   display: flex;
   flex-direction: column;
   color: #fff;
-  width: 0;
+  width: 60%;
   height: 0;
-  font-size: 0;
+  font-size: 17px;
   background-color: #4879a2;
   border-radius: 5px;
+  overflow-y: hidden;
   transition: all 0.5s linear;
 }
 
 .game-results__description--click {
   margin-top: 15px;
   padding: 15px 20px;
-  font-size: 17px;
-  width: 60%;
   height: 150px;
   overflow-y: scroll;
 }
@@ -273,16 +272,26 @@ body {
 }
 
 .block-title--wrong {
-  margin-top: 10px;
+  margin-top: 20px;
   color: red;
 }
 
-.game-results__answer {
-  margin-top: 5px;
+.answer {
+  margin-top: 10px;
+  display: flex;
 }
 
-.game-results__answer:hover {
+.answer__text:hover {
   text-decoration: underline;
+  cursor: pointer;
+}
+
+.answer__sound {
+  margin-right: 15px;
+  width: 20px;
+  height: 20px;
+  background-size: cover;
+  background-image: url("/assets/images/sound-image.svg");
   cursor: pointer;
 }
 
@@ -345,6 +354,23 @@ body {
   .await-block__keyboard {
     display: none;
   }
+
+  .game-results {
+    width: 72vw;
+    padding: 3%;
+    height: max-content;
+    left: 28%;
+    margin-left: -14vw;
+  }
+
+  .game-results__text {
+    margin-top: 10px;
+    font-size: 15px;
+  }
+
+  .game-results__description {
+    width: 90%;
+  }
 }
 
 @media (max-width: 500px) {
@@ -354,7 +380,7 @@ body {
   }
 
   .wrapper--top-buttons {
-    margin-top: 25px;
+    margin-top: 10px;
   }
 
   .form__error {
@@ -362,12 +388,18 @@ body {
   }
 
   .game-block {
-    margin-top: 70px;
+    margin-top: 20px;
   }
 
   .answers-wrapper {
+    margin-top: 160px;
     width: 100%;
-    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .button--rus {
+    margin-top: 20px;
   }
 
   .game-results {
@@ -388,7 +420,16 @@ body {
   }
 
   .game-results__description--click {
-    padding: 5px;
+    padding: 3%;
     width: 100%;
+  }
+
+  @keyframes fluidDrop {
+    from {
+      top: 0;
+    }
+    to {
+      top: 120px;
+    }
   }
 }
