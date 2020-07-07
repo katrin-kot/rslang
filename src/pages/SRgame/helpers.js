@@ -45,6 +45,11 @@ const countDaysInterval = (group, ease) => {
   return interval[group] * easeCoef[ease];
 };
 
+const getTodayDate = () => {
+  const date = new Date();
+  return `${addZeroToTime(date.getMonth() + 1)}/${addZeroToTime(date.getDate())}/${date.getFullYear()}`;
+};
+
 export {
-  countErrors, createElement, addZeroToTime, countDaysInterval,
+  countErrors, createElement, addZeroToTime, countDaysInterval, getTodayDate,
 };

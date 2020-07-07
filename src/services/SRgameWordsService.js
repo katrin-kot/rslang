@@ -1,4 +1,6 @@
 import { getToken, getUserID } from './authService';
+import { createUserWord, updateUserWord } from './userWordService';
+import { getTodayDate } from '../pages/SRgame/helpers';
 
 const token = getToken();
 const userID = getUserID();
@@ -44,4 +46,27 @@ export const filterLearningWordsPerDate = async () => {
     }
   });
   return filteredWords;
+};
+
+export const updateWordWithError = async ({ wordId }) => {
+  updateUserWord({
+    userId: getUserID(),
+    wordId,
+    word: { optional: { dateToShow: `${getTodayDate()}` } },
+  });
+};
+
+export const createWordWithError = async ({ wordId }) => {
+  const settings = {
+    difficulty: 'normal',
+    optional: {
+      status: 'to_study', count: '0', learningGroup: '1', date: 0, dateToShow: `${getTodayDate()}`,
+    },
+  };
+
+  createUserWord({
+    userId: getUserID(),
+    wordId,
+    word: settings,
+  });
 };
