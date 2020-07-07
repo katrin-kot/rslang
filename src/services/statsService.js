@@ -30,10 +30,24 @@ export const addEmptyStatistics = ({userId}) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                "learnedWords":0,
-                "optional":{
-                    "stats": "[]"
-                }
+                optional: {}
+            })
+        },
+    );
+}
+export const putStatistics = ({userId, optional}) => {
+    const token = getToken();
+    return fetch (`https://afternoon-falls-25894.herokuapp.com/users/${userId}/statistics`,
+        {
+            method: 'PUT',
+            withCredentials: true,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                optional,
             })
         },
     );

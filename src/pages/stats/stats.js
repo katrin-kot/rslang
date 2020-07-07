@@ -6,14 +6,21 @@ import { overallStats } from './components/overallStats';
 import { statsTable } from './components/statsTable';
 import { getStatistics } from '../../services/statsService'
 import { getUserID } from '../../services/authService'
+import {TabsComponent} from "./components/tabs";
 
 const body = document.querySelector('body');
 const userId = getUserID()
 async function renderPage() {
     const data = await getStatistics({userId});
-    data.optional.stats = JSON.parse(data.optional.stats);
     console.log('data: ',data);
-    body.appendChild(layoutGrid([header(), mainBlock(data), overallStats(data), statsTable(data)]));
+    const tabsContent = Object.entries(data.optional).map(el => {
+        const fragment = document.createDocumentFragment()
+        fragment.appendChild(mainBlock(el[1]))
+        fragment.appendChild(overallStats(el[1]))
+        fragment.appendChild(statsTable(el[1]))
+        return [el[0], fragment]
+    })
+    body.appendChild(layoutGrid([header(), TabsComponent(tabsContent)]));
 }
 
 renderPage();
@@ -24,95 +31,21 @@ renderPage();
 
 /*
 {
-   "id":"5efd033252f52eee34873e46",
-   "learnedWords":389,
    "optional":{
-      "stats":[
-         {
-            "date":"30.06.2020",
-            "score":[
-               "70%",
-               "100%",
-               "50%",
-               "100%",
-               "10%",
-               "100%"
-            ],
-            "learnedWords":60
+      "memoryGame":{
+         "07.07.2020, 11:48:36":{
+            "level":"0",
+            "score":"2-0",
+            "scoreGame":"40",
+            "errors":"0"
          },
-         {
-            "date":"01.07.2020",
-            "score":[
-               "30%",
-               "10%",
-               "93%",
-               "15%",
-               "40%",
-               "50%"
-            ],
-            "learnedWords":36
-         },
-         {
-            "date":"02.07.2020",
-            "score":[
-               "70%",
-               "17%",
-               "53%",
-               "75%",
-               "45%",
-               "57%"
-            ],
-            "learnedWords":76
-         },
-         {
-            "date":"03.07.2020",
-            "score":[
-               "36%",
-               "16%",
-               "91%",
-               "33%",
-               "47%",
-               "92%"
-            ],
-            "learnedWords":43
-         },
-         {
-            "date":"04.07.2020",
-            "score":[
-               "34%",
-               "36%",
-               "57%",
-               "84%",
-               "46%",
-               "75%"
-            ],
-            "learnedWords":57
-         },
-         {
-            "date":"05.07.2020",
-            "score":[
-               "54%",
-               "34%",
-               "23%",
-               "67%",
-               "63%",
-               "75%"
-            ],
-            "learnedWords":75
-         },
-         {
-            "date":"06.07.2020",
-            "score":[
-               "35%",
-               "76%",
-               "86%",
-               "83%",
-               "43%",
-               "65%"
-            ],
-            "learnedWords":42
+         "07.07.2020, 11:51:49":{
+            "level":"0",
+            "score":"0-2",
+            "scoreGame":"0",
+            "errors":"2"
          }
-      ]
+      }
    }
 }
 * */
