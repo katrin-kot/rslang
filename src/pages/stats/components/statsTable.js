@@ -1,10 +1,14 @@
 import Chart from 'chart.js';
 
+
+
+let instances = 0;
+
 export function statsTable() {
   const wrapper = document.createElement('div');
   wrapper.className = 'wrapper';
   const canvasEl = document.createElement('canvas');
-  canvasEl.id = 'canvas';
+  canvasEl.id = 'stats-table-' + instances++;
   setTimeout(() => {
     const colors = {
       purple: {
@@ -34,7 +38,7 @@ export function statsTable() {
       'Неделя 10',
     ];
 
-    const ctx = document.getElementById('canvas').getContext('2d');
+    const ctx = document.getElementById(canvasEl.id).getContext('2d');
     ctx.canvas.height = 100;
 
     const gradient = ctx.createLinearGradient(0, 25, 0, 300);

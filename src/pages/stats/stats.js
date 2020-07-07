@@ -14,7 +14,8 @@ async function renderPage() {
     const data = await getStatistics({userId});
     console.log('data: ',data);
     const tabsContent = Object.entries(data.optional).map(el => {
-        const fragment = document.createDocumentFragment()
+        const fragment = document.createElement("div")
+        fragment.className = 'tab-layout'
         fragment.appendChild(mainBlock(el[1]))
         fragment.appendChild(overallStats(el[1]))
         fragment.appendChild(statsTable(el[1]))

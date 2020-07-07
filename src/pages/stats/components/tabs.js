@@ -1,3 +1,4 @@
+import './tabs.css'
 export function TabsComponent(content) {
     const navigationContainer = document.createElement("div")
     navigationContainer.className = 'tabs__navigation'

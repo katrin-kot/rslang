@@ -7,11 +7,11 @@
 .course-completion {
     color: green;
 }
-#bar-chart {
+.bar-chart {
     width: 50%;
     margin-top: 1rem;
 }
-#bar-chart svg {
+.bar-chart svg {
     overflow: inherit;
 }
 .pie-chart-block {
