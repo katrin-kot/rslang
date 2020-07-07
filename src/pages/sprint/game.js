@@ -5,10 +5,6 @@ import { getWordforGame } from '../../services/userWordService';
 export default class Game extends GameWindow {
   constructor() {
     super();
-    this.difficulty = localStorage.difficultySprint;
-    this.useCartoons = localStorage.cartoonSprint;
-    this.useStudied = localStorage.studiedSprint;
-    this.userId = localStorage.userID;
     this.timer = new CountdownTimer();
     this.buttonList = [
       { class: 'wrong-answer-button', text: 'Неверно' },
@@ -31,8 +27,17 @@ export default class Game extends GameWindow {
     this.startPage = startPage;
     this.gamePage = gamePage;
     this.resultPage = resultPage;
+    this.updateSettings();
     this.clearStatistic();
     this.getPage();
+  }
+
+  updateSettings() {
+    this.difficulty = localStorage.difficultySprint;
+    this.useCartoons = localStorage.cartoonSprint;
+    this.useStudied = localStorage.studiedSprint;
+    this.userId = localStorage.userID;
+    this.round = localStorage.roundSprint;
   }
 
   clearStatistic() {
@@ -159,27 +164,16 @@ export default class Game extends GameWindow {
       userId: localStorage.userID,
       group: localStorage.difficultySprint,
       wordsPerPage: 20,
+      page: this.round,
     };
 
     const content = await getWordforGame(
       obj.userId,
       obj.group,
       obj.wordsPerPage,
+      obj.page,
     );
-    /**/
-    /* const obj1 = {
-      userId: localStorage.userID,
-      group: localStorage.difficultySprint,
-      wordsPerPage: 20,
-      filter: '',
-    };
-    const content1 = await getUserAggregatedWord(
-      obj1.userId,
-      obj1.group,
-      obj1.wordsPerPage,
-      obj1.filter
-    );
-    console.log(content1); */
+
     this.words.ingameWords.push(...content);
     this.words.recievedWords.push(...content);
   }

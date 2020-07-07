@@ -4,7 +4,7 @@ export async function getWordbyId(wordId) {
     {
       method: 'GET',
       withCredentials: true,
-    }
+    },
   );
   return rawResponse.json();
 }

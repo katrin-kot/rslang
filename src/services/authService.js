@@ -37,7 +37,6 @@ export const createUser = async (user) => {
   return content;
 };
 
-
 export function getUserID() {
   return localStorage.getItem('userID');
 }

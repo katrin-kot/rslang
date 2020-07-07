@@ -42,6 +42,10 @@ export default class StartPage extends GameWindow {
 
     gameField.insertAdjacentHTML('afterbegin', difficultOptions());
     gameField.insertAdjacentHTML(
+      'beforeend',
+      '<span>Выберите раунд: </span> <input class="round" type="number" value="1" max="30" min="1">',
+    );
+    gameField.insertAdjacentHTML(
       'beforeEnd',
       this.getOptionField(this.additionOption),
     );
@@ -52,7 +56,7 @@ export default class StartPage extends GameWindow {
 
     this.setDefaultOptions();
     this.listenToButtonsClick();
-    this.listenToChangeDifficult();
+    this.listenToChangedifficulty();
     this.listenToAdditionalOptions();
   }
 
@@ -78,6 +82,7 @@ export default class StartPage extends GameWindow {
     buttons.addEventListener('click', (event) => {
       if (event.target.tagName === 'BUTTON') {
         if (event.target.classList.contains('start-button')) {
+          this.updateRound();
           this.openGamePage(this.startPage, this.gamePage, this.resultPage);
         }
       }
@@ -85,12 +90,13 @@ export default class StartPage extends GameWindow {
   }
 
   setDefaultOptions() {
-    localStorage.setItem('difficultSprint', 0);
+    localStorage.setItem('difficultySprint', 0);
     localStorage.setItem('studiedSprint', true);
     localStorage.setItem('cartoonSprint', false);
+    localStorage.setItem('roundSprint', 0);
   }
 
-  listenToChangeDifficult() {
+  listenToChangedifficulty() {
     const form = document.querySelector('.form-difficult');
 
     form.addEventListener('click', () => {
@@ -98,7 +104,7 @@ export default class StartPage extends GameWindow {
 
       inputElements.forEach((item) => {
         if (item.checked) {
-          localStorage.setItem('difficultSprint', item.value);
+          localStorage.setItem('difficultySprint', item.value);
         }
       });
     });
@@ -118,5 +124,11 @@ export default class StartPage extends GameWindow {
         }
       });
     });
+  }
+
+  updateRound() {
+    const roundInput = document.querySelector('.round');
+
+    localStorage.setItem('roundSprint', roundInput.value - 1);
   }
 }

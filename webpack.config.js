@@ -46,11 +46,6 @@ const config = {
   module: {
     rules: [
       {
-        enforce: 'pre',
-        test: /\.js$/,
-        loader: 'eslint-loader',
-      },
-      {
         test: /\.html$/,
         use: [
           {

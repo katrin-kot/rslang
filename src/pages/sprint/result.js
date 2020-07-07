@@ -3,7 +3,6 @@ import {
   createUserWord,
   getUserWord,
   updateUserWord,
-  getAllUserWords,
 } from '../../services/userWordService';
 
 export default class Result extends GameWindow {
