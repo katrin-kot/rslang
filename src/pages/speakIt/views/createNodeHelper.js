@@ -8,3 +8,5 @@ export default function createNode(tag, ...classNames) {
 
   return element;
 }
+
+// TODO: удалю потом, подключу из helpers
