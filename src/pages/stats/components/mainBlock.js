@@ -4,10 +4,10 @@ import * as d3 from 'd3';
 let instances = 0;
 
 function getAnswerPercent(data) {
-  const { correct, wrong } = Object.values(data).reduce((acc, cur) => {
+  const {correct, wrong} = Object.values(data).reduce((acc, cur) => {
     const [correctLocal, wrongLocal] = cur.score.split('-');
-    return { correct: acc.correct + +correctLocal, wrong: acc.wrong + +wrongLocal };
-  }, { correct: 0, wrong: 0 });
+    return {correct: acc.correct + +correctLocal, wrong: acc.wrong + +wrongLocal};
+  }, {correct: 0, wrong: 0});
   const total = correct + wrong;
   return (correct / total) * 100;
 }
@@ -45,37 +45,39 @@ export function mainBlock(dataFromServer) {
     const pieChartColor = d3.scaleOrdinal([foregroundColor, backgroundColor]);
 
     const svg = d3.select(`#${completionChartId}`)
-      .append('svg')
-      .attr('class', 'pie')
-      .attr('width', pieChartWidth)
-      .attr('height', pieChartHeight);
+        .append('svg')
+        .attr('class', 'pie')
+        .attr('width', pieChartWidth)
+        .attr('height', pieChartHeight);
     const g = svg.append('g')
-      .attr('transform', `translate(${pieChartWidth / 2},${pieChartHeight / 2})`);
+        .attr('transform', `translate(${pieChartWidth / 2},${pieChartHeight / 2})`);
     const arc = d3.arc()
-      .innerRadius(radius - thickness)
-      .outerRadius(radius);
+        .innerRadius(radius - thickness)
+        .outerRadius(radius);
     const pie = d3.pie()
-      .sort(null);
+        .sort(null);
     const path = g.selectAll('path')
-      .data(pie([0, 1]))
-      .enter()
-      .append('path')
-      .attr('d', arc)
-      .attr('fill', (d, i) => pieChartColor(i))
-      .each(function onEach(d) { this.current = d; });
+        .data(pie([0, 1]))
+        .enter()
+        .append('path')
+        .attr('d', arc)
+        .attr('fill', (d, i) => pieChartColor(i))
+        .each(function onEach(d) {
+          this.current = d;
+        });
     path.data(pie([percent, 1 - percent])).transition()
-      .duration(duration)
-      .attrTween('d', function onAttrTween(d) {
-        const interpolate = d3.interpolate(this.current, d);
-        this.current = interpolate(0);
-        return function createArc(t) {
-          return arc(interpolate(t));
-        };
-      });
+        .duration(duration)
+        .attrTween('d', function onAttrTween(d) {
+          const interpolate = d3.interpolate(this.current, d);
+          this.current = interpolate(0);
+          return function createArc(t) {
+            return arc(interpolate(t));
+          };
+        });
     g.append('text')
-      .attr('text-anchor', 'middle')
-      .attr('dy', '.35em')
-      .text(text);
+        .attr('text-anchor', 'middle')
+        .attr('dy', '.35em')
+        .text(text);
 
     // Bar Chart
     const barChart = (selector, data) => {
@@ -87,48 +89,48 @@ export function mainBlock(dataFromServer) {
       };
       const container = d3.select(selector);
       const chart = container.append('svg')
-        .style('width', '100%')
-        .attr('viewBox', `0 0 ${width} ${height}`);
+          .style('width', '100%')
+          .attr('viewBox', `0 0 ${width} ${height}`);
       const xScale = d3.scaleLinear()
-        .range([0, width / 1.2 - margin.left - margin.right])
-        .domain([0, d3.max(data, (d) => d.value)]);
+          .range([0, width / 1.2 - margin.left - margin.right])
+          .domain([0, d3.max(data, (d) => d.value)]);
       const yScale = d3.scaleBand()
-        .range([0, height - margin.top - margin.bottom])
-        .domain(data.map((d) => d.name));
+          .range([0, height - margin.top - margin.bottom])
+          .domain(data.map((d) => d.name));
       const color = d3.scaleOrdinal()
-        .range(d3.schemeCategory10)
-        .domain(data.map((d) => d.name));
+          .range(d3.schemeCategory10)
+          .domain(data.map((d) => d.name));
       const yAxis = chart.append('g')
-        .call(d3.axisLeft(yScale))
-        .attr('transform', `translate(${margin.left}, ${margin.top})`);
+          .call(d3.axisLeft(yScale))
+          .attr('transform', `translate(${margin.left}, ${margin.top})`);
       chart.selectAll('.bar')
-        .data(data)
-        .enter()
-        .append('rect')
-        .attr('class', 'bar')
-        .attr('fill', (d) => color(d.name))
-        .attr('height', barHeight)
-        .attr('width', (d) => xScale(d.value))
-        .attr('x', margin.left + 1)
-        .attr('y', (d) => yScale(d.name) + (barHeight / 2));
+          .data(data)
+          .enter()
+          .append('rect')
+          .attr('class', 'bar')
+          .attr('fill', (d) => color(d.name))
+          .attr('height', barHeight)
+          .attr('width', (d) => xScale(d.value))
+          .attr('x', margin.left + 1)
+          .attr('y', (d) => yScale(d.name) + (barHeight / 2));
       chart.selectAll('.label')
-        .data(data)
-        .enter()
-        .append('text')
-        .attr('class', 'label')
-        .attr('alignment-baseline', 'middle')
-        .attr('x', (d) => xScale(d.value) + margin.left + 5)
-        .attr('y', (d) => yScale(d.name) + (barHeight))
-        .style('font-size', '12px')
-        .style('font-weight', 'bold')
-        .text((d) => d.value);
+          .data(data)
+          .enter()
+          .append('text')
+          .attr('class', 'label')
+          .attr('alignment-baseline', 'middle')
+          .attr('x', (d) => xScale(d.value) + margin.left + 5)
+          .attr('y', (d) => yScale(d.name) + (barHeight))
+          .style('font-size', '12px')
+          .style('font-weight', 'bold')
+          .text((d) => d.value);
       yAxis.selectAll('text').style('font-size', '12px');
     };
     const data = [
-      { name: 'Кол-во пройденных карточек', value: 33 },
-      { name: '% Правильных ответов', value: Math.round(getAnswerPercent(dataFromServer)) },
-      { name: 'Кол-во новых слов', value: getNewWordsCount(dataFromServer) },
-      { name: 'Серия правильных ответов', value: 17 },
+      {name: 'Кол-во пройденных карточек', value: 33},
+      {name: '% Правильных ответов', value: Math.round(getAnswerPercent(dataFromServer))},
+      {name: 'Кол-во новых слов', value: getNewWordsCount(dataFromServer)},
+      {name: 'Серия правильных ответов', value: 17},
     ];
     barChart(`#${barChartId}`, data);
   });
