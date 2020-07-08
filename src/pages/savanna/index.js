@@ -20,7 +20,11 @@ class Game {
 
     this.app.append(this.appContainer);
 
-    this.topButtonsWrapper = createNode('div', 'wrapper', 'wrapper--top-buttons');
+    this.topButtonsWrapper = createNode(
+      'div',
+      'wrapper',
+      'wrapper--top-buttons',
+    );
 
     this.exitButton = createNode('button', 'button', 'button--return');
 
@@ -37,7 +41,11 @@ class Game {
     this.startLoading();
     await checkUserLogin();
     this.topButtonsWrapper.append(this.exitButton);
-    this.startContainer.append(this.title, this.descriptionGame, this.buttonStartGame);
+    this.startContainer.append(
+      this.title,
+      this.descriptionGame,
+      this.buttonStartGame,
+    );
     this.appContainer.append(this.topButtonsWrapper, this.startContainer);
 
     this.startGame();
@@ -81,12 +89,22 @@ class Game {
     this.selectRound.setAttribute('max', '29');
     this.selectRound.setAttribute('required', 'true');
 
-    this.submitButton = createNode('button', 'button', 'form__button', 'button--start');
+    this.submitButton = createNode(
+      'button',
+      'button',
+      'form__button',
+      'button--start',
+    );
     this.submitButton.setAttribute('type', 'submit');
     this.submitButton.setAttribute('id', 'submitButton');
     this.submitButton.textContent = 'Продолжить';
 
-    this.form.append(this.inputField, this.selectRound, this.diffLevel, this.submitButton);
+    this.form.append(
+      this.inputField,
+      this.selectRound,
+      this.diffLevel,
+      this.submitButton,
+    );
 
     this.awaitBlock.append(this.keyboardImage, this.promt, this.form);
     this.appContainer.append(this.awaitBlock);
@@ -107,9 +125,11 @@ class Game {
       event.preventDefault();
 
       if (this.error) this.error.remove();
-      if (!Number.isInteger(Number(this.inputField.value))
-      || this.inputField.value > 20
-      || this.inputField.value < 5) return this.showError();
+      if (
+        !Number.isInteger(Number(this.inputField.value))
+        || this.inputField.value > 20
+        || this.inputField.value < 5
+      ) return this.showError();
 
       this.awaitBlock.classList.add('hidden');
       this.startLoading();
@@ -173,7 +193,9 @@ class Game {
       event.preventDefault();
 
       if (event.target.tagName !== 'BUTTON') return;
-      if (event.target.textContent === this.engWord.getAttribute('data-trans')) {
+      if (
+        event.target.textContent === this.engWord.getAttribute('data-trans')
+      ) {
         this.getRightAnswer();
       } else {
         this.getWrongAnswer();
@@ -190,7 +212,9 @@ class Game {
       switch (event.code) {
         case 'Digit1':
         case 'Numpad1':
-          if (answers[0].textContent === this.engWord.getAttribute('data-trans')) {
+          if (
+            answers[0].textContent === this.engWord.getAttribute('data-trans')
+          ) {
             this.getRightAnswer();
           } else {
             this.getWrongAnswer();
@@ -198,7 +222,9 @@ class Game {
           break;
         case 'Digit2':
         case 'Numpad2':
-          if (answers[1].textContent === this.engWord.getAttribute('data-trans')) {
+          if (
+            answers[1].textContent === this.engWord.getAttribute('data-trans')
+          ) {
             this.getRightAnswer();
           } else {
             this.getWrongAnswer();
@@ -206,7 +232,9 @@ class Game {
           break;
         case 'Digit3':
         case 'Numpad3':
-          if (answers[3].textContent === this.engWord.getAttribute('data-trans')) {
+          if (
+            answers[3].textContent === this.engWord.getAttribute('data-trans')
+          ) {
             this.getRightAnswer();
           } else {
             this.getWrongAnswer();
@@ -215,7 +243,9 @@ class Game {
 
         case 'Digit4':
         case 'Numpad4':
-          if (answers[4].textContent === this.engWord.getAttribute('data-trans')) {
+          if (
+            answers[4].textContent === this.engWord.getAttribute('data-trans')
+          ) {
             this.getRightAnswer();
           } else {
             this.getWrongAnswer();
@@ -232,7 +262,12 @@ class Game {
     new Audio('/assets/audio/startGame.mp3').play();
     this.numberOfWords = numberOfWords;
     try {
-      this.data = await getWordforGame(getUserID(), localStorage.getItem('difficultSprint'), numberOfWords, roundNumber);
+      this.data = await getWordforGame(
+        getUserID(),
+        localStorage.getItem('difficultSprint'),
+        numberOfWords,
+        roundNumber,
+      );
       if (this.data.Error) {
         this.stopLoading();
         throw new Error(this.data.Error);
@@ -261,7 +296,10 @@ class Game {
     this.state.currentTimerId = timer;
 
     this.engWord.textContent = this.data[this.data.length - 1].word;
-    this.engWord.setAttribute('data-trans', this.data[this.data.length - 1].wordTranslate);
+    this.engWord.setAttribute(
+      'data-trans',
+      this.data[this.data.length - 1].wordTranslate,
+    );
 
     const answersArray = this.rusAnswersSection.querySelectorAll('button');
     const answerWords = [];
@@ -297,8 +335,12 @@ class Game {
     this.engWord.classList.remove('dropped');
     this.wrongAnswers.push(this.data.pop());
     if (this.isSoundEnabled) new Audio('/assets/audio/error.mp3').play();
-    this.lifesWrapper.querySelector('.heart-icon').classList.add('heart-icon--disabled');
-    this.lifesWrapper.querySelector('.heart-icon').classList.remove('heart-icon');
+    this.lifesWrapper
+      .querySelector('.heart-icon')
+      .classList.add('heart-icon--disabled');
+    this.lifesWrapper
+      .querySelector('.heart-icon')
+      .classList.remove('heart-icon');
     const lostLifes = this.lifesWrapper.querySelectorAll('.heart-icon');
     if (lostLifes.length === 0
       || this.data.length === 0) return setTimeout(() => this.showResults(), 1500);
@@ -367,7 +409,10 @@ class Game {
       });
     }
 
-    this.resDescContainer.append(this.resultsRightContainer, this.resultsWrongContainer);
+    this.resDescContainer.append(
+      this.resultsRightContainer,
+      this.resultsWrongContainer,
+    );
 
     this.tryAgain = createNode('p', 'game-results__try');
     this.tryAgain.textContent = 'Продолжить тренировку';
@@ -376,7 +421,11 @@ class Game {
     this.backToTrain.textContent = 'К списку тренировок';
 
     this.resModal.append(this.resText, this.resLink);
-    this.resModal.append(this.resDescContainer, this.tryAgain, this.backToTrain);
+    this.resModal.append(
+      this.resDescContainer,
+      this.tryAgain,
+      this.backToTrain,
+    );
 
     this.appContainer.append(this.resModal);
 
@@ -393,7 +442,9 @@ class Game {
       if (event.target.tagName !== 'P') return;
 
       if (event.target === this.resLink) {
-        this.resDescContainer.classList.toggle('game-results__description--click');
+        this.resDescContainer.classList.toggle(
+          'game-results__description--click',
+        );
       }
 
       if (event.target === this.tryAgain) {
@@ -406,7 +457,11 @@ class Game {
         this.appContainer = createNode('div', 'savanna');
         this.app.append(this.appContainer);
 
-        this.topButtonsWrapper = createNode('div', 'wrapper', 'wrapper--top-buttons');
+        this.topButtonsWrapper = createNode(
+          'div',
+          'wrapper',
+          'wrapper--top-buttons',
+        );
 
         this.exitButton = createNode('button', 'button', 'button--return');
         this.topButtonsWrapper.append(this.exitButton);
@@ -419,18 +474,27 @@ class Game {
         this.trueAnswers = [];
         this.wrongAnswers = [];
 
-        localStorage.setItem('round', Number(localStorage.getItem('round')) + 1);
+        localStorage.setItem(
+          'round',
+          Number(localStorage.getItem('round')) + 1,
+        );
 
         if (Number(localStorage.getItem('round')) === 30) {
           localStorage.setItem('round', 0);
-          localStorage.setItem('difficultSprint', Number(localStorage.getItem('difficultSprint')) + 1);
+          localStorage.setItem(
+            'difficultSprint',
+            Number(localStorage.getItem('difficultSprint')) + 1,
+          );
 
           if (Number(localStorage.getItem('difficultSprint')) === 6) {
             localStorage.setItem('difficultSprint', 0);
           }
         }
 
-        this.getInfo(Number(localStorage.getItem('numberOfWords')), Number(localStorage.getItem('round')));
+        this.getInfo(
+          Number(localStorage.getItem('numberOfWords')),
+          Number(localStorage.getItem('round')),
+        );
       }
 
       if (event.target === this.backToAnotherTrain) {
@@ -456,7 +520,9 @@ class Game {
     const min = `0${date.getMinutes()}`;
     const sec = `0${date.getSeconds()}`;
 
-    const fullDate = `${day.substr(-2)}.${month.substr(-2)}.${year}T${hour}:${min.substr(-2)}:${sec.substr(-2)}`;
+    const fullDate = `${day.substr(-2)}.${month.substr(
+      -2,
+    )}.${year}T${hour}:${min.substr(-2)}:${sec.substr(-2)}`;
     const res = `${this.trueAnswers.length}-${this.wrongAnswers.length}`;
 
     this.statsForBack.Savanna[`${fullDate}`] = res;
