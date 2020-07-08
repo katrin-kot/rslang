@@ -51,51 +51,27 @@ export default class Game extends GameWindow {
 
   getPage() {
     const body = document.querySelector('body');
-    const gameField = document.createElement('div');
 
-    gameField.setAttribute('class', 'game-wrapper');
+    const gameField = `
+      <div class="game-wrapper">
+        <div class="game-bonus">
+          <div class="game-score">
+            <span class="inner-content">0</span>
+            ${this.getCanvas()}
+            <div class="speaker">
+              <img src="https://cdn.discordapp.com/attachments/624997901248233505/728348020193886218/speaker.svg">
+            </div>
+          </div>
+        </div>
+        ${this.getGameImage()}
+        ${this.addDivByClass('game-word')}
+        ${this.addDivByClass('game-translation')}
+        <hr>
+        ${this.addDivByClass('buttons-block', this.getButton(this.buttonList))}
+      </div>
+    `;
 
-    body.appendChild(gameField);
-
-    gameField.insertAdjacentHTML(
-      'afterbegin',
-      this.addDivByClass('game-bonus'),
-    );
-
-    const gameBonus = document.querySelector('.game-bonus');
-
-    gameBonus.insertAdjacentHTML(
-      'afterbegin',
-      this.addDivByClass('game-score', 0),
-    );
-
-    const gameScore = document.querySelector('.game-score');
-
-    gameScore.insertAdjacentHTML('afterbegin', '<div class="speaker"></div>');
-
-    const speaker = document.querySelector('.speaker');
-
-    speaker.insertAdjacentHTML(
-      'afterbegin',
-      '<img src="https://cdn.discordapp.com/attachments/624997901248233505/728348020193886218/speaker.svg">',
-    );
-    gameScore.insertAdjacentHTML('afterbegin', this.getCanvas());
-
-    gameField.insertAdjacentHTML('beforeend', this.getGameImage());
-
-    gameField.insertAdjacentHTML('beforeend', this.addDivByClass('game-word'));
-
-    gameField.insertAdjacentHTML(
-      'beforeend',
-      this.addDivByClass('game-translation'),
-    );
-
-    gameField.insertAdjacentHTML('beforeend', '<hr>');
-
-    gameField.insertAdjacentHTML(
-      'beforeEnd',
-      this.addDivByClass('buttons-block', this.getButton(this.buttonList)),
-    );
+    body.insertAdjacentHTML('afterbegin', gameField);
 
     this.listenToButtonsClick();
     this.listenToAudioButtonClick();

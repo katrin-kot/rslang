@@ -26,18 +26,15 @@ export default class Result extends GameWindow {
     this.updateUserWordByResult(this.score.wrongWords);
     this.updateServerStatistic();
     const body = document.querySelector('body');
-    const gameField = document.createElement('div');
 
-    gameField.setAttribute('class', 'game-wrapper');
+    const resultField = `
+      <div class="game-wrapper">
+        ${this.getResult()}
+        <div class="buttons-block">${this.getButton(this.buttonList)}</div>
+      </div>
+    `;
 
-    body.appendChild(gameField);
-
-    gameField.insertAdjacentHTML('afterbegin', this.getResult());
-
-    gameField.insertAdjacentHTML(
-      'beforeEnd',
-      `<div class="buttons-block">${this.getButton(this.buttonList)}</div>`,
-    );
+    body.insertAdjacentHTML('afterbegin', resultField);
 
     this.listenToButtonsClick();
     this.listenToSpeakerClick();
