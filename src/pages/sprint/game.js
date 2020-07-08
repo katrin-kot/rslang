@@ -81,7 +81,7 @@ export default class Game extends GameWindow {
   }
 
   activateTimer() {
-    const MILLISECONDS_IN_MINUTE = 6000;
+    const MILLISECONDS_IN_MINUTE = 60000;
     const MILLISECONDS_IN_SECOND = 1000;
     let seconds = 0;
 
@@ -97,13 +97,14 @@ export default class Game extends GameWindow {
         this.startPage,
         this.gamePage,
         this.resultPage,
-        this.words,
+        this.words
       );
     }, MILLISECONDS_IN_MINUTE);
   }
 
   getGameImage() {
-    const image = '<img class="game-image" src="https://cdn.discordapp.com/attachments/720535785622995023/721061601393770546/Octopus_-_Opt_2.png">';
+    const image =
+      '<img class="game-image" src="https://cdn.discordapp.com/attachments/720535785622995023/721061601393770546/Octopus_-_Opt_2.png">';
 
     return image;
   }
@@ -120,8 +121,12 @@ export default class Game extends GameWindow {
     buttons.addEventListener('click', (event) => {
       if (event.target.tagName === 'BUTTON') {
         try {
-          this.checkAnswer(event.target.classList);
-          this.checkNewWords();
+          const word = document.querySelector('.game-word');
+
+          if (word.innerText) {
+            this.checkAnswer(event.target.classList);
+            this.checkNewWords();
+          }
           // eslint-disable-next-line no-empty
         } catch (err) {}
       }
@@ -133,7 +138,7 @@ export default class Game extends GameWindow {
 
     audio.addEventListener('click', () => {
       this.playAudio(
-        this.words.wrongWords[this.words.wrongWords.length - 1].audio,
+        this.words.wrongWords[this.words.wrongWords.length - 1].audio
       );
     });
   }
@@ -150,7 +155,7 @@ export default class Game extends GameWindow {
       obj.userId,
       obj.group,
       obj.wordsPerPage,
-      obj.page,
+      obj.page
     );
 
     if (content.length < 10) {
@@ -171,7 +176,7 @@ export default class Game extends GameWindow {
           Authorization: `Bearer ${localStorage.token}`,
           Accept: 'application/json',
         },
-      },
+      }
     );
 
     const content = await rawResponse.json();
@@ -181,8 +186,8 @@ export default class Game extends GameWindow {
 
   checkAnswer(answer) {
     if (
-      (this.lastResult && answer.contains('correct-answer-button'))
-      || (!this.lastResult && answer.contains('wrong-answer-button'))
+      (this.lastResult && answer.contains('correct-answer-button')) ||
+      (!this.lastResult && answer.contains('wrong-answer-button'))
     ) {
       this.updateCorrectWords();
       this.correctQueue += 1;
@@ -235,7 +240,7 @@ export default class Game extends GameWindow {
     if (this.useCartoons === 'true') {
       image.setAttribute(
         'src',
-        `https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${source}`,
+        `https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${source}`
       );
     }
   }
