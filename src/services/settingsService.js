@@ -13,6 +13,7 @@ export const getUserSettings = async ({ userId }) => {
     },
   );
   const content = await rawResponse.json();
+  localStorage.setItem('settings', JSON.stringify(content));
   return content;
 };
 
@@ -31,6 +32,7 @@ export const putUserSettings = async ({ userId, wordsPerDay, optional }) => {
     },
   );
   const content = await rawResponse.json();
+  localStorage.setItem('settings', JSON.stringify(content));
   return content;
 };
 
@@ -41,6 +43,7 @@ export function putDefaultSettings(userId) {
     showAnswer: false,
     moveinHard: true,
     showDifficulty: true,
+    isShowAllLearningWords: false,
     wordTranslate: true,
     transcription: false,
     image: false,
@@ -53,4 +56,8 @@ export function putDefaultSettings(userId) {
     audioMeaning: false,
   };
   return putUserSettings({ userId, wordsPerDay: 50, optional });
+}
+
+export function getSettings() {
+  return JSON.parse(localStorage.getItem('settings'));
 }
