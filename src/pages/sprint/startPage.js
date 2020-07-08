@@ -1,5 +1,6 @@
 import difficultOptions from '../../components/main/difficultOptions/difficultOptions';
 import GameWindow from './gameWindow';
+import { checkUserLogin } from '../../services/verifyUserService';
 
 export default class StartPage extends GameWindow {
   constructor() {
@@ -29,6 +30,7 @@ export default class StartPage extends GameWindow {
     this.gamePage = gamePage;
     this.resultPage = resultPage;
 
+    checkUserLogin();
     this.getPage();
   }
 

@@ -1,6 +1,7 @@
 import GameWindow from './gameWindow';
 import CountdownTimer from './timer';
 import { getWordforGame } from '../../services/userWordService';
+import { checkUserLogin } from '../../services/verifyUserService';
 
 export default class Game extends GameWindow {
   constructor() {
@@ -27,6 +28,7 @@ export default class Game extends GameWindow {
     this.startPage = startPage;
     this.gamePage = gamePage;
     this.resultPage = resultPage;
+    checkUserLogin();
     this.updateSettings();
     this.clearStatistic();
     this.getPage();
