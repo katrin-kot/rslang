@@ -29,6 +29,7 @@ const config = {
   entry: {
     main: './src/pages/main/main.js',
     login: './src/pages/login/login.js',
+    audioCall: './src/pages/audioCall/startPage.js',
     savanna: './src/pages/savanna/savanna.js',
     speakIt: './src/pages/speakIt/speakIt.js',
     settings: './src/pages/settings/settings.js',
@@ -187,6 +188,14 @@ const config = {
       template: 'src/pages/login/login.html',
       filename: './index.html',
     }),
+
+    new HtmlWebPackPlugin({
+      title: 'RS lang-audioCall',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['audioCall'],
+      template: 'src/pages/audioCall/audioCall.html',
+      filename: './audioCall.html',
+    }),
     new HtmlWebPackPlugin({
       title: 'RS lang-savanna',
       favicon: './assets/images/favicon.ico',
@@ -219,6 +228,7 @@ const config = {
       chunks: ['dictionary'],
       template: 'src/pages/dictionary/dictionary.html',
       filename: './dictionary.html',
+
     }),
     new HtmlWebPackPlugin({
       title: 'RS lang',
