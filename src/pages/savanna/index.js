@@ -2,6 +2,7 @@ import createNode from '../../helpers/createNode';
 import diffLevel from '../../components/main/difficultOptions/difficultOptions';
 import { getWordforGame } from '../../services/userWordService';
 import { getUserID } from '../../services/authService';
+import { checkUserLogin } from '../../services/verifyUserService';
 
 class Game {
   constructor() {
@@ -32,13 +33,16 @@ class Game {
     this.buttonStartGame.textContent = 'Начать';
   }
 
-  render() {
+  async render() {
+    this.startLoading();
+    await checkUserLogin();
     this.topButtonsWrapper.append(this.exitButton);
     this.startContainer.append(this.title, this.descriptionGame, this.buttonStartGame);
     this.appContainer.append(this.topButtonsWrapper, this.startContainer);
 
     this.startGame();
     this.exitGame();
+    this.stopLoading();
   }
 
   startGame() {
@@ -124,7 +128,6 @@ class Game {
   }
 
   startLoading() {
-    new Audio('/assets/audio/startGame.mp3').play();
     this.loading = createNode('div', 'loading');
     this.appContainer.append(this.loading);
   }
@@ -184,36 +187,41 @@ class Game {
 
       const answers = this.rusAnswersSection.querySelectorAll('button');
 
-      if (event.code === 'Digit1' || event.code === 'Numpad1') {
-        if (answers[0].textContent === this.engWord.getAttribute('data-trans')) {
-          this.getRightAnswer();
-        } else {
-          this.getWrongAnswer();
-        }
-      }
+      switch (event.code) {
+        case 'Digit1':
+        case 'Numpad1':
+          if (answers[0].textContent === this.engWord.getAttribute('data-trans')) {
+            this.getRightAnswer();
+          } else {
+            this.getWrongAnswer();
+          }
+          break;
+        case 'Digit2':
+        case 'Numpad2':
+          if (answers[1].textContent === this.engWord.getAttribute('data-trans')) {
+            this.getRightAnswer();
+          } else {
+            this.getWrongAnswer();
+          }
+          break;
+        case 'Digit3':
+        case 'Numpad3':
+          if (answers[3].textContent === this.engWord.getAttribute('data-trans')) {
+            this.getRightAnswer();
+          } else {
+            this.getWrongAnswer();
+          }
+          break;
 
-      if (event.code === 'Digit2' || event.code === 'Numpad2') {
-        if (answers[1].textContent === this.engWord.getAttribute('data-trans')) {
-          this.getRightAnswer();
-        } else {
-          this.getWrongAnswer();
-        }
-      }
-
-      if (event.code === 'Digit3' || event.code === 'Numpad3') {
-        if (answers[2].textContent === this.engWord.getAttribute('data-trans')) {
-          this.getRightAnswer();
-        } else {
-          this.getWrongAnswer();
-        }
-      }
-
-      if (event.code === 'Digit4' || event.code === 'Numpad4') {
-        if (answers[3].textContent === this.engWord.getAttribute('data-trans')) {
-          this.getRightAnswer();
-        } else {
-          this.getWrongAnswer();
-        }
+        case 'Digit4':
+        case 'Numpad4':
+          if (answers[4].textContent === this.engWord.getAttribute('data-trans')) {
+            this.getRightAnswer();
+          } else {
+            this.getWrongAnswer();
+          }
+          break;
+        default:
       }
     };
 
@@ -221,6 +229,7 @@ class Game {
   }
 
   async getInfo(numberOfWords, roundNumber) {
+    new Audio('/assets/audio/startGame.mp3').play();
     this.numberOfWords = numberOfWords;
     try {
       this.data = await getWordforGame(getUserID(), localStorage.getItem('difficultSprint'), numberOfWords, roundNumber);
