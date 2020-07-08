@@ -6,16 +6,15 @@ let instances = 0
 export function mainBlock(dataFromServer) {
   const mainContainer = document.createElement('div');
   mainContainer.className = 'main-container';
-  const courseCompletion = document.createElement('h3');
-  courseCompletion.innerText = 'Course Completion';
-  courseCompletion.className = 'course-completion';
-  const completionChart = document.createElement('div');
-  completionChart.id = 'chart-' + instances;
-  const barChartElem = document.createElement('div');
-  barChartElem.id = 'bar-chart-' + instances++;
-  barChartElem.className = 'bar-chart';
-  const pieChartBlock = document.createElement('div');
-  pieChartBlock.className = 'pie-chart-block';
+  const completionChartId = 'chart-' + instances;
+  const barChartId = 'bar-chart-' + instances++;
+  mainContainer.innerHTML = `
+    <div class="pie-chart-block">
+        <h3 class="course-completion">Course Completion</h3>
+        <div id="${completionChartId}"></div>
+    </div>
+    <div class="bar-chart" id="${barChartId}"></div>
+  `
   setTimeout( () => {
     // Course Completion Chart
     const percent = 0.9;
@@ -29,7 +28,7 @@ export function mainBlock(dataFromServer) {
     const radius = Math.min(pieChartWidth, pieChartHeight) / 2;
     const pieChartColor = d3.scaleOrdinal([foregroundColor, backgroundColor]);
 
-    const svg = d3.select('#'+completionChart.id)
+    const svg = d3.select('#'+completionChartId)
       .append('svg')
       .attr('class', 'pie')
       .attr('width', pieChartWidth)
@@ -130,11 +129,8 @@ export function mainBlock(dataFromServer) {
       { name: 'Кол-во новых слов', value:  getNewWordsCount(dataFromServer)},
       { name: 'Серия правильных ответов', value: 17 },
     ];
-    barChart('#'+barChartElem.id, data);
+    barChart('#'+barChartId, data);
   });
-  pieChartBlock.appendChild(courseCompletion);
-  pieChartBlock.appendChild(completionChart);
-  mainContainer.appendChild(pieChartBlock);
-  mainContainer.appendChild(barChartElem);
+
   return mainContainer;
 }
