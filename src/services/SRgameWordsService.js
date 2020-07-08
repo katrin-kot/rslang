@@ -1,7 +1,7 @@
-import { getToken, getUserID } from './authService';
+import { getUserID } from './authService';
 import { createUserWord, updateUserWord } from './userWordService';
 import { getTodayDate } from '../pages/SRgame/helpers';
-
+import { getToken } from './token';
 
 const userID = getUserID();
 

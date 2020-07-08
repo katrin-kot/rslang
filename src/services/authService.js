@@ -1,3 +1,5 @@
+import { addEmptyStatistics } from './statsService';
+
 export const loginUser = async (user) => {
   const rawResponse = await fetch(
     'https://afternoon-falls-25894.herokuapp.com/signin',
@@ -29,28 +31,9 @@ export const createUser = async (user) => {
     },
   );
   const content = await rawResponse.json();
-  
+  await loginUser(user);
+  await addEmptyStatistics({ userId: content.id });
   localStorage.setItem('email', content.email);
-  return content;
-};
-
-export function getToken() {
-  return localStorage.getItem('token');
-}
-
-export const getNewUserToken = async ({ userId }) => {
-  const rawResponse = await fetch(
-    `https://afternoon-falls-25894.herokuapp.com/users/${userId}/tokens`,
-    {
-      method: 'GET',
-      withCredentials: true,
-      headers: {
-        Authorization: `Bearer ${getToken()}`,
-        Accept: 'application/json',
-      },
-    },
-  );
-  const content = await rawResponse.json();
   return content;
 };
 

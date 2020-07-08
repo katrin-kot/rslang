@@ -3,7 +3,7 @@ import './errorWindow.css';
 export const errorWindow = (
   errorText = 'Ошибка авторизации. Необходимо войти в учётную запись.',
   buttonText = 'Авторизоваться',
-  listener = defaultListener
+  listener = defaultListener,
 ) => {
   const errorWindow = `
     <div class="error-wrapper">
