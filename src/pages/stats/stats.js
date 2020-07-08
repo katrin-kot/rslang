@@ -4,24 +4,23 @@ import { header } from './components/header';
 import { mainBlock } from './components/mainBlock';
 import { overallStats } from './components/overallStats';
 import { statsTable } from './components/statsTable';
-import { getStatistics } from '../../services/statsService'
-import { getUserID } from '../../services/authService'
-import {TabsComponent} from "./components/tabs";
+import { getStatistics } from '../../services/statsService';
+import { getUserID } from '../../services/authService';
+import { TabsComponent } from './components/tabs';
 
 const body = document.querySelector('body');
-const userId = getUserID()
+const userId = getUserID();
 async function renderPage() {
-    const data = await getStatistics({userId});
-    console.log('data: ',data);
-    const tabsContent = Object.entries(data.optional).map(el => {
-        const fragment = document.createElement("div")
-        fragment.className = 'tab-layout'
-        fragment.appendChild(mainBlock(el[1]))
-        fragment.appendChild(overallStats(el[1]))
-        fragment.appendChild(statsTable(el[1]))
-        return [el[0], fragment]
-    })
-    body.appendChild(layoutGrid([header(), TabsComponent(tabsContent)]));
+  const data = await getStatistics({ userId });
+  const tabsContent = Object.entries(data.optional).map((el) => {
+    const fragment = document.createElement('div');
+    fragment.className = 'tab-layout';
+    fragment.appendChild(mainBlock(el[1]));
+    fragment.appendChild(overallStats(el[1]));
+    fragment.appendChild(statsTable(el[1]));
+    return [el[0], fragment];
+  });
+  body.appendChild(layoutGrid([header(), TabsComponent(tabsContent)]));
 }
 
 renderPage();

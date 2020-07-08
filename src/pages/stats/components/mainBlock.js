@@ -1,21 +1,37 @@
 import './mainBlock.css';
 import * as d3 from 'd3';
 
-let instances = 0
+let instances = 0;
+
+function getAnswerPercent(data) {
+  const { correct, wrong } = Object.values(data).reduce((acc, cur) => {
+    const [correctLocal, wrongLocal] = cur.score.split('-');
+    return { correct: acc.correct + +correctLocal, wrong: acc.wrong + +wrongLocal };
+  }, { correct: 0, wrong: 0 });
+  const total = correct + wrong;
+  return (correct / total) * 100;
+}
+
+function getNewWordsCount(data) {
+  return Object.values(data).reduce((acc, cur) => {
+    const [correct, wrong] = cur.score.split('-');
+    return acc + +correct + +wrong;
+  }, 0);
+}
 
 export function mainBlock(dataFromServer) {
   const mainContainer = document.createElement('div');
   mainContainer.className = 'main-container';
-  const completionChartId = 'chart-' + instances;
-  const barChartId = 'bar-chart-' + instances++;
+  const completionChartId = `chart-${instances}`;
+  const barChartId = `bar-chart-${instances += 1}`;
   mainContainer.innerHTML = `
     <div class="pie-chart-block">
         <h3 class="course-completion">Course Completion</h3>
         <div id="${completionChartId}"></div>
     </div>
     <div class="bar-chart" id="${barChartId}"></div>
-  `
-  setTimeout( () => {
+  `;
+  setTimeout(() => {
     // Course Completion Chart
     const percent = 0.9;
     const text = `${percent * 100}%`;
@@ -28,7 +44,7 @@ export function mainBlock(dataFromServer) {
     const radius = Math.min(pieChartWidth, pieChartHeight) / 2;
     const pieChartColor = d3.scaleOrdinal([foregroundColor, backgroundColor]);
 
-    const svg = d3.select('#'+completionChartId)
+    const svg = d3.select(`#${completionChartId}`)
       .append('svg')
       .attr('class', 'pie')
       .attr('width', pieChartWidth)
@@ -108,28 +124,13 @@ export function mainBlock(dataFromServer) {
         .text((d) => d.value);
       yAxis.selectAll('text').style('font-size', '12px');
     };
-    function getAnswerPercent(data) {
-      const {correct, wrong} = Object.values(data).reduce((acc, cur) => {
-        const [correct, wrong] = cur.score.split('-')
-        return {correct: acc.correct + +correct, wrong: acc.wrong + +wrong}
-      }, {correct: 0, wrong: 0})
-      const total = correct + wrong;
-      return (correct/total) * 100;
-    }
-
-    function getNewWordsCount(data) {
-      return Object.values(data).reduce((acc, cur) => {
-        const [correct, wrong] = cur.score.split('-')
-        return acc + +correct + +wrong
-      }, 0)
-    }
     const data = [
       { name: 'Кол-во пройденных карточек', value: 33 },
-      { name: '% Правильных ответов', value: Math.round(getAnswerPercent(dataFromServer))},
-      { name: 'Кол-во новых слов', value:  getNewWordsCount(dataFromServer)},
+      { name: '% Правильных ответов', value: Math.round(getAnswerPercent(dataFromServer)) },
+      { name: 'Кол-во новых слов', value: getNewWordsCount(dataFromServer) },
       { name: 'Серия правильных ответов', value: 17 },
     ];
-    barChart('#'+barChartId, data);
+    barChart(`#${barChartId}`, data);
   });
 
   return mainContainer;

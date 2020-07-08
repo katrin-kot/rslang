@@ -9,6 +9,6 @@ export function header() {
     <div class="avatar">
         <img class="user" src="${user}" alt="">
     </div>
-  `
+  `;
   return headerElem;
 }

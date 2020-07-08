@@ -1,14 +1,13 @@
 import Chart from 'chart.js';
 
 
-
 let instances = 0;
 
 export function statsTable() {
   const wrapper = document.createElement('div');
   wrapper.className = 'wrapper';
   const canvasEl = document.createElement('canvas');
-  canvasEl.id = 'stats-table-' + instances++;
+  canvasEl.id = `stats-table-${instances += 1}`;
   setTimeout(() => {
     const colors = {
       purple: {
@@ -109,7 +108,7 @@ export function statsTable() {
       },
     };
 
-      setTimeout(function onLoad() {
+    setTimeout(() => {
       window.myLine = new Chart(ctx, options);
       Chart.defaults.global.defaultFontColor = colors.indigo.default;
       Chart.defaults.global.defaultFontFamily = 'Fira Sans';
