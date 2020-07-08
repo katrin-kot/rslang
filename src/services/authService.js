@@ -50,5 +50,3 @@ export function logoutUser() {
   localStorage.removeItem('token');
   localStorage.removeItem('userID');
 }
-
-export * from './token';

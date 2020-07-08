@@ -1,4 +1,4 @@
-import { getToken } from './authService';
+import { getToken } from './token';
 
 export const getUserSettings = async ({ userId }) => {
   const rawResponse = await fetch(

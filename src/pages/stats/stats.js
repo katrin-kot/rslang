@@ -1,18 +1,18 @@
 import './stats.css';
-import {layoutGrid} from './components/layout';
-import {header} from './components/header';
-import {mainBlock} from './components/mainBlock';
-import {overallStats} from './components/overallStats';
-import {statsTable} from './components/statsTable';
-import {getStatistics} from '../../services/statsService';
-import {getUserID} from '../../services/authService';
-import {TabsComponent} from './components/tabs';
+import { layoutGrid } from './components/layout';
+import { header } from './components/header';
+import { mainBlock } from './components/mainBlock';
+import { overallStats } from './components/overallStats';
+import { statsTable } from './components/statsTable';
+import { getStatistics } from '../../services/statsService';
+import { getUserID } from '../../services/authService';
+import { TabsComponent } from './components/tabs';
 
 const body = document.querySelector('body');
 const userId = getUserID();
 
 async function renderPage() {
-  const data = await getStatistics({userId});
+  const data = await getStatistics({ userId });
   const tabsContent = Object.entries(data.optional).map((el) => {
     const fragment = document.createElement('div');
     fragment.className = 'tab-layout';
