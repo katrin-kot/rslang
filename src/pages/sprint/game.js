@@ -143,8 +143,11 @@ export default class Game extends GameWindow {
 
     buttons.addEventListener('click', (event) => {
       if (event.target.tagName === 'BUTTON') {
-        this.checkAnswer(event.target.classList);
-        this.checkNewWords();
+        try {
+          this.checkAnswer(event.target.classList);
+          this.checkNewWords();
+          // eslint-disable-next-line no-empty
+        } catch (err) {}
       }
     });
   }

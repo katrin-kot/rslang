@@ -1,9 +1,5 @@
 import GameWindow from './gameWindow';
-import {
-  createUserWord,
-  getUserWord,
-  updateUserWord,
-} from '../../services/userWordService';
+import { createUserWord, getUserWord } from '../../services/userWordService';
 import { getToken } from '../../services/authService';
 
 export default class Result extends GameWindow {
@@ -21,16 +17,14 @@ export default class Result extends GameWindow {
     this.gamePage = gamePage;
     this.resultPage = resultPage;
     this.score = score;
-    this.token = localStorage.token;
 
     this.getPage();
   }
 
   getPage() {
-    // this.updateUserWordByResult(this.score.correctWords);
-    // this.updateUserWordByResult(this.score.wrongWords);
+    this.updateUserWordByResult(this.score.correctWords);
+    this.updateUserWordByResult(this.score.wrongWords);
     this.updateServerStatistic();
-    console.log(this.score);
     const body = document.querySelector('body');
     const gameField = document.createElement('div');
 
@@ -42,7 +36,7 @@ export default class Result extends GameWindow {
 
     gameField.insertAdjacentHTML(
       'beforeEnd',
-      `<div class="buttons-block">${this.getButton(this.buttonList)}</div>`
+      `<div class="buttons-block">${this.getButton(this.buttonList)}</div>`,
     );
 
     this.listenToButtonsClick();
@@ -68,11 +62,11 @@ export default class Result extends GameWindow {
     return `
         <div class="correct-words">
           Знаю <span class="correct-words-count">${
-            this.score.correctWords.length
-          }</span>
+  this.score.correctWords.length
+}</span>
             ${this.score.correctWords
-              .map((word) => this.getWordStatisticLine(word))
-              .join('')}
+    .map((word) => this.getWordStatisticLine(word))
+    .join('')}
         </div>`;
   }
 
@@ -80,11 +74,11 @@ export default class Result extends GameWindow {
     return `
       <div class="wrong-words">
         Ошибок <span class="wrong-words-count">${
-          this.score.wrongWords.length
-        }</span>
+  this.score.wrongWords.length
+}</span>
           ${this.score.wrongWords
-            .map((word) => this.getWordStatisticLine(word))
-            .join('')}
+    .map((word) => this.getWordStatisticLine(word))
+    .join('')}
       </div>`;
   }
 
@@ -108,42 +102,19 @@ export default class Result extends GameWindow {
             Authorization: `Bearer ${getToken()}`,
             Accept: 'application/json',
           },
-        }
+        },
       );
 
       const content = await rawResponse.json();
 
       return content;
-    } catch (err) {
-      /*
-      const text = {
-        learnedWords: 0,
-        optional: { sprintMinigame: {} },
-      };
+      // eslint-disable-next-line no-empty
+    } catch (err) {}
 
-      const rawResponse = await fetch(
-        `https://afternoon-falls-25894.herokuapp.com/users/${userId}/statistics`,
-        {
-          method: 'POST',
-          withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${getToken()}`,
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(text),
-        }
-      );
-
-      const content = await rawResponse.json();
-
-      return content;*/
-    }
+    return false;
   }
 
   async putStatistic({ userId, statistic }) {
-    console.log(userId);
-    console.log(statistic);
     const rawResponse = await fetch(
       `https://afternoon-falls-25894.herokuapp.com/users/${userId}/statistics`,
       {
@@ -155,7 +126,7 @@ export default class Result extends GameWindow {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(statistic),
-      }
+      },
     );
 
     const content = await rawResponse.json();
@@ -166,72 +137,44 @@ export default class Result extends GameWindow {
   async updateServerStatistic() {
     const date = new Date().toLocaleString();
 
-    const statistic =
-      (await this.getStatistic({ userId: localStorage.userID })) || {};
+    const statistic = (await this.getStatistic({ userId: localStorage.userID })) || {};
 
     if (!statistic.optional) {
-      console.log('op');
       statistic.optional = {};
     }
     if (!statistic.optional.sprintMinigame) {
-      console.log('sp');
       statistic.optional.sprintMinigame = {};
     }
     delete statistic.id;
+
     statistic.optional.sprintMinigame[date] = {
       startRound: localStorage.roundSprint,
       gameScore: this.score.score,
       gameResult: `${this.score.correctWords.length}:${this.score.wrongWords.length}`,
     };
 
-    const result = await this.putStatistic({
+    await this.putStatistic({
       userId: localStorage.userID,
       statistic,
-    });
-
-    console.log(result);
-  }
-
-  async getUserSprintStatistic(word) {
-    const content = await getUserWord({
-      userId: localStorage.userID,
-      wordId,
     });
   }
 
   async updateUserWordByResult(words) {
     words.forEach(async (item) => {
       try {
-        const content = await getUserWord({
+        await getUserWord({
           userId: localStorage.userID,
           // eslint-disable-next-line no-underscore-dangle
           wordId: item._id,
         });
-
-        /* await updateUserWord({
-          userId: localStorage.userID,
-          wordId: item._id,
-        }); */
-        /* console.log(content); */
       } catch (err) {
-        try {
-          const wordData = await createUserWord({
-            userId: localStorage.userID,
-            // eslint-disable-next-line no-underscore-dangle
-            wordId: item._id,
-          });
-          console.log(wordData);
-          console.log(123);
-          wordData.optional.status = 'to_study';
-          console.log(wordData);
-
-          const updatedData = await updateUserWord({
-            userId: localStorage.userID,
-            // eslint-disable-next-line no-underscore-dangle
-            wordId: item._id,
-            word: wordData,
-          });
-        } catch (err) {}
+        const wordData = { optional: { status: 'to_study' } };
+        await createUserWord({
+          userId: localStorage.userID,
+          // eslint-disable-next-line no-underscore-dangle
+          wordId: item._id,
+          word: wordData,
+        });
       }
     });
   }
