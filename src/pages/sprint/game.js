@@ -162,20 +162,42 @@ export default class Game extends GameWindow {
   async getWordsByServer() {
     const obj = {
       userId: localStorage.userID,
-      group: localStorage.difficultySprint,
+      group: Number(localStorage.difficultySprint),
       wordsPerPage: 20,
-      page: this.round,
+      page: Number(this.round),
     };
 
-    const content = await getWordforGame(
+    let content = await getWordforGame(
       obj.userId,
       obj.group,
       obj.wordsPerPage,
       obj.page,
     );
 
+    if (content.length < 10) {
+      content = await this.getWords(obj.group, obj.wordsPerPage, obj.page);
+    }
+
     this.words.ingameWords.push(...content);
     this.words.recievedWords.push(...content);
+  }
+
+  async getWords(group, wordsPerPage, page) {
+    const rawResponse = await fetch(
+      `https://afternoon-falls-25894.herokuapp.com/words?group=${group}&page=${page}&wordsPerPage=${wordsPerPage}`,
+      {
+        method: 'GET',
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${localStorage.token}`,
+          Accept: 'application/json',
+        },
+      },
+    );
+
+    const content = await rawResponse.json();
+
+    return content;
   }
 
   checkAnswer(answer) {
@@ -196,6 +218,7 @@ export default class Game extends GameWindow {
   async checkNewWords() {
     if (this.words.ingameWords.length < 10) {
       await this.getWordsByServer();
+      this.round = (Number(this.round) + 1) % this.maxPages;
     }
 
     this.showWordData();

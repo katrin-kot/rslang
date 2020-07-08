@@ -320,6 +320,9 @@ hr {
   box-sizing: border-box;
   margin: 20px;
   text-align: center;
+  font-family: Arial, sans-serif;
+  font-size: 24px;
+  padding: 5px 10px;
 }
 
 .statistic {
