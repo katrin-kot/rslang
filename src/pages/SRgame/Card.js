@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 // for settings variables
-import { countErrors, createElement } from './helpers';
+import { createElement } from './helpers';
 import swiper from './swiper';
 
 const fontSize = 16;
@@ -42,6 +42,8 @@ export default class Card {
       const card = new Card(this.wordCard);
       swiper.appendSlide(card.renderCard());
     });
+    this.error = 0;
+    this.container = createElement('div', 'card-container swiper-slide');
   }
 
 
@@ -132,13 +134,12 @@ export default class Card {
     if (audioExampleSetting) template += this.createAudioExample();
     if (audioMeaningSetting) template += this.createAudioMeaning();
 
-    template += '</div>';
-
     card.innerHTML = template;
 
-    const container = createElement('div', 'card-container swiper-slide');
-    container.dataset.id = this.wordCard.id;
-    container.append(card);
+
+    // eslint-disable-next-line no-underscore-dangle
+    this.container.dataset.id = this.wordCard._id;
+    this.container.append(card);
 
     const cardsBtns = createElement('div', 'card-btns');
     if (showAnswerBtnSetting) cardsBtns.append(this.showAnswerBtn);
@@ -155,8 +156,28 @@ export default class Card {
       difficultyBtnsContainer.append(this.goodBtn);
       difficultyBtnsContainer.append(this.hardBtn);
 
-      container.append(difficultyBtnsContainer);
+      this.container.append(difficultyBtnsContainer);
     }
-    return container;
+
+    return this.container;
+  }
+
+  addErrorsObserver() {
+    const target = this.container;
+    const config = {
+      attributes: true,
+      attributeFilter: ['data-errors'],
+    };
+    const mCallback = (mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes') {
+          this.error = target.dataset.errors;
+          const card = new Card(this.wordCard);
+          swiper.appendSlide(card.renderCard());
+        }
+      });
+    };
+    const observer = new MutationObserver(mCallback);
+    observer.observe(target, config);
   }
 }

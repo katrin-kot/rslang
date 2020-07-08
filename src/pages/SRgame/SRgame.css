@@ -185,3 +185,8 @@
 .display-none {
   display: none;
 }
+
+.btn_clicked {
+  background:rgb(78, 100, 100);
+  cursor: not-allowed;
+}

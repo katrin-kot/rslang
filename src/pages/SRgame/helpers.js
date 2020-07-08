@@ -22,4 +22,34 @@ const createElement = (element, elementClasses, elementText) => {
   return el;
 };
 
-export { countErrors, createElement };
+const addZeroToTime = (t) => {
+  if (t < 10) return `0${t}`;
+  return t;
+};
+
+const countDaysInterval = (group, ease) => {
+  const interval = {
+    1: 1,
+    2: 3,
+    3: 7,
+    4: 10,
+    5: 14,
+    6: 21,
+  };
+  const easeCoef = {
+    good: 1,
+    hard: 0.5,
+    easy: 2,
+  };
+  if (group > 6) return 30 * easeCoef[ease];
+  return interval[group] * easeCoef[ease];
+};
+
+const getTodayDate = () => {
+  const date = new Date();
+  return `${addZeroToTime(date.getMonth() + 1)}/${addZeroToTime(date.getDate())}/${date.getFullYear()}`;
+};
+
+export {
+  countErrors, createElement, addZeroToTime, countDaysInterval, getTodayDate,
+};
