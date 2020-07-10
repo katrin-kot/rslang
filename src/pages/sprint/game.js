@@ -302,14 +302,7 @@ export default class Game extends GameWindow {
 
   calculateScore() {
     const multiply = Math.floor(this.correctQueue / 4);
-
-    let addedScore = 20;
-
-    if (multiply >= 2) {
-      addedScore = 80;
-    } else if (multiply === 1) {
-      addedScore = 40;
-    }
+    let addedScore = 10 * Math.pow(2, multiply);
 
     return addedScore;
   }
