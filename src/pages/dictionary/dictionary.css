@@ -11,9 +11,25 @@ html {
   font-weight: 400;
 }
 
-main {
-  background:linear-gradient(62deg, rgba(64,180,189,1) 0%,
-   rgba(214,212,225,1) 61%, rgba(255,255,255,1) 100%);
+body {
+  background: linear-gradient(
+    62deg,
+    rgba(64, 180, 189, 1) 0%,
+    rgba(214, 212, 225, 1) 61%,
+    rgba(255, 255, 255, 1) 100%
+  );
+}
+
+.row {
+  margin: 0;
+  height: 100vh;
+}
+
+.tab-header {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 20px;
 }
 
 a {
@@ -52,8 +68,12 @@ p {
 }
 
 .col-3 {
-  background:linear-gradient(62deg, rgba(64,180,189,1) 0%,
-   rgba(214,212,225,1) 61%, rgba(255,255,255,1) 100%);
+  background: linear-gradient(
+    62deg,
+    rgba(64, 180, 189, 1) 0%,
+    rgba(214, 212, 225, 1) 61%,
+    rgba(255, 255, 255, 1) 100%
+  );
 }
 
 .col-9 {
@@ -130,6 +150,42 @@ p {
   left: 70%;
 }
 
+ul {
+  margin-top: 10px;
+  width: 100px;
+  height: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  list-style-type: none;
+  border-radius: 50%;
+  background-color: rgb(214, 218, 219);
+}
+
+.progress--1 li:nth-child(-n + 1) {
+  background-color: rgb(253, 167, 8);
+}
+
+.progress--2 li:nth-child(-n + 2) {
+  background-color: rgb(41, 188, 224);
+}
+
+.progress--3 li:nth-child(-n + 3) {
+  background-color: rgb(144, 126, 185);
+}
+
+.progress--4 li:nth-child(-n + 4) {
+  background-color: rgb(45, 0, 128);
+}
+
+.progress--5 li:nth-child(-n + 5) {
+  background-color: rgb(14, 168, 14);
+}
+
 @media (max-width: 880px) {
   .btn-outline-secondary {
     top: 30px;
@@ -142,9 +198,14 @@ p {
     margin-bottom: 200px;
     margin-right: 10px;
   }
+
   .nav-link,
   .primary {
     font-size: 14px;
+  }
+
+  .nav-link {
+    padding: 0.5rem;
   }
 }
 
@@ -153,10 +214,12 @@ p {
     top: 35px;
     font-size: 10px;
   }
+
   .nav-link,
   .primary {
     font-size: 12px;
   }
+
   h4 {
     font-size: 1.2rem;
     margin-left: 5px;
@@ -167,6 +230,7 @@ p {
   .primary {
     margin-left: 10px;
   }
+
   h4 {
     margin-left: 10px;
   }
@@ -176,10 +240,16 @@ p {
   h4 {
     font-size: 1.4rem;
   }
+
   .word-card {
     margin-bottom: 140px;
   }
+
   h5 {
     font-size: 1.1rem;
+  }
+  
+  .navigation {
+    padding: 0;
   }
 }
