@@ -246,6 +246,22 @@ hr {
   width: 100%;
 }
 
+.answer-check {
+  margin: -15px auto 0px;
+  width: 35px;
+  height: 35px;
+}
+
+.correct-answer-icon {
+  background-size: contain;
+  background-image: url('/assets/images/correct-icon.png');
+}
+
+.wrong-answer-icon {
+  background-size: contain;
+  background-image: url('/assets/images/incorrect-icon.png');
+}
+
 .wrong-answer-button,
 .correct-answer-button {
   width: 45%;
