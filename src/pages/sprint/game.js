@@ -224,10 +224,8 @@ export default class Game extends GameWindow {
       this.updateCorrectWords();
       this.correctQueue += 1;
       this.updateScore();
-      this.showAnswer(true);
     } else {
       this.correctQueue = 0;
-      this.showAnswer(false);
     }
   }
 
@@ -300,31 +298,16 @@ export default class Game extends GameWindow {
     currentScore.innerText = this.words.score;
   }
 
+  audioSignal(isCorrect = true) {
+    const audioType = 1;
+    //new Audio('/assets/audio/correct.mp3').play();
+    audio.setAttribute;
+  }
+
   calculateScore() {
     const multiply = Math.floor(this.correctQueue / 4);
     let addedScore = 10 * Math.pow(2, multiply);
 
     return addedScore;
-  }
-
-  showAnswer(result) {
-    const bonus = document.querySelector('.game-bonus');
-    let queue = 1;
-
-    if (this.correctQueue > 6) {
-      queue = 3;
-    } else if (this.correctQueue > 3) {
-      queue = 2;
-    }
-
-    for (let i = 1; i < 4; i += 1) {
-      bonus.classList.remove(`correct-shadow-${i}`);
-    }
-
-    bonus.classList.remove('wrong-shadow');
-
-    const shadowClass = result ? `correct-shadow-${queue}` : 'wrong-shadow';
-
-    bonus.classList.add(shadowClass);
   }
 }
