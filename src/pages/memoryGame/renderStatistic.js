@@ -1,5 +1,5 @@
 import { getUserID } from '../../services/authService';
-import { getStatistics, putStatistics } from '../../services/statisticsService';
+import { getStatistics, putStatistics } from '../../services/statsService';
 
 export async function renderStatistic(score, error) {
   const userId = getUserID();
@@ -23,7 +23,7 @@ export async function renderStatistic(score, error) {
     scoreGame: score,
     errors: countError,
   };
-  await putStatistics({ userId, statistic });
+  await putStatistics({ userId, payload: statistic });
   const result = await getStatistics({ userId });
   const tab = document.querySelector('.msg');
   tab.insertAdjacentHTML(
