@@ -58,11 +58,11 @@ export default class Result extends GameWindow {
     return `
         <div class="correct-words">
           Знаю <span class="correct-words-count">${
-            this.score.correctWords.length
-          }</span>
+  this.score.correctWords.length
+}</span>
             ${this.score.correctWords
-              .map((word) => this.getWordStatisticLine(word))
-              .join('')}
+    .map((word) => this.getWordStatisticLine(word))
+    .join('')}
         </div>`;
   }
 
@@ -70,11 +70,11 @@ export default class Result extends GameWindow {
     return `
       <div class="wrong-words">
         Ошибок <span class="wrong-words-count">${
-          this.score.wrongWords.length
-        }</span>
+  this.score.wrongWords.length
+}</span>
           ${this.score.wrongWords
-            .map((word) => this.getWordStatisticLine(word))
-            .join('')}
+    .map((word) => this.getWordStatisticLine(word))
+    .join('')}
       </div>`;
   }
 
@@ -98,7 +98,7 @@ export default class Result extends GameWindow {
             Authorization: `Bearer ${getToken()}`,
             Accept: 'application/json',
           },
-        }
+        },
       );
 
       const content = await rawResponse.json();
@@ -122,7 +122,7 @@ export default class Result extends GameWindow {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(statistic),
-      }
+      },
     );
 
     const content = await rawResponse.json();
@@ -133,8 +133,7 @@ export default class Result extends GameWindow {
   async updateServerStatistic() {
     const date = new Date().toLocaleString();
 
-    const statistic =
-      (await this.getStatistic({ userId: localStorage.userID })) || {};
+    const statistic = (await this.getStatistic({ userId: localStorage.userID })) || {};
 
     if (!statistic.optional) {
       statistic.optional = {};

@@ -64,7 +64,7 @@ export default class StartPage extends GameWindow {
           </div>
         </div>
         `,
-      ''
+      '',
     );
 
     return additionOptions;
@@ -106,7 +106,7 @@ export default class StartPage extends GameWindow {
 
   listenToAdditionalOptions() {
     const additionalOptions = document.querySelectorAll(
-      '.additional-option input'
+      '.additional-option input',
     );
 
     additionalOptions.forEach((option) => {
@@ -123,6 +123,6 @@ export default class StartPage extends GameWindow {
   updateRound() {
     const roundInput = document.querySelector('.round');
 
-    localStorage.setItem('roundSprint', roundInput.value - 1);
+    localStorage.setItem('roundSprint', (roundInput.value - 1) % 30);
   }
 }
