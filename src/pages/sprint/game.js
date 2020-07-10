@@ -74,6 +74,7 @@ export default class Game extends GameWindow {
             <div class="speaker">
               <img src="https://cdn.discordapp.com/attachments/624997901248233505/728348020193886218/speaker.svg">
             </div>
+            <div class="audio-check audio-true"></div>
           </div>
         </div>
         ${this.getGameImage()}
@@ -88,6 +89,7 @@ export default class Game extends GameWindow {
 
     this.listenToButtonsClick();
     this.listenToAudioButtonClick();
+    this.listenAudioCheckClick();
     this.activateTimer();
 
     this.checkNewWords();
@@ -172,6 +174,14 @@ export default class Game extends GameWindow {
       this.playAudio(
         this.words.wrongWords[this.words.wrongWords.length - 1].audio
       );
+    });
+  }
+
+  listenAudioCheckClick() {
+    const audio = document.querySelector('.audio-check');
+
+    audio.addEventListener('click', () => {
+      audio.classList.toggle('audio-false');
     });
   }
 
@@ -302,16 +312,19 @@ export default class Game extends GameWindow {
 
   audioSignal(isCorrect) {
     const updateMultiply = this.correctQueue % 4 > 0 ? false : true;
+    const isMusic = document.querySelector('.audio-false');
 
-    if (isCorrect) {
-      if (updateMultiply) {
-        new Audio('/assets/audio/correct.mp3').play();
-        new Audio('/assets/audio/correct.mp3').play();
+    if (!isMusic) {
+      if (isCorrect) {
+        if (updateMultiply) {
+          new Audio('/assets/audio/correct.mp3').play();
+          new Audio('/assets/audio/correct.mp3').play();
+        } else {
+          new Audio('/assets/audio/correct.mp3').play();
+        }
       } else {
-        new Audio('/assets/audio/correct.mp3').play();
+        new Audio('/assets/audio/error.mp3').play();
       }
-    } else {
-      new Audio('/assets/audio/error.mp3').play();
     }
   }
 

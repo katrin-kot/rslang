@@ -177,58 +177,6 @@ input[type='checkbox']:checked + label:before {
   background-color: #d6d4e1;
 }
 
-.correct-shadow-1 {
-  animation: correct-1 1s infinite alternate;
-}
-
-.correct-shadow-2 {
-  animation: correct-2 1s infinite alternate;
-}
-
-.correct-shadow-3 {
-  animation: correct-3 1s infinite alternate;
-}
-
-.wrong-shadow {
-  animation: wrong 1s infinite alternate;
-}
-
-@keyframes correct-1 {
-  from {
-    box-shadow: 0 0 5px 0 greenyellow inset;
-  }
-  to {
-    box-shadow: 0 0 15px 0 greenyellow inset;
-  }
-}
-
-@keyframes correct-2 {
-  from {
-    box-shadow: 0 0 10px 3px greenyellow inset;
-  }
-  to {
-    box-shadow: 0 0 20px 3px greenyellow inset;
-  }
-}
-
-@keyframes correct-3 {
-  from {
-    box-shadow: 0 0 15px 6px greenyellow inset;
-  }
-  to {
-    box-shadow: 0 0 25px 6px greenyellow inset;
-  }
-}
-
-@keyframes wrong {
-  from {
-    box-shadow: 0 0 5px 0 red inset;
-  }
-  to {
-    box-shadow: 0 0 15px 0 red inset;
-  }
-}
-
 .speaker {
   position: absolute;
   z-index: 2;
@@ -258,6 +206,21 @@ input[type='checkbox']:checked + label:before {
   left: 80%;
 }
 
+.audio-check {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background-image: url('/assets/images/soundOn.png');
+  background-size: contain;
+}
+
+.audio-false {
+  background-image: url('/assets/images/soundOff.png');
+  background-size: contain;
+}
+
 .game-image {
   width: 150px;
   height: 150px;
@@ -285,7 +248,7 @@ hr {
 
 .wrong-answer-button,
 .correct-answer-button {
-  width: 35%;
+  width: 45%;
   display: block;
   position: relative;
   border-radius: 25px;
