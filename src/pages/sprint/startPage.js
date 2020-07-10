@@ -50,7 +50,7 @@ export default class StartPage extends GameWindow {
 
     this.setDefaultOptions();
     this.listenToButtonsClick();
-    this.listenToChangedifficulty();
+    this.listenToChangedDifficulty();
     this.listenToAdditionalOptions();
   }
 
@@ -64,7 +64,7 @@ export default class StartPage extends GameWindow {
           </div>
         </div>
         `,
-      '',
+      ''
     );
 
     return additionOptions;
@@ -90,7 +90,7 @@ export default class StartPage extends GameWindow {
     localStorage.setItem('roundSprint', 0);
   }
 
-  listenToChangedifficulty() {
+  listenToChangedDifficulty() {
     const form = document.querySelector('.form-difficult');
 
     form.addEventListener('click', () => {
@@ -106,7 +106,7 @@ export default class StartPage extends GameWindow {
 
   listenToAdditionalOptions() {
     const additionalOptions = document.querySelectorAll(
-      '.additional-option input',
+      '.additional-option input'
     );
 
     additionalOptions.forEach((option) => {
