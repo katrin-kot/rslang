@@ -30,16 +30,33 @@ class CardsController {
 
       CardsView.showPreloaderForCards();
 
-      const words = await Words.getWords(userdifficultyLevel, userRaund, WORDS_PER_PAGE);
-      const studyWords = await Words.getStudyWords(WORDS_PER_PAGE);
+      let words;
+      let studyWords;
+
+      try {
+        words = await Words.getWords(userdifficultyLevel, userRaund, WORDS_PER_PAGE);
+        studyWords = await Words.getStudyWords(WORDS_PER_PAGE);
+      } catch (e) {
+        PubSub.publish('showNotification', {
+          message: 'При загрузке слов, что то пошло не так. Попробуйте снова.',
+          type: 'error',
+        });
+      }
 
       // eslint-disable-next-line max-len
       if ((userdifficultyLevel === STUDY_WORDS_GROUP) || (studyWords !== undefined && !this.isStudyWordsRendered)) {
         if (studyWords === undefined) {
-          // TODO: добавить notification, что недостаточно изученных слов
+          PubSub.publish('showNotification', {
+            message: 'У Вас недостаточно изученных слов. Выберите уровень сложности.',
+            type: 'error',
+          });
           ControlsView.disableBtnStart();
           return;
         }
+        PubSub.publish('showNotification', {
+          message: 'Изученные слова.',
+          type: 'success',
+        });
         CardsView.render(studyWords);
         Words.setCurrentWords(studyWords);
         this.isStudyWordsRendered = true;
@@ -50,7 +67,6 @@ class CardsController {
       PubSub.publish('activateBtnStart');
     } catch (e) {
       await checkUserLogin();
-      // TODO: добавить notification (что то пошло не так при загрузке страницы)
     }
   }
 }

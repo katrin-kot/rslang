@@ -11,6 +11,7 @@ import GameController from './controllers/game';
 import ResultPageController from './controllers/resultsPage';
 import StatsPageController from './controllers/statsPage';
 import ModalPopupController from './controllers/modalPopup';
+import NotificationsController from './controllers/notifications';
 
 StartPageView.render();
 ContentController.init();
@@ -25,3 +26,4 @@ GameController.init();
 ResultPageController.init();
 StatsPageController.init();
 ModalPopupController.init();
+NotificationsController.init();

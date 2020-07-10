@@ -13,6 +13,8 @@
 body {
   height: 100%;
   background: #fffff4;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  overflow-x: hidden;
 }
 
 /* Стартовая страница */
@@ -78,10 +80,13 @@ body {
 .speakIt__description {
   color: #fff;
   font-size: 20px;
-  max-width: 500px;
+  max-width: 800px;
   padding: 0;
   margin: 0;
-  padding-bottom: 40px;
+  padding: 20px 20px 40px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, .5);
+  margin-bottom: 30px;
 }
 
 @keyframes blur {
@@ -391,7 +396,7 @@ body {
 }
 
 .round-select-box {
-  width: 180px;
+  width: 190px;
 }
 
 .options__container,
@@ -432,14 +437,18 @@ body {
 }
 
 .options__container::-webkit-scrollbar,
-.raund-options__container::-webkit-scrollbar {
+.raund-options__container::-webkit-scrollbar,
+.stats__container::-webkit-scrollbar,
+.result__container::-webkit-scrollbar {
   width: 8px;
   background: #0d141f;
   border-radius: 0 8px 8px 0;
 }
 
 .options__container::-webkit-scrollbar-thumb,
-.raund-options__container::-webkit-scrollbar-thumb {
+.raund-options__container::-webkit-scrollbar-thumb,
+.stats__container::-webkit-scrollbar-thumb,
+.result__container::-webkit-scrollbar-thumb {
   width: 8px;
   background: #525861;
   border-radius: 0 8px 8px 0;
@@ -686,6 +695,24 @@ body {
 .stats-btn-back:hover {
   background: rgba(60, 70, 97, .1);
 }
+
+.stats__container {
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
+.stats-item > span {
+  display: flex;
+}
+
+.stats-item {
+  border-bottom: 2px solid black;
+  margin-bottom: 15px;
+}
+
+.stats-title {
+  margin-bottom: 10px;
+}
 /* Страницы с результатами */
 
 /* congratulations */
@@ -807,6 +834,43 @@ body {
   width: 100%;
 }
 /* modal popup */
+
+/* notifications */
+.notification {
+  width: 280px;
+  padding: 10px;
+  height: 60px;
+  position: absolute;
+  transition: all .3s ease-in-out;
+  top: 15px;
+  color: #fff;
+  z-index: 3;
+  font-size: 18px;
+  border-radius: 10px;
+}
+
+.notification[data-type='error'] {
+  background-color: red;
+}
+
+.notification[data-type='success'] {
+  background-color: green;
+}
+
+.notification[data-type='info'] {
+  background-color: blue;
+}
+
+.notification-hidden {
+  transition: all .3s ease-in-out;
+  right: -300px;
+}
+
+.notification-visible {
+  right: 15px;
+}
+
+/* notifications */
 
 /* conditions */
 .none {

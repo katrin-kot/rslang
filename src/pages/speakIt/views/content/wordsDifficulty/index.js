@@ -52,6 +52,7 @@ class WordsDifficultyView {
 
     elementContainer.addEventListener('click', (e) => {
       if (e.target.classList.contains(dropDownItem)) {
+        PubSub.publish('setGlobalStatsOnAction');
         selectedElement.innerHTML = e.target.innerText;
         selectedElement.setAttribute(selectedAttr, e.target.getAttribute(dataAttribute));
         elementContainer.classList.remove(activeItem);
@@ -85,6 +86,15 @@ class WordsDifficultyView {
         <span class="drop-down__raund" data-raund="${indx}">${indx + 1}</span>
       `).join('');
     return optionsForRaund;
+  }
+
+  getCunrrentWordsDifficulty() {
+    const dfLevelTitles = ['Базовый', 'Начальный', 'Легкий', 'Средний', 'Сложный', 'Максимальный', 'Изученные слова'];
+    const currentDfLevel = parseInt(document.querySelector('.selected__item').dataset.currentOption, 10);
+    return {
+      difficultyLevel: dfLevelTitles[currentDfLevel],
+      raund: document.querySelector('.selected__raund').dataset.currentRaund,
+    };
   }
 }
 

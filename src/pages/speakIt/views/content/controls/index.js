@@ -96,6 +96,10 @@ class ControlsView {
     this.stopSpeakBtn.innerText = 'Stop speak';
     this.stopSpeakBtn.classList.remove('micro-on');
   }
+
+  getStateGame() {
+    return this.isGameStarted;
+  }
 }
 
 export default new ControlsView();
