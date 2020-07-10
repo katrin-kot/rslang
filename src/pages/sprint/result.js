@@ -144,9 +144,10 @@ export default class Result extends GameWindow {
     delete statistic.id;
 
     statistic.optional.sprintMinigame[date] = {
-      startRound: localStorage.roundSprint,
-      gameScore: this.score.score,
-      gameResult: `${this.score.correctWords.length}:${this.score.wrongWords.length}`,
+      level: localStorage.difficultySprint,
+      score: `${this.score.correctWords.length}-${this.score.wrongWords.length}`,
+      scoreGame: this.score.score,
+      errors: this.score.wrongWords.length,
     };
 
     await this.putStatistic({
