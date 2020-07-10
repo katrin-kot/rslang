@@ -10,11 +10,11 @@ const btnSettings = [
   },
 ];
 
-export function renderBtnSettings(defaultSettings) {
+export function renderBtnSettings(userSettings) {
   const fragment = document.createDocumentFragment();
 
   btnSettings.forEach((elem) => {
-    renderCheckbox(elem, fragment, defaultSettings);
+    renderCheckbox(elem, fragment, userSettings);
   });
   return fragment;
 }
