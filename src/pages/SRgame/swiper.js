@@ -7,10 +7,11 @@ const swiper = new Swiper('.swiper-container', {
   },
   pagination: {
     el: '.swiper-pagination',
-    dynamicBullets: true,
+    type: 'progressbar',
   },
   initialSlide: 0,
   slidesPerView: 1,
+  centeredSlides: true,
 
 });
 
