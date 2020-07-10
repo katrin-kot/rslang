@@ -223,9 +223,11 @@ export default class Game extends GameWindow {
     ) {
       this.updateCorrectWords();
       this.correctQueue += 1;
+      this.audioSignal(true);
       this.updateScore();
     } else {
       this.correctQueue = 0;
+      this.audioSignal(false);
     }
   }
 
@@ -298,10 +300,19 @@ export default class Game extends GameWindow {
     currentScore.innerText = this.words.score;
   }
 
-  audioSignal(isCorrect = true) {
-    const audioType = 1;
-    //new Audio('/assets/audio/correct.mp3').play();
-    audio.setAttribute;
+  audioSignal(isCorrect) {
+    const updateMultiply = this.correctQueue % 4 > 0 ? false : true;
+
+    if (isCorrect) {
+      if (updateMultiply) {
+        new Audio('/assets/audio/correct.mp3').play();
+        new Audio('/assets/audio/correct.mp3').play();
+      } else {
+        new Audio('/assets/audio/correct.mp3').play();
+      }
+    } else {
+      new Audio('/assets/audio/error.mp3').play();
+    }
   }
 
   calculateScore() {
