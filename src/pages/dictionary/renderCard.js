@@ -125,7 +125,9 @@ export function renderCard(content, settings) {
     const date = new Date();
     const time = date.getTime() - content.optional.date;
     const timeText = msToTime(time);
-    statistic.innerHTML = `<h5>Давность: ${timeText} назад | Повторений: ${content.optional.count}</h5>`;
+    const nextDate = new Date(content.optional.dateToShow).getTime() - date.getTime();
+    const nextTime = msToTime(nextDate);
+    statistic.innerHTML = `<h5>Давность: ${timeText} назад | Повторений: ${content.optional.count} | Повторится через: ${nextTime}</h5>`;
   }
   explanation.appendChild(statistic);
   const progress = document.createElement('div');
@@ -134,5 +136,25 @@ export function renderCard(content, settings) {
   progress.innerHTML = `<div class="progress-bar" role="progressbar" style="width: ${progressValue}%;" aria-valuenow="${progressValue}" aria-valuemin="0" aria-valuemax="100">${progressValue}%</div>
   </div>`;
   explanation.appendChild(progress);
+  progress.insertAdjacentHTML(
+    'afterend',
+    `<ul class="dots-progress"><li class='dot'></li><li class='dot'></li><li class='dot'></li>
+  <li class ='dot'></li><li class ='dot'></li></ul>`,
+  );
+  if (progressValue === 0) {
+    explanation.querySelector('.dots-progress').classList.add('progress--1');
+  }
+  if (progressValue > 0 && progressValue <= 30) {
+    explanation.querySelector('.dots-progress').classList.add('progress--2');
+  }
+  if (progressValue > 30 && progressValue <= 60) {
+    explanation.querySelector('.dots-progress').classList.add('progress--3');
+  }
+  if (progressValue > 60 && progressValue <= 90) {
+    explanation.querySelector('.dots-progress').classList.add('progress--4');
+  }
+  if (progressValue > 90 && progressValue <= 100) {
+    explanation.querySelector('.dots-progress').classList.add('progress--5');
+  }
   return fragment;
 }
