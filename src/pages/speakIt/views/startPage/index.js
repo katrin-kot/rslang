@@ -1,4 +1,6 @@
 import createNode from '../createNodeHelper';
+import PubSub from '../../controllers/pubSub';
+import { checkUserLogin } from '../../../../services/verifyUserService';
 
 class StartPageView {
   constructor() {
@@ -12,22 +14,27 @@ class StartPageView {
     this.descriptionGame = createNode('p', 'speakIt__description');
     this.descriptionGame.innerText = 'Click on the words to hear them sound. Click on the button and speak the words into the microphone.';
 
-    this.startBtn = createNode('button', 'speakIt__btn-start');
+    this.startBtn = createNode('button', 'speakIt__btn-start', 'btn');
     this.startBtn.innerText = 'Start game';
   }
 
-  render() {
+  async render() {
     this.startWindow.append(this.title, this.descriptionGame, this.startBtn);
     this.appContainer.append(this.startWindow);
     document.body.append(this.appContainer);
     this.hideStartWindow();
+    await checkUserLogin();
   }
 
   hideStartWindow() {
     this.startBtn.addEventListener('click', () => {
       this.startWindow.classList.add('hidden');
-      // TODO: добавить сюда паблишера для рендера основной логики игры
+      PubSub.publish('loadContent');
     });
+  }
+
+  showStartWindow() {
+    this.startWindow.classList.remove('hidden');
   }
 }
 
