@@ -304,8 +304,15 @@ hr {
 
   cursor: pointer;
   outline: none;
-  background: linear-gradient(to right, #81a4b4, #cde2e9);
   border: none;
+}
+
+.wrong-answer-button {
+  background: linear-gradient(to right, pink, red);
+}
+
+.correct-answer-button {
+  background: linear-gradient(to right, green, yellowgreen);
 }
 
 .wrong-answer-button:hover,
