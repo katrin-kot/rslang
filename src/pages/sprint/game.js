@@ -24,13 +24,16 @@ export default class Game extends GameWindow {
     this.maxPages = 30;
   }
 
-  initPage(startPage, gamePage, resultPage) {
+  async initPage(startPage, gamePage, resultPage) {
     this.startPage = startPage;
     this.gamePage = gamePage;
     this.resultPage = resultPage;
+
+    this.toggleLoader(false);
     checkUserLogin();
     this.updateSettings();
     this.clearStatistic();
+    await this.checkNewWords(true);
     this.getPage();
   }
 
@@ -99,13 +102,14 @@ export default class Game extends GameWindow {
         this.startPage,
         this.gamePage,
         this.resultPage,
-        this.words,
+        this.words
       );
     }, MILLISECONDS_IN_MINUTE);
   }
 
   getGameImage() {
-    const image = '<img class="game-image" src="https://cdn.discordapp.com/attachments/720535785622995023/721061601393770546/Octopus_-_Opt_2.png">';
+    const image =
+      '<img class="game-image" src="https://cdn.discordapp.com/attachments/720535785622995023/721061601393770546/Octopus_-_Opt_2.png">';
 
     return image;
   }
@@ -139,7 +143,7 @@ export default class Game extends GameWindow {
 
     audio.addEventListener('click', () => {
       this.playAudio(
-        this.words.wrongWords[this.words.wrongWords.length - 1].audio,
+        this.words.wrongWords[this.words.wrongWords.length - 1].audio
       );
     });
   }
@@ -156,7 +160,7 @@ export default class Game extends GameWindow {
       obj.userId,
       obj.group,
       obj.wordsPerPage,
-      obj.page,
+      obj.page
     );
 
     if (content.length < 10) {
@@ -177,7 +181,7 @@ export default class Game extends GameWindow {
           Authorization: `Bearer ${localStorage.token}`,
           Accept: 'application/json',
         },
-      },
+      }
     );
 
     const content = await rawResponse.json();
@@ -187,8 +191,8 @@ export default class Game extends GameWindow {
 
   checkAnswer(answer) {
     if (
-      (this.lastResult && answer.contains('correct-answer-button'))
-      || (!this.lastResult && answer.contains('wrong-answer-button'))
+      (this.lastResult && answer.contains('correct-answer-button')) ||
+      (!this.lastResult && answer.contains('wrong-answer-button'))
     ) {
       this.updateCorrectWords();
       this.correctQueue += 1;
@@ -200,13 +204,17 @@ export default class Game extends GameWindow {
     }
   }
 
-  async checkNewWords() {
+  async checkNewWords(isPreload = false) {
     if (this.words.ingameWords.length < 10) {
       await this.getWordsByServer();
       this.round = (Number(this.round) + 1) % this.maxPages;
     }
 
-    this.showWordData();
+    if (!isPreload) {
+      this.showWordData();
+    } else {
+      this.toggleLoader(true);
+    }
   }
 
   randomNumber(min = 0, max = 30) {
@@ -241,7 +249,7 @@ export default class Game extends GameWindow {
     if (this.useCartoons === 'true') {
       image.setAttribute(
         'src',
-        `https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${source}`,
+        `https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${source}`
       );
     }
   }

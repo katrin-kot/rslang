@@ -10,8 +10,9 @@ export default class GameWindow {
 
   getButton(description) {
     const button = description.reduce(
-      (hypertext, option) => `${hypertext}<button class="${option.class}">${option.text}</button>`,
-      '',
+      (hypertext, option) =>
+        `${hypertext}<button class="${option.class}">${option.text}</button>`,
+      ''
     );
 
     return button;
@@ -36,9 +37,20 @@ export default class GameWindow {
     });
   }
 
+  toggleLoader(wasCreate = false) {
+    const body = document.querySelector('body');
+    const loader = `<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>`;
+    const loaderDiv = document.querySelector('.lds-ellipsis');
+    if (wasCreate) {
+      loaderDiv.remove();
+    } else {
+      body.insertAdjacentHTML('afterbegin', loader);
+    }
+  }
+
   playAudio(source) {
     const audio = new Audio(
-      `https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${source}`,
+      `https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${source}`
     );
 
     audio.play();
