@@ -1,21 +1,7 @@
-/*
-{
-  Юзер без достаточного количества изученных слов
-  "id": "5eff3457635aec001764e0a0",
-  "name": "testbobr",
-  "email": "testbobr@gmail.ru"
-  "password": "Aabbcc_123"
-}
-{
-  Юзер с достаточным количеством изученных слов
-  "id": "5f044476836f4e00177bc25b",
-  "name": "testest11",
-  "email": "testest11@gmail.com",
-  "password": "AaBb123_",
-}
-*/
-
-import { getToken, getUserID } from '../../../services/authService';
+import { getToken } from '../../../services/token';
+import { getUserID } from '../../../services/authService';
+import { getUserWord } from '../../../services/userWordService';
+import { createWordWithError, updateWordWithError } from '../../../services/SRgameWordsService';
 
 function randomNumHelper(min, max) {
   const rand = min + Math.random() * (max + 1 - min);
@@ -57,7 +43,7 @@ const getUserAggregatedWord = async ({
 
 async function getWordforGame(group, page, wordsPerPage) {
   const filter = new window.URLSearchParams({
-    filter: `{"$and":[{"userWord": null, "page": ${page}}]}`,
+    filter: `{"$and":[{"page": ${page}}]}`,
   }).toString();
   const wordsForGame = await getUserAggregatedWord({
     userId: getUserID(),
@@ -86,7 +72,6 @@ async function getStudyWordforGame(wordsPerPage) {
   return undefined;
 }
 
-
 class Words {
   constructor() {
     this.currentWords = [];
@@ -112,6 +97,24 @@ class Words {
 
   setCurrentWords(words) {
     this.currentWords = [...words];
+  }
+
+  addWrongAnswersToAnki(wordsId) {
+    wordsId.forEach(async (id) => {
+      try {
+        await getUserWord({
+          userId: getUserID(),
+          wordId: id,
+        });
+        updateWordWithError({
+          wordId: id,
+        });
+      } catch (err) {
+        createWordWithError({
+          wordId: id,
+        });
+      }
+    });
   }
 }
 

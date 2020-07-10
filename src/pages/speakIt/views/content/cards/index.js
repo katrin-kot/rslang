@@ -79,6 +79,10 @@ class CardsView {
   hidePreloaderForCards() {
     document.querySelector('.loader').classList.add('none');
   }
+
+  getUnansweredWords() {
+    return [...document.querySelectorAll('[data-answer="0"]')].map((card) => parseInt(card.dataset.index, 10));
+  }
 }
 
 export default new CardsView();

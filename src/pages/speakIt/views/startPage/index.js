@@ -12,7 +12,14 @@ class StartPageView {
     this.title.innerText = 'speakit';
 
     this.descriptionGame = createNode('p', 'speakIt__description');
-    this.descriptionGame.innerText = 'Click on the words to hear them sound. Click on the button and speak the words into the microphone.';
+    this.descriptionGame.innerText = `
+      Нажимайте на карточки со словами, чтобы услышть их произношение.
+      Если изученных слов не хватает, по умолчанию уровень сложности - базовый, раунд - 0. 
+      Нажимите на кнопку "Speak Please" и после произносите слова в микрофон. 
+      Статистика записывается по окончании игры, также если игра была начата, то по нажатию на кнопку "New game" или 
+      по нажатию на кнопку "Restart".
+      Удачи !
+    `;
 
     this.startBtn = createNode('button', 'speakIt__btn-start', 'btn');
     this.startBtn.innerText = 'Start game';

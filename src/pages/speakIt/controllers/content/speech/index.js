@@ -22,8 +22,10 @@ class SpeechController {
         });
         recognition.onerror = (e) => {
           if (e.error === 'not-allowed') {
-            // TODO: добавить потом сюда notification
-            console.log('Включите микрофон'); // удалю
+            PubSub.publish('showNotification', {
+              message: 'Пожалуйста, включите микрофон ! После этого нажмите Stop Speak и Start Speak',
+              type: 'info',
+            });
             recognition.removeEventListener('end', recognition.start);
           }
         };
@@ -31,8 +33,10 @@ class SpeechController {
       recognition.start();
       recognition.addEventListener('end', recognition.start);
     } catch (error) {
-      console.log(error); // удалю
-      // TODO: добавить потом сюда notification
+      PubSub.publish('showNotification', {
+        message: 'Что то случилось с микрофоном, перезагрузите страницу.',
+        type: 'error',
+      });
     }
   }
 

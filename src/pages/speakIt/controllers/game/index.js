@@ -3,9 +3,12 @@ import CardsView from '../../views/content/cards';
 import TranslationView from '../../views/content/translation';
 import GameView from '../../views/game';
 import ControlsView from '../../views/content/controls';
+import WordsDifficultyView from '../../views/content/wordsDifficulty';
 import StartPageView from '../../views/startPage';
 import ImageView from '../../views/content/image';
 import Words from '../../models/words';
+import { getUserID } from '../../../../services/authService';
+import { getStatistics, putStatistics, addEmptyStatistics } from '../../../../services/statsService';
 
 class GameController {
   constructor() {
@@ -17,6 +20,7 @@ class GameController {
     this.startGame = this.startGame.bind(this);
     this.newGame = this.newGame.bind(this);
     this.resetProgress = this.resetProgress.bind(this);
+    this.setGlobalStatsOnAction = this.setGlobalStatsOnAction.bind(this);
   }
 
   init() {
@@ -25,6 +29,7 @@ class GameController {
     PubSub.subscribe('restartGame', this.restartGame);
     PubSub.subscribe('newGame', this.newGame);
     PubSub.subscribe('resetProgress', this.resetProgress);
+    PubSub.subscribe('setGlobalStatsOnAction', this.setGlobalStatsOnAction);
   }
 
   startGame() {
@@ -66,7 +71,7 @@ class GameController {
     if ((this.gameScore === Words.getCurrentWords().length) && !this.isEndOfTheGame) {
       this.isEndOfTheGame = true;
       GameView.showHideCongratulations();
-
+      this.setGlobalStats();
       this.hideCongratulations().then(() => {
         ControlsView.showResultPage();
       });
@@ -78,7 +83,7 @@ class GameController {
   }
 
   restartGame() {
-    // TODO: Добавить сюда отправление результата
+    this.setGlobalStatsOnAction();
     this.resetStats();
     this.increaseResult();
     ImageView.setDefaultImage();
@@ -90,6 +95,7 @@ class GameController {
   }
 
   newGame() {
+    this.setGlobalStatsOnAction();
     this.resetStats();
     GameView.removeContentWrapper();
     StartPageView.showStartWindow();
@@ -120,6 +126,78 @@ class GameController {
     GameView.resetProgress();
     ImageView.setDefaultImage();
     this.resetStats();
+  }
+
+  async setGlobalStats() {
+    const attempts = this.attemptsToPronounce;
+    const currentDifficultyLevel = WordsDifficultyView.getCunrrentWordsDifficulty();
+    const date = new Date();
+    const day = `0${date.getDate()}`.slice(-2);
+    const month = `0${date.getMonth() + 1}`.slice(-2);
+    const hours = `0${date.getHours()}`.slice(-2);
+    const minutes = `0${date.getMinutes()}`.slice(-2);
+    const seconds = `0${date.getSeconds()}`.slice(-2);
+    const dateTemplate = `${day}.${month}.${date.getFullYear()}T${hours}:${minutes}:${seconds}`;
+    const score = `${this.gameScore}-${Words.getCurrentWords().length - this.gameScore}`;
+
+    let stats;
+
+    try {
+      stats = await getStatistics({
+        userId: getUserID(),
+      });
+    } catch (e) {
+      await addEmptyStatistics();
+    }
+    delete stats.id;
+
+    if (!stats.optional) {
+      stats.optional = {};
+    }
+
+    if (!stats.optional.speakIt) {
+      stats.optional = {
+        speakIt: {},
+      };
+    }
+
+    stats.optional.speakIt[`${dateTemplate}`] = {
+      score: `${score}`,
+      level: currentDifficultyLevel.difficultyLevel,
+      raund: currentDifficultyLevel.raund,
+      attempts,
+    };
+
+    try {
+      await putStatistics({
+        userId: getUserID(),
+        payload: stats,
+      });
+      PubSub.publish('showNotification', {
+        message: 'Статистика сохранена.',
+        type: 'success',
+      });
+    } catch (e) {
+      PubSub.publish('showNotification', {
+        message: 'Что то пошло не так, статистика не сохранена.',
+        type: 'error',
+      });
+    }
+  }
+
+  setGlobalStatsOnAction() {
+    if (ControlsView.getStateGame() && this.gameScore !== Words.getCurrentWords().length) {
+      this.setGlobalStats();
+      this.getWrongWords();
+    }
+  }
+
+  getWrongWords() {
+    const wrongWords = Words.getCurrentWords().filter(
+      (word, indx) => CardsView.getUnansweredWords().includes(indx),
+      // eslint-disable-next-line no-underscore-dangle
+    ).map((word) => word._id);
+    Words.addWrongAnswersToAnki(wrongWords);
   }
 }
 
