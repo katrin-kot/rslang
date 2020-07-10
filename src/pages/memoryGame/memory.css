@@ -35,6 +35,10 @@ body .form-difficult {
   width: 300px;
 }
 
+body .form-difficult .label-difficult {
+  padding: 0px 0 3px 30px;
+}
+
 .memory-game {
   max-width: 740px;
   margin: auto;
