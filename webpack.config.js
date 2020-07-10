@@ -27,7 +27,7 @@ const config = {
   entry: {
     main: './src/pages/main/main.js',
     login: './src/pages/login/login.js',
-    audioCall: './src/pages/audioCall/startPage.js',
+    audioCall: './src/pages/audioCall/audioCall.js',
     stats: './src/pages/stats/stats.js',
     savanna: './src/pages/savanna/savanna.js',
     speakIt: './src/pages/speakIt/speakIt.js',
