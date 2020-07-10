@@ -70,20 +70,9 @@
   align-items: center;
   font-size: 18px;
 }
-.question-button {
-  display: flex;
-  width: 100px;
-  height: 100px;
-  border-radius: 100%;
-  background-color: rgba(255, 255, 255, 0.2);
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  margin-top: 10%;
-}
-.question-button__icon {
-  width: 50px;
-  height: 50px;
+
+.fade {
+  color: rgba(255, 255, 255, 0.2);
 }
 
 .await-block {
@@ -112,16 +101,14 @@
 .form__input::placeholder {
   color: #fff;
 }
-.next-button {
-  margin-top: 5%;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 200px;
-  height: 30px;
-  border: 1px solid rgba(0, 0, 0, 0.5);
-  color: rgba(0, 0, 0, 0.8);
+
+.form__round {
+  margin-top: 10px;
+  padding: .5rem .25rem;
+  height: 2rem;
+  color: #fff;
+  border: 1px solid #fff;
+  outline: none;
   background-color: transparent;
 }
 
@@ -143,14 +130,10 @@
   justify-content: center;
   align-items: flex-end;
 }
-.answer__image {
-  width: 120px;
-  height: 120px;
-  border: 1px solid black;
-  border-radius: 100%;
-  background-image: url("/assets/images/alcohol.png");
-  background-position: center;
-  background-repeat: no-repeat;
+
+.game-block__image {
+  width: 150px;
+  height: 150px;
   background-size: cover;
 }
 
