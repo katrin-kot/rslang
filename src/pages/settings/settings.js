@@ -1,34 +1,32 @@
 import './settings.css';
-import { getUserID } from '../../services/authService';
-import {
-  putUserSettings,
-  getUserSettings,
-} from '../../services/settingsService';
-import { renderBtnSettings } from './btnSettings';
-import { renderCardsSettings } from './cardsSettings';
+import { initHandlers } from './initHandlers';
+import { getToken, getUserID } from '../../services/authService';
+import { errorWindow } from '../../components/main/errorWindow/errorWindow';
 
 const body = document.querySelector('body');
-const userId = getUserID();
-
 const main = document.createElement('main');
-body.appendChild(main);
+const userId = getUserID();
+const token = getToken();
 
+if (!userId || !token) {
+  errorWindow();
+}
 main.innerHTML = `
 <div class ="container shadow-lg mb-5 mt-10 rounded">
 <h2 class="main-title">Мои настройки</h2>
 <form>
-<div class ="section-wrapper row"><div class="col-auto"><h4 class ="section-title mt-1 ml-1" >Настройки изучения слов</h4>
+<div class ="section-wrapper row"><div class="col-auto word-settings"><h4 class ="section-title mt-1 ml-1" >Настройки изучения слов</h4>
 <div class="input-group col-auto mb-3">
   <div class="input-group-prepend">
     <span class="input-group-text text-break" id="basic-addon1">Всего карточек в день (максимум 50)</span>
   </div>
-  <input type="number" class="form-control all" min="0" max="50" value="50">
+  <input type="number" class="form-control all" min="0" max="50" value="">
 </div>
 <div class="input-group col-auto mb-3">
   <div class="input-group-prepend">
     <span class="input-group-text text-break" id="basic-addon1">Количество новых карточек в день</span>
   </div>
-  <input type="number" class="form-control new" min="0" max="50" value="50">
+  <input type="number" class="form-control new" min="0" max="50" value="">
 </div>
 </div></div>
 <h4 class ="section-title mt-1" >Настройка кнопок</h4>
@@ -42,57 +40,5 @@ main.innerHTML = `
 <button type="button" class="btn btn-outline-secondary btn-lg mt-3">Вернуться на главную</button>
 </form>
 </div>`;
-
-const optional = {};
-
-const btnBlock = document.querySelector('.btn-settings');
-const cardBlock = document.querySelector('.cards-settings');
-async function initContent() {
-  const defaultSettings = await getUserSettings({ userId });
-  btnBlock.appendChild(renderBtnSettings(defaultSettings));
-  cardBlock.appendChild(renderCardsSettings(defaultSettings));
-}
-initContent();
-
-const form = document.querySelector('form');
-
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
-  const errorText = document.querySelectorAll('.error-text');
-  if (errorText.length > 0) {
-    errorText.forEach((elem) => elem.remove());
-  }
-  document.querySelectorAll('.form-check-input').forEach((elem) => {
-    if (elem.checked === true) {
-      optional[elem.dataset.name] = true;
-    } else {
-      optional[elem.dataset.name] = false;
-    }
-  });
-  if (Array.from(cardBlock.querySelectorAll('.form-check-input')).some((elem) => elem.checked === true) === false) {
-    cardBlock
-      .insertAdjacentHTML(
-        'afterend',
-        '<p class = "error-text">Нужно отметить хотя бы один пункт</p>',
-      );
-  } else {
-    const newWordsPerDay = document.querySelector('.new').value;
-    optional.newWordsPerDay = Number(newWordsPerDay);
-    const wordsPerDay = document.querySelector('.all').value;
-    if (wordsPerDay < newWordsPerDay) {
-      document
-        .querySelectorAll('.input-group')[1]
-        .insertAdjacentHTML(
-          'afterend',
-          '<p class = "error-text">Количество новых карточек не должно превышать всех карточек</p>',
-        );
-    } else {
-      putUserSettings({ userId, wordsPerDay, optional });
-    }
-  }
-});
-
-const returnMainpage = document.querySelector('.btn-outline-secondary');
-returnMainpage.addEventListener('click', () => {
-
-});
+body.appendChild(main);
+initHandlers();

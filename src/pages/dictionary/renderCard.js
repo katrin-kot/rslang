@@ -113,7 +113,7 @@ export function renderCard(content, settings) {
   fragment.appendChild(wrapper);
   if (settings.image === true) {
     const img = document.createElement('img');
-    img.setAttribute('src', image);
+    img.setAttribute('src', `data:image/jpg;base64,${image}`);
     img.classList.add('card-image');
     wrapper.appendChild(img);
   }

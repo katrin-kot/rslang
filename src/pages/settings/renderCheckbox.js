@@ -1,4 +1,4 @@
-export function renderCheckbox(elem, fragment, defaultSettings) {
+export function renderCheckbox(elem, fragment, userSettings) {
   const div = document.createElement('div');
   div.classList.add('form-check');
   div.innerHTML = `
@@ -8,9 +8,15 @@ export function renderCheckbox(elem, fragment, defaultSettings) {
     </label>`;
   fragment.appendChild(div);
   const checkbox = div.querySelector('.form-check-input');
-  if (defaultSettings.optional[elem.name] === true) {
+  if (userSettings.optional[elem.name] === true) {
+    if (elem.name === 'isShowAllLearningWords') {
+      fragment.querySelectorAll('.form-control').forEach((item) => { item.setAttribute('disabled', true); });
+    }
     checkbox.checked = true;
   } else {
+    if (elem.name === 'isShowAllLearningWords') {
+      fragment.querySelectorAll('input').forEach((item) => { item.removeAttribute('disabled'); });
+    }
     checkbox.checked = false;
   }
 }
