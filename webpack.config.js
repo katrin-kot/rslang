@@ -180,6 +180,7 @@ const config = {
       title: 'RS lang-main',
       favicon: './assets/images/favicon.ico',
       chunks: ['main'],
+      template: 'src/pages/main/main.html',
       filename: './main.html',
     }),
     new HtmlWebPackPlugin({
