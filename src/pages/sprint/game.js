@@ -8,8 +8,16 @@ export default class Game extends GameWindow {
     super();
     this.timer = new CountdownTimer();
     this.buttonList = [
-      { class: 'wrong-answer-button', text: 'Неверно' },
-      { class: 'correct-answer-button', text: 'Верно' },
+      {
+        class: 'wrong-answer-button',
+        text:
+          '<img src="https://image.flaticon.com/icons/svg/134/134209.svg" alt="" width="35px" height="35px"> Неверно',
+      },
+      {
+        class: 'correct-answer-button',
+        text:
+          'Верно <img src="https://image.flaticon.com/icons/svg/134/134208.svg" alt="" width="35px" height="35px">',
+      },
     ];
 
     this.correctQueue = 0;
@@ -135,6 +143,25 @@ export default class Game extends GameWindow {
           // eslint-disable-next-line no-empty
         } catch (err) {}
       }
+    });
+
+    document.addEventListener('keyup', (key) => {
+      try {
+        const word = document.querySelector('.game-word');
+        let currentAnswer = '';
+
+        if (key.code === 'ArrowRight') {
+          currentAnswer = document.querySelector('.correct-answer-button');
+        } else if (key.code === 'ArrowLeft') {
+          currentAnswer = document.querySelector('.wrong-answer-button');
+        }
+
+        if (word.innerText) {
+          this.checkAnswer(currentAnswer.classList);
+          this.checkNewWords();
+        }
+        // eslint-disable-next-line no-empty
+      } catch (err) {}
     });
   }
 
