@@ -165,13 +165,16 @@ export default class Result extends GameWindow {
           wordId: item._id,
         });
       } catch (err) {
-        const wordData = { optional: { status: 'to_study' } };
-        await createUserWord({
-          userId: localStorage.userID,
-          // eslint-disable-next-line no-underscore-dangle
-          wordId: item._id,
-          word: wordData,
-        });
+        try {
+          const wordData = { optional: { status: 'to_study' } };
+          await createUserWord({
+            userId: localStorage.userID,
+            // eslint-disable-next-line no-underscore-dangle
+            wordId: item._id,
+            word: wordData,
+          });
+          // eslint-disable-next-line no-empty
+        } catch (error) {}
       }
     });
   }
