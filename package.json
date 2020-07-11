@@ -8,6 +8,7 @@
     "chart.js": "^2.9.3",
     "core-js": "^3.6.5",
     "d3": "^5.16.0",
+    "eslint-loader": "^4.0.2",
     "postcss-preset-env": "^6.7.0",
     "swiper": "^5.4.5"
   },
