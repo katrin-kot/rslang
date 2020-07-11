@@ -1,6 +1,6 @@
 import GameWindow from './gameWindow';
 import { createUserWord, getUserWord } from '../../services/userWordService';
-import { getToken } from '../../services/authService';
+import { getToken } from '../../services/token';
 
 export default class Result extends GameWindow {
   constructor() {
