@@ -101,7 +101,7 @@ export default class Game extends GameWindow {
   }
 
   activateTimer() {
-    const MILLISECONDS_IN_MINUTE = 60000000;
+    const MILLISECONDS_IN_MINUTE = 60000;
     const MILLISECONDS_IN_SECOND = 1000;
     let seconds = 0;
 
