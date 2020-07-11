@@ -38,7 +38,7 @@ export const header = () => {
       <nav>
         <ul class="primary">
           <li>
-            <a href="/SRgame.html">Главная</a>
+            <a href="/main.html">Главная</a>
           </li>
           <li>
             <a href="/dictionary.html">Словарь</a>

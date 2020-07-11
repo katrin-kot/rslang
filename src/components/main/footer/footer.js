@@ -9,7 +9,7 @@ export const footer = () => {
           <a href="/promo.html">Промо</a>
         </div>
         <div class="about-icon">
-          <a href="/about.html">О нас</a>
+          <a href="/team.html">О нас</a>
         </div>
       </div>
     </footer>`;
