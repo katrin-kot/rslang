@@ -1,6 +1,9 @@
+body {
+  margin: 0;
+}
 .card-container body, input, button {
   font-size: 16px;
-  font-family: "Poppins" "Comic Sans MS";
+  font-family: Poppins, sans-serif;
   color: rgb(75, 69, 69);
 }
 .card-container button {
@@ -9,7 +12,7 @@
   cursor: pointer;
 }
 .card-container input {
-  font-family: "Poppins" "Comic Sans MS";
+  font-family: Poppins, sans-serif;
   padding: 5px 20px;
   margin: 0 15px;
   font-family: inherit;
@@ -29,7 +32,7 @@
   text-align: center;
   padding: 10px;
   margin: auto;
-
+  margin-top: 50px;
   background: linear-gradient(#D6D4E1, #9198e5);
 }
 
@@ -140,6 +143,27 @@
 }
 
 /* StartScreen */
+.start-screen-container-wrapper  {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: url(https://image.freepik.com/free-vector/cute-seamless-pattern-with-octopus-jellyfish-starfish-crab_76147-182.jpg)
+}
+.start-screen-container {
+  font-family: "Poppins" "Comic Sans MS";
+  width: 70%;
+  padding: 40px 20px;
+  box-shadow: 0 5px 10px 0 rgba(0,0,0,.1);
+  border-radius: 10px;
+  z-index: 10;
+  background: linear-gradient(#ffffff, #e0e4e9);;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
 .games-container {
   display: flex;
 }
@@ -154,7 +178,8 @@
 .words-to-practice, .hard-words, .new-words, .learning-words {
   margin: 10px;
   border-radius: 25px;
-  background: linear-gradient(#D6D4E1, #9198e5);
+  background: linear-gradient(#D6D4E1, #b8cce6);
+  box-shadow: 0 5px 10px 0 rgba(0,0,0,.1);
   padding: 20px;
   cursor: pointer;
 }
@@ -164,14 +189,14 @@
 }
 
 .start-screen-container h2, h3 {
-  color: rgb(62, 12, 143);
+  color: rgb(48, 128, 182);
 }
 
 .new-number {
   color: rgb(74, 173, 16);
 }
 .learning-number {
-  color: rgb(102, 16, 173);
+  color: rgb(68, 66, 211);
 }
 .hard-number {
   color: rgb(173, 16, 29);
@@ -189,4 +214,102 @@
 .btn_clicked {
   background:rgb(78, 100, 100);
   cursor: not-allowed;
+}
+
+/* static */
+
+.logo {
+  width: 80px;
+  margin-bottom: 20px;
+  margin: 0 auto;
+  display: block;
+}
+
+.statistics-container {
+  width: 330px;
+  padding: 40px 20px;
+  box-shadow: 0 5px 10px 0 rgba(0,0,0,.1);
+  border-radius: 10px;
+  z-index: 10;
+  background: white;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+.statistics-container_title {
+  align-content: center;
+  text-align: center;
+}
+.statistics-container p {
+  display: flex;
+  justify-content: space-between;
+}
+
+.statistics-btn, .modal-btn {
+  display: block;
+  margin: auto;
+}
+
+.modal  {
+  position: fixed;
+  top: 0;
+  z-index: 5;
+  font-size: 16px;
+  font-family: Poppins,Comic Sans MS;
+  color: #4b4545;
+  width: 100vw;
+  height: 100vh;
+  background: url(https://image.freepik.com/free-vector/cute-seamless-pattern-with-octopus-jellyfish-starfish-crab_76147-182.jpg)
+}
+
+/* swiper */ 
+/* .swiper-container{
+  width: 100vw;
+  height: 100vh;
+}
+.swiper-slide-active {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  height: auto;
+} */
+/* .swiper-slide {*/
+
+
+
+
+.swiper-container-horizontal>.swiper-pagination-progressbar {
+  height: 10px !important;
+}
+
+
+.notification-container {
+  width: 330px;
+  padding: 40px 20px;
+  box-shadow: 0 5px 10px 0 rgba(0,0,0,.1);
+  border-radius: 10px;
+  z-index: 10;
+  background: white;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+.modal-btns-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.notification-container h3, h4 {
+  text-align: center;
 }

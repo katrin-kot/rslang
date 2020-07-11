@@ -1,8 +1,11 @@
 import NewCard from './NewCard';
 import LearningCard from './LearningCard';
 import swiper from './swiper';
-import { getNewWords, filterLearningWordsPerDate } from '../../services/SRgameWordsService';
-import { countErrors, createElement } from './helpers';
+import { getNewWords, filterLearningWordsPerDate, getHardWords } from '../../services/SRgameWordsService';
+import { getUserID } from '../../services/authService';
+import {
+  countErrors, createElement, createCountObj, createErrorObj,
+} from './helpers';
 
 export default class CardGame {
   constructor() {
@@ -11,6 +14,7 @@ export default class CardGame {
     this.rightAnswersSeriesArr = [];
     this.newCards = [];
     this.learningCards = [];
+    this.hardCards = [];
   }
 
   async createCardsForNewCardGame() {
@@ -28,6 +32,15 @@ export default class CardGame {
     });
   }
 
+  async createCardsForHardCardGame() {
+    const cards = await getHardWords({
+      userId: getUserID(),
+    });
+    cards.forEach((word) => {
+      this.hardCards.push(new LearningCard(word));
+    });
+  }
+
   async renderGame(cards) {
     document.body.append(CardGame.createAudioControl('on'));
     document.body.append(CardGame.createTranslationControl('on'));
@@ -41,6 +54,19 @@ export default class CardGame {
     });
     this.addControl();
     this.endGame(cards);
+  }
+
+  async renderGameHardCards() {
+    await this.createCardsForHardCardGame();
+    this.renderGame(this.hardCards);
+  }
+
+  async renderGameLearningAndNewCards() {
+    await this.createCardsForLearningCardGame();
+    await this.createCardsForNewCardGame();
+    const cards = this.learningCards.concat(this.newCards);
+    cards.sort(() => Math.random() - 0.5);
+    this.renderGame(cards);
   }
 
   async renderGameLearningCards() {
@@ -174,8 +200,8 @@ export default class CardGame {
 
     setTimeout(() => { setInput(); }, 2000);
 
-    document.querySelector('.swiper-slide-active .meaning-input').value = document.querySelector('.swiper-slide-active .meaning-input').dataset.word;
-    document.querySelector('.swiper-slide-active .example-input').value = document.querySelector('.swiper-slide-active .example-input').dataset.word;
+    if (document.querySelector('.swiper-slide-active .meaning-input')) document.querySelector('.swiper-slide-active .meaning-input').value = document.querySelector('.swiper-slide-active .meaning-input').dataset.word;
+    if (document.querySelector('.swiper-slide-active .example-input')) document.querySelector('.swiper-slide-active .example-input').value = document.querySelector('.swiper-slide-active .example-input').dataset.word;
 
     document.querySelector('.swiper-slide-active .word-input').addEventListener('input', () => {
       document.querySelector(`#${input.dataset.word}-check`).innerHTML = '';
@@ -257,11 +283,68 @@ export default class CardGame {
     document.addEventListener('click', (e) => {
       if (e.target.tagName === 'BUTTON') {
         if (swiper.activeIndex === document.querySelectorAll('.swiper-slide').length - 1) {
+          const words = document.querySelectorAll('.card-container');
+          const errObj = createErrorObj(words);
+          const countObj = createCountObj(words);
+          cards.forEach((card) => {
+            // eslint-disable-next-line no-underscore-dangle
+            card.addCountAndErrors(countObj[card.wordCard._id], errObj[card.wordCard._id]);
+          });
           cards.forEach(async (card) => {
             await card.createUserCard();
           });
+          this.renderStatistic(cards);
         }
       }
     });
+  }
+
+  renderStatistic(cards) {
+    const words = document.querySelectorAll('.card-container');
+    let errors = 0;
+    words.forEach((i) => {
+      // eslint-disable-next-line no-restricted-globals
+      const err = isNaN(parseInt(i.dataset.errors, 10)) ? 0 : parseInt(i.dataset.errors, 10);
+      errors += err;
+    });
+    const modal = createElement('div', 'modal statistics');
+    const statistics = createElement('div', 'statistics-container');
+    const template = `
+        <img id="logo" class ="logo" src="/assets/images/logo.png" alt="logo">
+        <h3 class="statistics-container_title">Серия завершена</h3>
+        <p><span>Карточек завершено:</span><span>${cards.length}</span></p>
+        <p><span>Правильные ответы:</span><span>${Math.round(100 - errors / (words.length / 100))}%</span></p>
+        <p><span>Новые слова:</span><span>${this.newCards.length}</span></p>
+        <p><span>Самая длинная серия правильных ответов:</span><span>${Math.max(...this.rightAnswersSeriesArr)}</span></p>`;
+
+    statistics.innerHTML = template;
+
+    const btn = createElement('button', 'statistics-btn', 'Дальше');
+    btn.addEventListener('click', CardGame.renderNotification);
+
+    statistics.append(btn);
+    modal.append(statistics);
+
+    document.body.innerHTML = '';
+    document.body.append(modal);
+  }
+
+  static renderNotification() {
+    const modal = createElement('div', 'modal');
+    const container = createElement('div', 'notification-container');
+    const btnsContainer = createElement('div', 'modal-btns-container');
+    const settings = createElement('a', 'modal-btn', 'Настройки');
+    settings.href = '/settings.html';
+    const template = `
+        <h3>4000 Essential English Words:1.Book</h3>
+        <h4>Ура! На сегодня всё.</h4>
+        <p>Есть ещё новые карточки, но дневной лимит исчерпан. Вы можете увеличить лимит в настройках, но, пожалуйста, 
+        имейте в виду, что чем больше новых карточек вы просмотрите, тем больше вам надо будет повторять в ближайшее время.</p>`;
+    container.innerHTML = template;
+    btnsContainer.append(settings);
+    container.append(btnsContainer);
+    modal.append(container);
+    document.body.innerHTML = '';
+    document.body.append(modal);
   }
 }

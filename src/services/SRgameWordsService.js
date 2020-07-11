@@ -1,7 +1,8 @@
-import { getUserID } from './authService';
-import { createUserWord, updateUserWord } from './userWordService';
+import { getToken, getUserID } from './authService';
+import { createUserWord, updateUserWord, getAllHardWords } from './userWordService';
 import { getTodayDate } from '../pages/SRgame/helpers';
-import { getToken } from './token';
+import { newWordsPerDay, learningWordsPerDay, isShowAllLearningWords } from '../pages/SRgame/settings';
+
 
 const userID = getUserID();
 
@@ -25,7 +26,7 @@ const getAllUserAggregatedWords = async (filter, wordsPerPage) => {
 
 export const getNewWords = async () => {
   const filterForNewWords = '{"userWord":null}';
-  const response = await getAllUserAggregatedWords(filterForNewWords, 5);
+  const response = await getAllUserAggregatedWords(filterForNewWords, newWordsPerDay);
   return response[0].paginatedResults;
 };
 
@@ -70,4 +71,38 @@ export const createWordWithError = async ({ wordId }) => {
     wordId,
     word: settings,
   });
+};
+
+export const getHardWords = async () => {
+  const filteredWords = [];
+  const allWords = await getLearningWords();
+  allWords.forEach((word) => {
+    const { status } = word.userWord.optional;
+    if (status === 'hard') {
+      filteredWords.push(word);
+    }
+  });
+  return filteredWords;
+};
+
+export const getHardWordsCount = async () => {
+  const words = await getAllHardWords({
+    userId: getUserID(),
+  });
+  return words.length;
+};
+
+export const getLearningWordsCount = async () => {
+  const words = await filterLearningWordsPerDate();
+  const wordsCount = words.length;
+  if (isShowAllLearningWords) {
+    return wordsCount;
+  }
+  if (wordsCount > learningWordsPerDay) {
+    return learningWordsPerDay;
+  }
+  if (wordsCount < learningWordsPerDay) {
+    return wordsCount;
+  }
+  return 0;
 };

@@ -9,14 +9,13 @@ export default class NewCard extends Card {
     this.settings = {
       difficulty: 'normal',
       optional: {
-        status: 'to_study', count: '1', learningGroup: '1', date: 0, dateToShow: '0',
+        status: 'to_study', count: '0', errors: '0', learningGroup: '1', date: 0, dateToShow: '0',
       },
     };
   }
 
   async createUserCard() {
     this.addDate();
-
     await createUserWord({
       userId: getUserID(),
       // eslint-disable-next-line no-underscore-dangle
@@ -31,9 +30,6 @@ export default class NewCard extends Card {
     });
     this.easyBtn.addEventListener('click', () => {
       this.settings.difficulty = 'easy';
-    });
-    this.againBtn.addEventListener('click', () => {
-      this.settings.optional.count += 1;
     });
     this.addToHardBtn.addEventListener('click', () => {
       this.settings.optional.status = 'hard';
@@ -53,5 +49,10 @@ export default class NewCard extends Card {
 
     date.setDate(date.getDate() + 1);
     this.settings.optional.dateToShow = `${addZeroToTime(date.getMonth() + 1)}/${addZeroToTime(date.getDate())}/${date.getFullYear()}`;
+  }
+
+  addCountAndErrors(count, errors) {
+    this.settings.optional.count = parseInt(this.settings.optional.count, 10) + count;
+    this.settings.optional.errors = parseInt(this.settings.optional.errors, 10) + errors;
   }
 }

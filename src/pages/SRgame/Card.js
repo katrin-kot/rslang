@@ -1,29 +1,25 @@
-/* eslint-disable no-unused-vars */
-// for settings variables
 import { createElement } from './helpers';
 import swiper from './swiper';
+import {
+  imageSetting,
+  audioSetting,
+  audioMeaningSetting,
+  audioExampleSetting,
+  textMeaningSetting,
+  textExampleSetting,
+  transcriptionSetting,
+  wordTranslateSetting,
+
+  showAnswerBtnSetting,
+  addToHardBtnSetting,
+  deleteWordBtnSetting,
+
+  difficultyBtnsSetting,
+} from './settings';
 
 const fontSize = 16;
 const letterLength = fontSize * 0.7;
 
-
-const wordSetting = true;
-const imageSetting = true;
-const audioSetting = true;
-const audioMeaningSetting = true;
-const audioExampleSetting = true;
-const textMeaningSetting = true;
-const textExampleSetting = true;
-const transcriptionSetting = true;
-const textExampleTranslateSetting = true;
-const textMeaningTranslateSetting = true;
-const wordTranslateSetting = true;
-
-const showAnswerBtnSetting = true;
-const addToHardBtnSetting = true;
-const deleteWordBtnSetting = true;
-
-const difficultyBtnsSetting = true;
 
 export default class Card {
   constructor({ ...wordCard }) {
@@ -45,7 +41,6 @@ export default class Card {
     this.error = 0;
     this.container = createElement('div', 'card-container swiper-slide');
   }
-
 
   static createCard() {
     const card = createElement('div', 'game-card');
@@ -118,7 +113,7 @@ export default class Card {
     if (imageSetting) template += this.createImage();
     template += this.createWordInput();
 
-    template += this.createTranscription();
+    if (transcriptionSetting) template += this.createTranscription();
     if (textExampleSetting) {
       template += this.createTextExample();
       template += this.createTextExampleTranslate();
