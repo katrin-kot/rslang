@@ -1,6 +1,10 @@
 body {
   margin: 0px;
   background-image: url('/assets/images/foggy_birds_@2X.png');
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 .game-wrapper {
@@ -8,7 +12,6 @@ body {
   width: 30%;
   min-width: 320px;
   max-width: 400px;
-  margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -150,6 +153,7 @@ input[type='checkbox']:checked + label:before {
   position: relative;
   width: 100%;
 }
+
 .game-score,
 .game-bonus {
   height: 60px;
@@ -157,7 +161,7 @@ input[type='checkbox']:checked + label:before {
 }
 
 .game-score {
-  padding: 20px 0px;
+  padding: 10px 0px;
   font-family: Poppins, sans-serif;
   font-size: 20px;
   color: #333;
@@ -166,35 +170,37 @@ input[type='checkbox']:checked + label:before {
   font-weight: 600;
 }
 
+.game-score .inner-content,
+.game-score .added-score {
+  display: block;
+}
+
+.game-score .added-score {
+  font-size: 15px;
+}
+
 .game-bonus {
   position: absolute;
   z-index: 1;
   width: 100%;
   top: 0px;
-  background-color: #fff;
   border-top-right-radius: 25px;
   border-top-left-radius: 25px;
   background-color: #d6d4e1;
+  background-size: contain;
+  background-blend-mode: soft-light;
 }
 
-.speaker {
-  position: absolute;
-  z-index: 2;
-  width: 75px;
-  height: 75px;
-  top: 0px;
-  left: 0%;
+.game-bonus.yellow {
+  background-image: url('/assets/images/roof-yellow.png');
 }
 
-.speaker img {
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
+.game-bonus.green {
+  background-image: url('/assets/images/roof-green.png');
 }
 
-.speaker img:hover {
-  width: 55px;
-  height: 55px;
+.game-bonus.blue {
+  background-image: url('/assets/images/roof-blue.png');
 }
 
 .countdown-timer {
@@ -203,7 +209,7 @@ input[type='checkbox']:checked + label:before {
   width: 75px;
   height: 75px;
   top: -10px;
-  left: 80%;
+  left: 77%;
 }
 
 .audio-check {
@@ -227,12 +233,17 @@ input[type='checkbox']:checked + label:before {
   margin-top: 40px;
 }
 
+.word-block {
+  position: relative;
+  width: 100%;
+}
+
 .game-word,
 .game-translation {
   width: 100%;
   height: 20px;
   box-sizing: border-box;
-
+  position: relative;
   padding: 20px 0px;
   font-family: Poppins, sans-serif;
   font-size: 20px;
@@ -240,6 +251,26 @@ input[type='checkbox']:checked + label:before {
   line-height: 1.2;
   text-align: center;
   font-weight: 600;
+}
+
+.speaker {
+  position: absolute;
+  z-index: 2;
+  width: 75px;
+  height: 75px;
+  top: 25px;
+  left: 25px;
+}
+
+.speaker img {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.speaker img:hover {
+  width: 55px;
+  height: 55px;
 }
 
 hr {
@@ -253,11 +284,19 @@ hr {
 }
 
 .correct-answer-icon {
+  opacity: 0;
+  margin: -15px auto 0px;
+  width: 35px;
+  height: 35px;
   background-size: contain;
   background-image: url('/assets/images/correct-icon.png');
 }
 
 .wrong-answer-icon {
+  opacity: 0;
+  margin: -15px auto 0px;
+  width: 35px;
+  height: 35px;
   background-size: contain;
   background-image: url('/assets/images/incorrect-icon.png');
 }
