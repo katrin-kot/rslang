@@ -38,7 +38,7 @@ export const header = () => {
       <nav>
         <ul class="primary">
           <li>
-            <a href="/main.html">Главная</a>
+            <a href="/SRgame.html">Главная</a>
           </li>
           <li>
             <a href="/dictionary.html">Словарь</a>
@@ -47,10 +47,10 @@ export const header = () => {
           <li>
             <a href="">Миниигры</a>
             <ul class="sub">
-              <li><a href="/SRgame.html">SRGame</a></li>
+              <li><a href="/SRgame.html">Spaced repetition</a></li>
               <li><a href="/speakIt.html">SpeakIt</a></li>
               <li><a href="/audioCall.html">AudioCall</a></li>
-              <li><a href="/memory.html">MemoryGame</a></li>
+              <li><a href="/memory.html">Memory</a></li>
               <li><a href="/savanna.html">Savanna</a></li>
               <li><a href="/sprint.html">Sprint</a></li>
             </ul>
