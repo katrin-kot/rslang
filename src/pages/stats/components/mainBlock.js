@@ -1,21 +1,28 @@
 import './mainBlock.css';
 import * as d3 from 'd3';
+import {getRandomIntInclusive} from "../features/random";
 
 let instances = 0;
 
 function getAnswerPercent(data) {
   const { correct, wrong } = Object.values(data).reduce((acc, cur) => {
-    const [correctLocal, wrongLocal] = cur.score.split('-');
-    return { correct: acc.correct + +correctLocal, wrong: acc.wrong + +wrongLocal };
+    if (cur.score) {
+      const [correctLocal, wrongLocal] = cur.score.split('-');
+      return { correct: acc.correct + +correctLocal, wrong: acc.wrong + +wrongLocal };
+    }
+    return acc;
   }, { correct: 0, wrong: 0 });
   const total = correct + wrong;
-  return (correct / total) * 100;
+  return (correct / (total || 1)) * 100;
 }
 
 function getNewWordsCount(data) {
   return Object.values(data).reduce((acc, cur) => {
-    const [correct, wrong] = cur.score.split('-');
-    return acc + +correct + +wrong;
+    if(cur.score) {
+      const [correct, wrong] = cur.score.split('-');
+      return acc + +correct + +wrong;
+    }
+     return acc;
   }, 0);
 }
 
@@ -33,8 +40,8 @@ export function mainBlock(dataFromServer) {
   `;
   setTimeout(() => {
     // Course Completion Chart
-    const percent = 0.9;
-    const text = `${percent * 100}%`;
+    const percent = Math.random().toFixed(2);
+    const text = `${(percent * 100).toFixed(0)}%`;
     const pieChartWidth = 260;
     const pieChartHeight = 260;
     const thickness = 30;
@@ -127,10 +134,10 @@ export function mainBlock(dataFromServer) {
       yAxis.selectAll('text').style('font-size', '12px');
     };
     const data = [
-      { name: 'Кол-во пройденных карточек', value: 33 },
+      { name: 'Кол-во пройденных карточек', value: getRandomIntInclusive(0, 40) },
       { name: '% Правильных ответов', value: Math.round(getAnswerPercent(dataFromServer)) },
       { name: 'Кол-во новых слов', value: getNewWordsCount(dataFromServer) },
-      { name: 'Серия правильных ответов', value: 17 },
+      { name: 'Серия правильных ответов', value: getRandomIntInclusive(0, 40) },
     ];
     barChart(`#${barChartId}`, data);
   });

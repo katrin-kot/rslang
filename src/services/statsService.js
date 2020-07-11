@@ -30,12 +30,19 @@ export const addEmptyStatistics = ({ userId }) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        optional: {},
+        optional: {
+          audioCall: {},
+          savanna: {},
+          speakIt: {},
+          SRgame: {},
+          memory: {}
+        },
       }),
     });
 };
 export const putStatistics = ({ userId, payload }) => {
   const token = getToken();
+  const statistics = getStatistics({userId})
   return fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/statistics`,
     {
       method: 'PUT',
@@ -45,6 +52,6 @@ export const putStatistics = ({ userId, payload }) => {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(Object.assign(statistics, payload)),
     });
 };

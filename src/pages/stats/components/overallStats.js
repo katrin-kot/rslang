@@ -4,7 +4,7 @@ import Chart from 'chart.js';
 let instances = 0;
 
 
-export function overallStats(dataFromServer) {
+export function overallStats(dataFromServer,settings) {
   const canvasContainer = document.createElement('div');
   const canvas = document.createElement('canvas');
   canvas.id = `myChart-${instances += 1}`;
@@ -26,8 +26,11 @@ export function overallStats(dataFromServer) {
           pointHighlightStroke: 'rgba(220,220,220,1)',
           backgroundColor: 'rgba(0,100,120,0.8)',
           data: Object.values(dataFromServer).map((el) => {
-            const [correct, wrong] = el.score.split('-');
-            return +correct + +wrong;
+            if(el.score) {
+              const [correct, wrong] = el.score.split('-');
+              return +correct + +wrong;
+            }
+            return 0;
           }),
         },
         {
@@ -39,7 +42,7 @@ export function overallStats(dataFromServer) {
           pointHighlightFill: '#fff',
           pointHighlightStroke: 'rgba(220,220,220,1)',
           backgroundColor: 'rgba(34,139,34,0.7)',
-          data: [40, 40, 40, 40, 40, 40, 40],
+          data: Object.keys(dataFromServer).map(() => settings.wordsPerDay),
         },
       ],
     };
