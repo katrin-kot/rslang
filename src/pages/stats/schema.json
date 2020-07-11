@@ -1,0 +1,43 @@
+{
+  "totalData": {
+    "courseCompletionPercent": 0.9,
+    "cardsCompleted": 25,
+    "correctAnswersPercent": 0.87,
+    "newWordsAmount": 12,
+    "correctAnswersStreak": 17
+  },
+  "learnedWordsByOneWeek": [
+    {
+      "date": "16/06/2020",
+      "learnedWords": 36,
+      "dailyNorm": 40
+    },
+    {
+      "date": "17/06/2020",
+      "learnedWords": 46,
+      "dailyNorm": 40
+    },
+    {
+      "date": "18/06/2020",
+      "learnedWords": 16,
+      "dailyNorm": 40
+    }
+  ],
+  "learnedWordsByAllWeeks": [
+    {
+      "weekStart": "16/06/2020",
+      "weekEnd": "23/06/2020",
+      "learnedWords": 120
+    },
+    {
+      "weekStart": "24/06/2020",
+      "weekEnd": "31/06/2020",
+      "learnedWords": 95
+    },
+    {
+      "weekStart": "01/07/2020",
+      "weekEnd": "08/07/2020",
+      "learnedWords": 103
+    }
+  ]
+}

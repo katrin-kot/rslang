@@ -7,11 +7,17 @@ import {
 import { renderAllCards } from './renderAllCards';
 import { getUserSettings } from '../../services/settingsService';
 import { getUserID } from '../../services/authService';
+import { getToken } from '../../services/token';
+import { errorWindow } from '../../components/main/errorWindow/errorWindow';
+import { showSpinner, hideSpinner, renderSpinner } from './spinner';
 
 const body = document.querySelector('body');
 const main = document.createElement('main');
 const userId = getUserID();
-
+const token = getToken();
+if (!userId || !token) {
+  errorWindow();
+}
 const typeWords = [
   {
     name: 'to_study',
@@ -64,6 +70,7 @@ main.innerHTML = `
   </div></div>
   
 `;
+renderSpinner(main);
 const col1 = main.querySelector('.navigation');
 col1.appendChild(renderNavTabs());
 const col2 = main.querySelector('.words-content');
@@ -76,6 +83,7 @@ const loaders = {
 };
 
 async function initContent(user, name) {
+  showSpinner(main);
   const content = await loaders[name](user);
   const activeTab = document.querySelector('.show');
   const allSettings = await getUserSettings({ userId });
@@ -83,6 +91,7 @@ async function initContent(user, name) {
   const wordsContent = await renderAllCards(content, settings);
   activeTab.innerHTML = '';
   activeTab.appendChild(wordsContent);
+  hideSpinner(main);
 }
 
 document.addEventListener('DOMContentLoaded', () => {

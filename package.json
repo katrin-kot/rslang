@@ -5,7 +5,10 @@
   "main": "index.js",
   "dependencies": {
     "@babel/polyfill": "^7.8.7",
+    "chart.js": "^2.9.3",
     "core-js": "^3.6.5",
+    "d3": "^5.16.0",
+    "eslint-loader": "^4.0.2",
     "postcss-preset-env": "^6.7.0",
     "swiper": "^5.4.5"
   },
@@ -33,10 +36,14 @@
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "webpack-dev-server": "^3.10.3",
+    "file-loader": "^6.0.0",
+    "image-webpack-loader": "^6.0.0",
+    "postcss-preset-env": "^6.7.0",
+    "svg-path-properties": "^1.0.4"
   },
   "scripts": {
-    "lint": "eslint ./src",
+    "lint": "eslint ./src --fix",
     "test": "jest",
     "watch": "webpack --watch",
     "start": "webpack-dev-server --open",

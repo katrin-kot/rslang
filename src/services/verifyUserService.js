@@ -1,6 +1,7 @@
 import { errorWindow } from '../components/main/errorWindow/errorWindow';
 import { getAllUserWords } from './userWordService';
-import { getUserID, getToken } from './authService';
+import { getUserID } from './authService';
+import { getToken } from './token';
 
 export const checkUserLogin = async () => {
   const userId = getUserID();

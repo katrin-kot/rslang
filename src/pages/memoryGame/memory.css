@@ -12,16 +12,19 @@ html {
 }
 
 body {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   background: url(https://image.freepik.com/free-vector/cute-seamless-pattern-with-octopus-jellyfish-starfish-crab_76147-182.jpg);
 }
 
+.container-fluid {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 h3 {
-    color: #10467b;
-    font-weight: 600;
+  color: #10467b;
+  font-weight: 600;
+  margin-top: 50px;
 }
 
 .form-difficult label:first-child:before {
@@ -32,10 +35,22 @@ body .form-difficult {
   width: 300px;
 }
 
+body .form-difficult .label-difficult {
+  padding: 0px 0 3px 30px;
+}
+
+.memory-game {
+  max-width: 740px;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .memory-card {
-  width: calc(25% - 10px);
-  height: calc(33.333% - 10px);
+  width: 180px;
+  height: 200px;
   margin: 5px;
+  margin-top: 20px;
   position: relative;
   box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.3);
   transform: scale(1);
@@ -45,7 +60,7 @@ body .form-difficult {
 
 .mainCard {
   width: 400px;
-  height: 380px;
+  height: 460px;
 }
 
 .memory-card:active {
@@ -64,8 +79,21 @@ body .form-difficult {
   backface-visibility: hidden;
 }
 
+.mainCard .front-face {
+  font-size: 1rem;
+  padding-top: 30px;
+}
+
+.front-face .btn-sm {
+  margin-left: 40px;
+}
+
 .front-face {
   transform: rotateY(180deg);
+  font-weight: 500;
+  padding-top: 80px;
+  font-size: 1.1rem;
+  text-align: center;
 }
 
 .memory-card.flip {
@@ -79,4 +107,121 @@ body .form-difficult {
 .btn-sm {
   margin-left: 250px;
   margin-top: 10px;
+  position: absolute;
+  bottom: 10px;
+}
+
+.game-header {
+  margin-top: 10px;
+  width: 100%;
+}
+
+.game-header button {
+  margin-left: 40px;
+}
+
+.score {
+  width: 60px;
+  height: 60px;
+  padding-top: 13px;
+  text-align: center;
+  border: none;
+  border-radius: 50%;
+  font-size: 24px;
+  font-weight: 900;
+  color: #39b919;
+  margin-left: calc(100% / 3);
+  background-color: #ffffff;
+}
+
+.game-over {
+  opacity: 0.7;
+  background-color: beige;
+  margin: 1.2rem auto;
+  padding: 2rem;
+}
+
+.final-text {
+  font-size: 1.3rem;
+  color: #000000;
+}
+
+.final-text span {
+  color:rgb(252, 2, 56);
+}
+
+.input-group {
+  margin-left: 1.2rem;
+  width: auto;
+}
+
+.form-control {
+  width: auto;
+  height: auto;
+}
+
+.msg {
+  position: fixed;
+  overflow-y: scroll;
+  top: 30%;
+  bottom: 0;
+  background-color: #ffffff;
+  width: 80%;
+  right: 0;
+  transition: all 1s;
+  min-height: 400px;
+}
+
+.msg .btn {
+  position: fixed;
+  top: 30%;
+  width: 200px;
+  height: 40px;
+  background: blue;
+  color: #fff;
+  cursor: pointer;
+  transform-origin: left top 0;
+  transform: rotate(90deg);
+  text-align: center;
+}
+
+.msg.hidden {
+  right: -80%;
+}
+
+@media (max-width: 400px) {
+  .front-face,
+  .back-face {
+    height: inherit;
+  }
+
+  .input-group {
+    margin-left: 0;
+  }
+
+  .btn-sm {
+    margin-left: 180px;
+  }
+
+  .mainCard {
+    width: 320px;
+    height: 460px;
+  }
+
+  .memory-game {
+    margin-left: 20px;
+  }
+
+  .memory-game .memory-card {
+    width: 140px;
+    height: 180px;
+  }
+
+  .memory-game .back-face {
+    padding: 10px;
+  }
+
+  .btn-outline-primary {
+    margin-top: 10px;
+  }
 }
