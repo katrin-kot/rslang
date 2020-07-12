@@ -64,7 +64,7 @@ export default class GameWindow {
   redirectToMainPage() {
     this.clearGameWindow();
 
-    window.location.pathname = '/main.html';
+    window.location.pathname = '/index.html';
   }
 
   openGamePage(startPage, gamePage, resultPage) {
