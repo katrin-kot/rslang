@@ -10,8 +10,11 @@ import { getUserID } from '../../services/authService';
 import { getToken } from '../../services/token';
 import { errorWindow } from '../../components/main/errorWindow/errorWindow';
 import { showSpinner, hideSpinner, renderSpinner } from './spinner';
+import { header } from '../../components/main/header/header';
+import { footer } from '../../components/main/footer/footer';
 
 const body = document.querySelector('body');
+header();
 const main = document.createElement('main');
 const userId = getUserID();
 const token = getToken();
@@ -64,9 +67,9 @@ function renderTabContent() {
 }
 main.innerHTML = `
 <div class="row">
-  <div class="col-3 navigation">
+  <div class="col-12 col-sm-3 navigation">
   </div>
-  <div class="col-9 words-content">
+  <div class="col-12 col-sm-9 words-content">
   </div></div>
   
 `;
@@ -99,4 +102,5 @@ document.addEventListener('DOMContentLoaded', () => {
   const navTabs = main.querySelectorAll('.nav-link');
   navTabs.forEach((elem) => elem.addEventListener('click', () => initContent({ userId }, elem.dataset.content)));
   body.appendChild(main);
+  footer();
 });

@@ -69,7 +69,6 @@ export function gameOver(score, words, error) {
   msg.querySelector('.btn').addEventListener('click', (event) => {
     event.target.parentNode.classList.toggle('hidden');
   });
-  debugger
   if (Array.isArray(window.idError)) {
     window.idError.forEach(async (elem) => {
       try {
