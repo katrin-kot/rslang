@@ -37,6 +37,7 @@ const config = {
     memory: './src/pages/memoryGame/memory.js',
     sprint: './src/pages/sprint/sprint.js',
     promo: './src/pages/promo/promo.js',
+    team: './src/pages/team/team.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -186,6 +187,7 @@ const config = {
       title: 'RS lang-main',
       favicon: './assets/images/favicon.ico',
       chunks: ['main'],
+      template: 'src/pages/main/main.html',
       filename: './main.html',
     }),
     new HtmlWebPackPlugin({
@@ -262,6 +264,13 @@ const config = {
       chunks: ['promo'],
       template: 'src/pages/promo/promo.html',
       filename: './promo.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['team'],
+      template: 'src/pages/team/team.html',
+      filename: './team.html',
     }),
     new CopyWebpackPlugin([
       {

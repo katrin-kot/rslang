@@ -1,4 +1,5 @@
 import Chart from 'chart.js';
+import {getRandomIntInclusive} from "../features/random";
 
 
 let instances = 0;
@@ -22,7 +23,7 @@ export function statsTable() {
       },
     };
 
-    const wordsLearned = [232, 170, 120, 101, 123, 180, 280, 65, 100, 99];
+    const wordsLearned = new Array(10).fill(0).map(() => getRandomIntInclusive(0,300));
 
     const labels = [
       'Неделя 1',
