@@ -9,11 +9,11 @@ const toggleMenuClasses = () => {
 
   document.addEventListener('click', async (event) => {
     if (event.target.classList.contains('burger-menu')) {
-      burgerMenu.classList.add('selected');
-      navMenu.classList.add('selected');
+      burgerMenu.classList.add('selected-nav');
+      navMenu.classList.add('selected-nav');
     } else {
-      burgerMenu.classList.remove('selected');
-      navMenu.classList.remove('selected');
+      burgerMenu.classList.remove('selected-nav');
+      navMenu.classList.remove('selected-nav');
     }
 
     if (
@@ -21,9 +21,9 @@ const toggleMenuClasses = () => {
       || userMenu.classList.contains('unauthorized')
     ) {
       if (event.target.parentNode.classList.contains('user-profile')) {
-        userMenu.classList.toggle('selected');
-      } else if (userMenu.classList.contains('selected')) {
-        userMenu.classList.remove('selected');
+        userMenu.classList.toggle('selected-nav');
+      } else if (userMenu.classList.contains('selected-nav')) {
+        userMenu.classList.remove('selected-nav');
       }
     }
   });
@@ -46,7 +46,7 @@ const selectCurrentPage = () => {
 
   links.forEach((link) => {
     if (link.getAttribute('href') === window.location.pathname) {
-      link.parentElement.classList.add('selected');
+      link.parentElement.classList.add('selected-nav');
     }
   });
 };
@@ -76,7 +76,7 @@ export const header = () => {
     <div class="header-wrap">
       <span class="decor"></span>
       <nav>
-        <ul class="primary">
+        <ul class="primary-nav">
           <li>
             <a href="/index.html">Главная</a>
           </li>

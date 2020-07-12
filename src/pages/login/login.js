@@ -76,7 +76,7 @@ document.querySelector('.validate-form').addEventListener('submit', (event) => {
     })
       .then((res) => getUserSettings({ userId: res.userId }))
       .then(() => {
-        window.location.pathname = '/SRgame.html';
+        window.location.pathname = '/index.html';
       })
       .catch((err) => renderError(err));
   }

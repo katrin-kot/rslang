@@ -80,7 +80,7 @@
   float: left;
 }
 
-.site-header li.selected > a {
+.site-header li.selected-nav > a {
   box-sizing: border-box;
   box-shadow: 0px -4px 0px 0px yellowgreen;
 }
@@ -107,17 +107,17 @@
   border-bottom-left-radius: 8px;
 }
 
-.site-header ul.primary li a {
+.site-header ul.primary-nav li a {
   display: block;
   padding: 20px 30px;
   border-right: 1px solid #3d3d3d;
 }
 
-.site-header ul.primary li:last-child a {
+.site-header ul.primary-nav li:last-child a {
   border-right: none;
 }
 
-.site-header ul.primary li a:hover {
+.site-header ul.primary-nav li a:hover {
   color: #cde2e9;
 }
 
@@ -150,18 +150,18 @@
   background: #eeeeee;
 }
 
-.site-header ul.primary li:hover ul {
+.site-header ul.primary-nav li:hover ul {
   display: block;
   background: #fff;
 }
 
-.site-header ul.primary li:hover a {
+.site-header ul.primary-nav li:hover a {
   background: #fff;
   color: #666;
   text-shadow: none;
 }
 
-.site-header ul.primary li:hover > a {
+.site-header ul.primary-nav li:hover > a {
   color: #000;
 }
 
@@ -179,7 +179,7 @@
     cursor: pointer;
   }
 
-  .burger-menu.selected {
+  .burger-menu.selected-nav {
     display: none;
   }
 
@@ -189,7 +189,7 @@
     margin-top: 0px;
   }
 
-  .header-wrap.selected {
+  .header-wrap.selected-nav {
     display: inline-block;
   }
 
@@ -197,18 +197,18 @@
     float: none;
   }
 
-  .site-header li.selected > a {
+  .site-header li.selected-nav > a {
     box-shadow: none;
     border-left: 5px solid yellowgreen;
   }
 
-  .site-header ul.primary li:hover a {
+  .site-header ul.primary-nav li:hover a {
     background: none;
     color: #8b8b8b;
     text-shadow: 1px 1px #000;
   }
 
-  .site-header ul.primary li:hover ul {
+  .site-header ul.primary-nav li:hover ul {
     display: block;
     background: #272727;
     color: #fff;
@@ -241,8 +241,8 @@
   }
 }
 
-.user-profile.authorized.selected .authorized-block,
-.user-profile.unauthorized.selected .unauthorized-block {
+.user-profile.authorized.selected-nav .authorized-block,
+.user-profile.unauthorized.selected-nav .unauthorized-block {
   display: block;
 }
 
