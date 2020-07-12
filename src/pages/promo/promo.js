@@ -1,5 +1,6 @@
 import './promo.css';
 import { header } from '../../components/main/header/header';
+import { footer } from '../../components/main/footer/footer';
 
 const body = document.querySelector('body');
 header();
@@ -202,3 +203,4 @@ main.innerHTML = `
 </div>
 `;
 body.appendChild(main);
+footer();
