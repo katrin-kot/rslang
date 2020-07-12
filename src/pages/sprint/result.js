@@ -1,6 +1,9 @@
 import GameWindow from './gameWindow';
 import { getUserWord } from '../../services/userWordService';
-import { createWordWithError } from '../../services/SRgameWordsService';
+import {
+  createWordWithError,
+  updateWordWithError,
+} from '../../services/SRgameWordsService';
 import { getStatistics, putStatistics } from '../../services/statsService';
 
 export default class Result extends GameWindow {
@@ -114,18 +117,33 @@ export default class Result extends GameWindow {
     });
   }
 
+  filterWrongWords(words) {
+    const result = [];
+
+    words.forEach((word) => {
+      // eslint-disable-next-line no-underscore-dangle
+      if (result.indexOf(word._id) < 0) {
+        // eslint-disable-next-line no-underscore-dangle
+        result.push(word._id);
+      }
+    });
+
+    return result;
+  }
+
   async updateUserWordByResult(words) {
-    words.forEach(async (item) => {
+    const wordIds = this.filterWrongWords(words);
+
+    wordIds.forEach(async (id) => {
       try {
         await getUserWord({
           userId: localStorage.userID,
-          // eslint-disable-next-line no-underscore-dangle
-          wordId: item._id,
+          wordId: id,
         });
+        await updateWordWithError({ wordId: id });
       } catch (err) {
         try {
-          // eslint-disable-next-line no-underscore-dangle
-          createWordWithError({ wordId: item._id });
+          await createWordWithError({ wordId: id });
           // eslint-disable-next-line no-empty
         } catch (error) {}
       }
