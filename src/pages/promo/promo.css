@@ -1,0 +1,177 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+  }
+  
+  body,
+  html {
+    height: 100%;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+  }
+
+  main { 
+    background: url(../../../assets/images/bg.jpg) no-repeat center center fixed; 
+    background-size: cover;
+  }
+
+h1,h2,h3,h4 {
+    font-family: 'Oswald', sans-serif;
+    color: #47adcb;
+}
+
+.divider {
+  background-image: url('../../../assets/images/divider-pattern.png');
+  background-repeat: repeat-x;
+  height: 4px;
+  width: 100%;
+}
+
+/* -------- Carousel styles ---------  */
+
+.carousel-control {
+  border: none;
+  width: 60px;
+  height: 60px;
+  line-height: 50px;
+  font-size: 40px;
+  border-radius: 3px;
+}
+
+.carousel-caption {
+  background: none;
+  max-width: 800px;
+  top: 150px;
+  padding: 0 200px;
+}
+
+.carousel-logo {
+  width: auto;
+  height: 100px;
+}
+
+.carousel-caption h1 {
+  color:#ffffff;
+  text-shadow: 0px 2px #222;
+}
+
+.carousel-caption a {
+  margin-top: 20px;
+}
+
+.carousel-item {
+  text-align: center;
+  height: 400px;
+  color: #ffffff;
+}
+
+.carousel-item:nth-child(2){
+  background: url(../../../assets/images/abstract.png)  no-repeat center center fixed; 
+  background-size: auto;
+  
+}
+
+.carousel-item:nth-child(3){
+  background: url(../../../assets/images/fashion.png) no-repeat center center fixed; 
+  background-size: cover;
+
+}
+
+.carousel-image {
+  width: 100%;
+  height: inherit;
+}
+
+/* -------- Page styles ---------  */
+
+#heading,
+#screenshots,
+#features,
+#download {
+  text-align: center;
+  padding: 50px 0;
+}
+
+/* #about div.row {
+  padding: 50px 0;
+} */
+
+#screenshots h1 {
+  padding-bottom: 30px;
+}
+
+.img-polaroid {
+  width: inherit;;
+}
+@media (max-width: 979px) {
+  .carousel-caption {
+    height: 500px;
+  }
+ 
+}
+
+@media (max-width: 767px) {
+ 
+  .carousel-item {
+    height: 300px;
+  }
+  .carousel img {
+    height: 300px;
+  }
+  .carousel-caption {
+    width: 65%;
+    padding: 0 100px;
+    top: 50px;
+  }
+  .carousel-caption h1 {
+    font-size: 30px;
+  }
+  .carousel-caption .lead,
+  .carousel-caption .btn {
+    font-size: 16px;
+  }
+
+  #screenshots .span2 {
+    padding-bottom: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .img-polaroid {
+    width: 280px;
+  }
+
+  .carousel-item {
+    height: 300px;
+  }
+  .carousel-img {
+    height: 300px;
+  }
+  .carousel-caption {
+    width: 55%;
+    padding: 0 100px;
+    position: absolute;
+    top: 50px;
+  }
+  .carousel-caption h1 {
+    font-size: 20px;
+  }
+  .carousel-caption .lead,
+  .carousel-caption .btn {
+    font-size: 14px;
+  }
+
+  .row {
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+
+  .inline li {
+    padding-bottom: 10px;
+  }
+
+  .form-inline button {
+    margin-top: 10px;
+  }
+}
