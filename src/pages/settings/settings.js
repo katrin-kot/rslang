@@ -1,6 +1,7 @@
 import './settings.css';
 import { initHandlers } from './initHandlers';
-import { getToken, getUserID } from '../../services/authService';
+import { getUserID } from '../../services/authService';
+import { getToken } from '../../services/token';
 import { errorWindow } from '../../components/main/errorWindow/errorWindow';
 
 const body = document.querySelector('body');

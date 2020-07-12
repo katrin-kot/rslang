@@ -188,14 +188,14 @@ const config = {
       favicon: './assets/images/favicon.ico',
       chunks: ['main'],
       template: 'src/pages/main/main.html',
-      filename: './main.html',
+      filename: './index.html',
     }),
     new HtmlWebPackPlugin({
       title: 'RS lang',
       favicon: './assets/images/favicon.ico',
       chunks: ['login'],
       template: 'src/pages/login/login.html',
-      filename: './index.html',
+      filename: './login.html',
     }),
 
     new HtmlWebPackPlugin({

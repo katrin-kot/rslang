@@ -1,4 +1,5 @@
-import { getToken, getUserID } from './authService';
+import { getUserID } from './authService';
+import { getToken } from './token';
 import { createUserWord, updateUserWord, getAllHardWords } from './userWordService';
 import { getTodayDate } from '../pages/SRgame/helpers';
 import { newWordsPerDay, learningWordsPerDay, isShowAllLearningWords } from '../pages/SRgame/settings';

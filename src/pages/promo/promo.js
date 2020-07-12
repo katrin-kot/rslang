@@ -1,6 +1,8 @@
 import './promo.css';
+import { header } from '../../components/main/header/header';
 
 const body = document.querySelector('body');
+header();
 const main = document.createElement('main');
 main.innerHTML = `
 <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
@@ -13,20 +15,20 @@ main.innerHTML = `
     <div class="carousel-item active">
       <video width="100%" height="auto" preload="auto" autoplay="autoplay"
       loop="loop"><source src="../../../assets/video/Яркий  ФОН. Анимация.mp4"></source></video>
-      <div class="carousel-caption d-none d-md-block">
+      <div class="carousel-caption d-md-block">
         <h1>Приветствуем вас в RS LangOctopus</h1>
-        <img class="carousel-logo" src="../../../assets/images/logo.png">
+        <img class="carousel-logo d-none" src="../../../assets/images/logo.png">
       </div>
     </div>
     <div class="carousel-item">
       <img src="https://media.istockphoto.com/photos/colorful-english-word-cube-on-white-paper-background-picture-id646095094?k=6&m=646095094&s=612x612&w=0&h=tuJpV9Glz39spdzAp6XhEftIzPoHNWrFop-7a_8RJlc=" class="carousel-img" alt="...">
-      <div class="carousel-caption d-none d-md-block">
+      <div class="carousel-caption d-md-block">
         <h1>Учи слова</h1>
       </div>
     </div>
     <div class="carousel-item">
       <img src="https://image.freepik.com/free-photo/english-lettering-blue-wooden-background_23-2148293461.jpg" class="carousel-img" alt="...">
-      <div class="carousel-caption d-none d-md-block">
+      <div class="carousel-caption  d-md-block">
         <h1>Занимайся чаще</h1>
       </div>
     </div>
