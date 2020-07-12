@@ -67,19 +67,23 @@ export default class Game extends GameWindow {
 
     const gameField = `
       <div class="game-wrapper">
-        <div class="game-bonus">
+        <div class="game-bonus yellow">
           <div class="game-score">
             <span class="inner-content">0</span>
+            <span class="added-score"></span>
             ${this.getCanvas()}
-            <div class="speaker">
-              <img src="https://cdn.discordapp.com/attachments/624997901248233505/728348020193886218/speaker.svg">
-            </div>
             <div class="audio-check audio-true"></div>
           </div>
         </div>
         ${this.getGameImage()}
-        ${this.addDivByClass('game-word')}
-        ${this.addDivByClass('game-translation')}
+        <div class="word-block">
+          <div class="speaker">
+          <img src="https://cdn.discordapp.com/attachments/624997901248233505/728348020193886218/speaker.svg">
+          </div>
+          ${this.addDivByClass('game-word')}
+          ${this.addDivByClass('game-translation')}
+        </div>
+
         <hr>
         <div class="answer-check"></div>
         ${this.addDivByClass('buttons-block', this.getButton(this.buttonList))}
@@ -235,11 +239,14 @@ export default class Game extends GameWindow {
       this.correctQueue += 1;
       this.audioSignal(true);
       this.videoSignal(true);
-      this.updateScore();
+      this.updateScore(true);
+      this.updateRoof();
     } else {
       this.correctQueue = 0;
       this.audioSignal(false);
       this.videoSignal(false);
+      this.updateScore(false);
+      this.updateRoof();
     }
   }
 
@@ -305,11 +312,40 @@ export default class Game extends GameWindow {
     this.words.correctWords.push(this.words.wrongWords.pop());
   }
 
-  updateScore() {
-    const currentScore = document.querySelector('.game-score span');
+  updateScore(isCorrect) {
+    const currentScore = document.querySelector('.game-score .inner-content');
+    const addedScore = document.querySelector('.game-score .added-score');
+    const additional = this.calculateScore();
 
-    this.words.score += this.calculateScore();
-    currentScore.innerText = this.words.score;
+    if (isCorrect) {
+      this.words.score += additional;
+      currentScore.innerText = this.words.score;
+      addedScore.innerText = `+${additional} очков за слово`;
+    } else {
+      addedScore.innerText = '';
+    }
+  }
+
+  updateRoof() {
+    const roofDiv = document.querySelector('.game-bonus');
+    const roofType = Math.floor(this.correctQueue / 4);
+
+    roofDiv.classList.remove('yellow', 'green', 'blue');
+
+    switch (roofType) {
+      case 0: {
+        roofDiv.classList.add('yellow');
+        break;
+      }
+      case 1: {
+        roofDiv.classList.add('green');
+        break;
+      }
+      default: {
+        roofDiv.classList.add('blue');
+        break;
+      }
+    }
   }
 
   audioSignal(isCorrect) {
@@ -333,14 +369,28 @@ export default class Game extends GameWindow {
   videoSignal(isCorrect) {
     const answerCheckDiv = document.querySelector('.answer-check');
 
-    answerCheckDiv.classList.remove('correct-answer-icon');
-    answerCheckDiv.classList.remove('wrong-answer-icon');
+    answerCheckDiv.classList.remove('correct-answer-icon', 'wrong-answer-icon');
 
     if (isCorrect) {
-      answerCheckDiv.classList.add('correct-answer-icon');
+      answerCheckDiv.classList.toggle('correct-answer-icon');
     } else {
-      answerCheckDiv.classList.add('wrong-answer-icon');
+      answerCheckDiv.classList.toggle('wrong-answer-icon');
     }
+
+    answerCheckDiv.animate(
+      [
+        {
+          opacity: 1,
+        },
+        {
+          opacity: 0,
+        },
+      ],
+      {
+        duration: 1000,
+        iterations: 1,
+      },
+    );
   }
 
   calculateScore() {
