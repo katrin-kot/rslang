@@ -253,6 +253,8 @@
 
 .authorized-block,
 .unauthorized-block {
+  z-index: 20;
+  position: absolute;
   display: none;
   text-align: left;
   width: 150px;

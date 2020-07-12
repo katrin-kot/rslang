@@ -6,9 +6,15 @@
 
 body,
 html {
+  display: flex;
+  flex-direction: column;
   height: 100%;
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
+}
+
+main {
+  flex:1;
 }
 
 .row {
@@ -17,7 +23,7 @@ html {
 
 .words-content {
   justify-content: center;
-  height: 100vh;
+  height: calc(100%-128px);
 }
 
 .tab-header {
