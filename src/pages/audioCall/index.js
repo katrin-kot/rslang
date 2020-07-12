@@ -1,11 +1,17 @@
 /* eslint-disable no-param-reassign */
 import './audioCall.css';
-
 import createNode from '../../helpers/createNode';
 import diffLevel from '../../components/main/difficultOptions/difficultOptions';
-import { getWordforGame } from '../../services/userWordService';
-import { getUserID } from '../../services/authService';
+import { getWordforGame } from './words';
 import { checkUserLogin } from '../../services/verifyUserService';
+import ResultPage from './resultPage';
+import StatsPage from './statsPage';
+
+const QUANTITY_BUTTONS = 5;
+const MIN_QUANTITY_WORDS = 10;
+const MAX_QUANTITY_WORDS = 20;
+const MIN_QUANTITY_RAUNDS = 0;
+const MAX_QUANTITY_RAUNDS = 29;
 
 class Game {
   constructor() {
@@ -26,19 +32,17 @@ class Game {
     this.startPageButton = createNode('button', 'start-page__button');
     this.startPageButton.textContent = 'Начать';
 
-    this.exitButton = createNode('button', 'button', 'button--return');
-
     this.app.append(this.appContainer);
   }
 
   async render() {
     this.startLoading();
     await checkUserLogin();
+
     this.startPage.append(this.startPageTitle, this.startPageDescription, this.startPageButton);
-    this.appContainer.append(this.exitButton, this.startPage);
+    this.appContainer.append(this.startPage);
 
     this.startGame();
-    this.exitGame();
     this.stopLoading();
   }
 
@@ -49,12 +53,6 @@ class Game {
 
   stopLoading() {
     this.loading.remove();
-  }
-
-  exitGame() {
-    this.exitButton.addEventListener('click', () => {
-      console.log('ПЕРЕХОДИМ НА СТРАНИЦУ ТРЕНИРОВОК');
-    });
   }
 
   startGame() {
@@ -72,11 +70,14 @@ class Game {
     this.diffLevel = createNode('div', 'difficult-block');
     this.diffLevel.innerHTML = diffLevel();
 
-    this.form = createNode('form', 'await-block__form');
+    this.form = createNode('div', 'await-block__form');
 
     this.inputField = createNode('input', 'form__input');
     this.inputField.setAttribute('placeholder', 'Введите количество слов');
     this.inputField.setAttribute('required', 'true');
+
+    this.raundTitle = createNode('span', 'raund__title');
+    this.raundTitle.innerText = 'Введите раунд игры';
 
     this.selectRound = createNode('input', 'form__round');
     this.selectRound.setAttribute('type', 'number');
@@ -96,6 +97,7 @@ class Game {
 
     this.form.append(
       this.inputField,
+      this.raundTitle,
       this.selectRound,
       this.diffLevel,
       this.submitButton,
@@ -103,47 +105,71 @@ class Game {
 
     this.awaitBlock.append(this.form);
     this.appContainer.append(this.awaitBlock);
+    ResultPage.render();
+    StatsPage.render();
 
-    this.form.addEventListener('click', () => {
-      const inputElements = this.form.querySelectorAll('input[type="radio"]');
-      inputElements.forEach((item) => {
-        if (item.checked) {
-          localStorage.setItem('difficultSprint', item.value);
-        }
-      });
+    this.form.addEventListener('click', (e) => {
+      if (e.target.closest('.label-difficult')) {
+        localStorage.setItem('difficultAudioCall', e.target.previousElementSibling.value);
+      }
+
+      if (e.target.classList.contains('button--start')) {
+        e.preventDefault();
+        this.continueListener();
+        this.trueAnswers = [];
+        this.wrongAnswers = [];
+      }
     });
-    this.continueListener();
   }
 
   continueListener() {
-    this.form.addEventListener('submit', (event) => {
-      event.preventDefault();
+    if (this.error) {
+      this.error.remove();
+    }
 
-      if (this.error) this.error.remove();
-      if (
-        !Number.isInteger(Number(this.inputField.value))
-        || this.inputField.value > 20
-        || this.inputField.value < 10
-      ) return this.showError();
+    if (
+      !parseInt(this.inputField.value, 10)
+      || this.inputField.value > MAX_QUANTITY_WORDS
+      || this.inputField.value < MIN_QUANTITY_WORDS
+    ) {
+      return this.showError('diffLevel');
+    }
 
-      this.awaitBlock.classList.add('hidden');
-      this.startLoading();
-      this.updateBody();
-      localStorage.setItem('numberOfWords', this.inputField.value);
-      localStorage.setItem('round', this.selectRound.value);
-      return this.getInfo(this.inputField.value, this.selectRound.value);
-    });
+    if (
+      !parseInt(this.selectRound.value, 10)
+      || this.selectRound.value < MIN_QUANTITY_RAUNDS
+      || this.selectRound.value > MAX_QUANTITY_RAUNDS
+    ) {
+      return this.showError('raund');
+    }
+
+    this.awaitBlock.classList.add('hidden');
+    this.startLoading();
+    this.updateBody();
+
+    localStorage.setItem('numberOfWords', this.inputField.value);
+    localStorage.setItem('raund', this.selectRound.value);
+
+    return this.getInfo(this.inputField.value, this.selectRound.value);
   }
 
-  showError() {
+  showError(type) {
     this.error = createNode('p', 'form__error');
-    this.error.textContent = 'Внимание! Введите число от 10 до 20';
+
+    if (type === 'diffLevel') {
+      this.error.textContent = 'Внимание! Введите количество слов от 10 до 20';
+      this.inputField.value = '';
+    }
+
+    if (type === 'raund') {
+      this.error.textContent = 'Внимание! Введите раунд от 0 до 29';
+      this.selectRound.value = '';
+    }
     this.form.prepend(this.error);
-    this.inputField.value = '';
   }
 
   updateBody() {
-    this.gameBlock = createNode('div', 'game-block');
+    this.gameBlock = createNode('div', 'game-block', 'container');
 
     this.engTopBlock = createNode('div', 'game-block__question');
 
@@ -154,17 +180,17 @@ class Game {
 
     this.engWord = createNode('button', 'button', 'button--english');
 
-    this.engTopBlock.append(this.wordImage, this.repeatSoundButton, this.engWord);
+    this.engTopBlock.append(this.engWord, this.wordImage, this.repeatSoundButton);
 
     this.rusAnswersSection = createNode('div', 'answers-wrapper');
-    for (let i = 0; i < 5; i += 1) {
+
+    for (let i = 0; i < QUANTITY_BUTTONS; i += 1) {
       const answerButton = createNode('button', 'button', 'button--rus');
       answerButton.setAttribute('data-answer', `${i + 1}`);
       this.rusAnswersSection.append(answerButton);
     }
 
-    this.buttonNext = createNode('button', 'button', 'button--next');
-    this.buttonNext.textContent = 'Не знаю';
+    this.buttonNext = createNode('button', 'button', 'css-arrow', 'button--arrow', 'event-pointer-none');
 
     this.gameBlock.append(this.engTopBlock, this.rusAnswersSection, this.buttonNext);
     this.appContainer.append(this.gameBlock);
@@ -173,55 +199,84 @@ class Game {
       event.preventDefault();
 
       if (event.target.tagName !== 'BUTTON') return;
+
       if (event.target.textContent === this.engWord.getAttribute('data-trans')) {
         this.getRightAnswer();
       } else {
         this.getWrongAnswer();
       }
-      this.buttonNext.classList.add('button--arrow');
+
+      document.querySelectorAll('.button--rus').forEach((item) => item.classList.add('event-pointer-none'));
+      event.target.classList.add('activeAnswer');
+
+      this.buttonNext.classList.remove('event-pointer-none');
     };
 
     this.rusAnswersSection.addEventListener('click', clickListener);
 
     this.repeatSoundButton.addEventListener('click', (event) => {
       event.preventDefault();
-
-      new Audio(`https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${this.data[this.data.length - 1].audio}`).play();
+      new Audio(`https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${this.repeatSoundButton.dataset.audioSrc}`).play();
     });
 
     this.buttonNext.addEventListener('click', (event) => {
       event.preventDefault();
-      this.buttonNext.classList.add('button--arrow');
+      this.addPointerOnCards();
+      this.buttonNext.classList.remove('event-pointer-none');
       if (!this.isAnswered) {
-        //this.showAnswer();
         this.getWrongAnswer();
-        setTimeout(() => this.updateButtonsContent(), 1500);
+        this.gameProgress();
       } else {
-        setTimeout(() => this.updateButtonsContent(), 500);
+        this.gameProgress();
       }
     });
   }
 
-  async getInfo(numberOfWords, roundNumber) {
+  gameProgress() {
+    if (this.data.length) {
+      this.updateButtonsContent();
+    } else {
+      this.disabelBtnNext();
+      ResultPage.show(this.trueAnswers, this.wrongAnswers);
+      this.removeGameBlock();
+    }
+
+    this.removePointerFromCards();
+
+    document.querySelectorAll('.rightAnswer').forEach((item) => item.classList.remove('rightAnswer'));
+    document.querySelectorAll('.wrongAnswer').forEach((item) => item.classList.remove('wrongAnswer'));
+
+    const activeAnswer = document.querySelector('.activeAnswer');
+
+    if (activeAnswer) {
+      activeAnswer.classList.remove('activeAnswer');
+    }
+  }
+
+  addPointerOnCards() {
+    document.querySelectorAll('.button--rus').forEach((item) => item.classList.add('event-pointer-none'));
+  }
+
+  removePointerFromCards() {
+    document.querySelectorAll('.button--rus').forEach((item) => item.classList.remove('event-pointer-none'));
+  }
+
+  async getInfo() {
     new Audio('/assets/audio/startGame.mp3').play();
-    this.numberOfWords = numberOfWords;
+
     try {
       this.data = await getWordforGame(
-        getUserID(),
-        localStorage.getItem('difficultSprint'),
-        numberOfWords,
-        roundNumber,
+        localStorage.getItem('difficultAudioCall'),
+        localStorage.getItem('raund'),
+        localStorage.getItem('numberOfWords'),
       );
+
       if (this.data.Error) {
         this.stopLoading();
         throw new Error(this.data.Error);
       }
 
-      this.rusAnswers = [];
-
-      this.data.forEach((item) => {
-        this.rusAnswers.push(item.wordTranslate);
-      });
+      this.rusAnswers = this.data.map((item) => item.wordTranslate);
 
       this.updateButtonsContent();
       this.stopLoading();
@@ -231,9 +286,7 @@ class Game {
   }
 
   updateButtonsContent() {
-    if (this.buttonNext.classList.contains('button--arrow')) {
-      this.buttonNext.classList.remove('button--arrow');
-    }
+    this.buttonNext.classList.add('event-pointer-none');
     this.wordImage.style.background = `url(https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${this.data[this.data.length - 1].image})`;
     this.isAnswered = false;
     this.engWord.textContent = this.data[this.data.length - 1].word;
@@ -243,39 +296,47 @@ class Game {
     );
 
     const answersArray = this.rusAnswersSection.querySelectorAll('button');
-    const answerWords = [];
+    const rightWord = this.data[this.data.length - 1].wordTranslate;
+    const random = [...this.rusAnswers].sort(() => 0.5 - Math.random()).slice(0, 6);
 
-    let dataLength = this.data.length - 1;
-
-    for (let i = 0; i < 7; i += 1) {
-      if (dataLength - i < 0) {
-        dataLength = this.data.length + i + 1;
-      }
-      answerWords.push(this.rusAnswers[dataLength - i]);
-    }
-
-    const sortAnsArray = answerWords.sort(() => Math.random() - 0.5);
-
+    // eslint-disable-next-line max-len
+    const sortAnsArray = [...new Set([rightWord, ...random])].slice(0, 5).sort(() => Math.random() - 0.5);
     answersArray.forEach((item, index) => {
       const answer = item;
       answer.textContent = sortAnsArray[index];
+      answer.setAttribute('data-rus-word', answer.textContent);
     });
 
     new Audio(`https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${this.data[this.data.length - 1].audio}`).play();
+    this.repeatSoundButton.setAttribute('data-audio-src', this.data[this.data.length - 1].audio);
   }
 
   getRightAnswer() {
     this.isAnswered = true;
     this.trueAnswers.push(this.data.pop());
     new Audio('/assets/audio/correct.mp3').play();
-    if (this.data.length === 0) setTimeout(() => this.showResults(), 1500);
+    document.querySelector(`[data-rus-word='${this.engWord.getAttribute('data-trans')}']`).classList.add('rightAnswer');
   }
 
   getWrongAnswer() {
     this.isAnswered = true;
     this.wrongAnswers.push(this.data.pop());
     new Audio('/assets/audio/error.mp3').play();
-    if (this.data.length === 0) setTimeout(() => this.showResults(), 1500);
+    document.querySelector(`[data-rus-word='${this.engWord.getAttribute('data-trans')}']`).classList.add('wrongAnswer');
+  }
+
+  removeGameBlock() {
+    const gameBlock = document.querySelector('.game-block');
+    if (gameBlock) {
+      gameBlock.remove();
+    }
+  }
+
+  disabelBtnNext() {
+    const btnNext = document.querySelector('.button--next');
+    if (btnNext) {
+      btnNext.classList.add('event-pointer-none');
+    }
   }
 }
 
