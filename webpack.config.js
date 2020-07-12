@@ -36,6 +36,7 @@ const config = {
     dictionary: './src/pages/dictionary/dictionary.js',
     memory: './src/pages/memoryGame/memory.js',
     sprint: './src/pages/sprint/sprint.js',
+    team: './src/pages/team/team.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -255,6 +256,13 @@ const config = {
       favicon: './assets/images/favicon.ico',
       chunks: ['sprint'],
       filename: './sprint.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['team'],
+      template: 'src/pages/team/team.html',
+      filename: './team.html',
     }),
     new CopyWebpackPlugin([
       {
