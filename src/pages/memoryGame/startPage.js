@@ -38,7 +38,7 @@ export function renderStartPage() {
   card.insertAdjacentHTML(
     'afterend',
     `
-  <button type="button" class="btn btn-secondary btn-lg">Вернуться к тренировкам</button></div>`,
+  <button type="button" class="btn btn-secondary back btn-lg">Вернуться к тренировкам</button></div>`,
   );
   const formContainer = wrapper.querySelector('form');
   formContainer.insertAdjacentHTML(

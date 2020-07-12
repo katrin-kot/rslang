@@ -4,10 +4,12 @@ export function initHandlers() {
   const card = document.querySelector('.mainCard');
   const formContainer = document.querySelector('form');
   const smallBtn = document.querySelectorAll('.btn-sm');
+  const backBtn = document.querySelector('.back');
   function flipCard() {
     card.classList.toggle('flip');
   }
   smallBtn.forEach((btn) => btn.addEventListener('click', flipCard));
+  backBtn.addEventListener('click', () => { window.location.pathname = '/'; });
   formContainer.addEventListener('submit', (event) => {
     event.preventDefault();
     let group;
