@@ -1,8 +1,8 @@
 import { getUserID } from './authService';
-import { getToken } from './token';
 import { createUserWord, updateUserWord, getAllHardWords } from './userWordService';
 import { getTodayDate } from '../pages/SRgame/helpers';
 import { newWordsPerDay, learningWordsPerDay, isShowAllLearningWords } from '../pages/SRgame/settings';
+import { getToken } from './token';
 
 
 const userID = getUserID();
@@ -51,11 +51,31 @@ export const filterLearningWordsPerDate = async () => {
   return filteredWords;
 };
 
+export const getUserAggregatedWord = async ({ wordId }) => {
+  const token = getToken();
+  const rawResponse = await fetch(
+    `https://afternoon-falls-25894.herokuapp.com/users/${userID}/aggregatedWords/${wordId}`,
+    {
+      method: 'GET',
+      withCredentials: true,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
+      },
+    },
+  );
+  const content = await rawResponse.json();
+  return content;
+};
+
 export const updateWordWithError = async ({ wordId }) => {
+  const content = await getUserAggregatedWord({ wordId });
+  const settings = content[0].userWord;
+  settings.optional.dateToShow = `${getTodayDate()}`;
   updateUserWord({
     userId: getUserID(),
     wordId,
-    word: { optional: { dateToShow: `${getTodayDate()}` } },
+    word: settings,
   });
 };
 

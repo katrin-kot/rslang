@@ -266,25 +266,6 @@ body {
   background: url(https://image.freepik.com/free-vector/cute-seamless-pattern-with-octopus-jellyfish-starfish-crab_76147-182.jpg)
 }
 
-/* swiper */ 
-/* .swiper-container{
-  width: 100vw;
-  height: 100vh;
-}
-.swiper-slide-active {
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
-  height: auto;
-} */
-/* .swiper-slide {*/
-
-
-
-
 .swiper-container-horizontal>.swiper-pagination-progressbar {
   height: 10px !important;
 }
@@ -312,4 +293,55 @@ body {
 
 .notification-container h3, h4 {
   text-align: center;
+}
+
+@media (max-width: 760px) {
+  .card-container body, button, input {
+    font-size: 12px;
+  }
+  .start-screen-container {
+    padding: 5px 20px;
+  }
+  .games-container {
+    flex-direction: column;
+    font-size: 12px;
+  }
+  .words-to-practice {
+    width: 82%;
+    margin-right: 0;
+  }
+  .new-words, .learning-words, .hard-words, .words-to-practice {
+    padding: 10px;
+  }
+  .game-card {
+    width: 95vw;
+    font-size: 12px;
+  }
+  #audio-control, #translation-control {
+    width: 40px;
+    height: 40px;
+    top: 10px;
+  }
+  #translation-control {
+    left: 10px;
+  }
+  #audio-control {
+    left: 70px;
+  }
+  .swiper-button-next {
+    top: 30px !important;
+    width: 10px !important;
+    height: 40px !important;
+    right: 20px !important;
+  }
+  .swiper-button-next:after {
+    font-size: 20px !important;
+  }
+  .difficulty-btns button, .card-btns button {
+    font-size: 10px;
+  }
+  .statistics-container, .notification-container {
+    width: 280px;
+    padding: 10px;
+  }
 }

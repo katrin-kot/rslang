@@ -17,3 +17,20 @@ export const checkUserLogin = async () => {
     errorWindow();
   }
 };
+
+export const checkUserLoginWithoutWindow = async () => {
+  const userId = getUserID();
+  const token = getToken();
+  let result = true;
+
+  if (!userId || !token) {
+    result = false;
+  }
+  try {
+    await getAllUserWords({ userId });
+  } catch (error) {
+    result = false;
+  }
+
+  return result;
+};
