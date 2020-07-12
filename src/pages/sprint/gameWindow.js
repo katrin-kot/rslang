@@ -62,9 +62,11 @@ export default class GameWindow {
   }
 
   redirectToMainPage() {
-    this.clearGameWindow();
-
     window.location.pathname = '/index.html';
+  }
+
+  redirectToStatisticPage() {
+    window.location.pathname = '/stats.html';
   }
 
   openGamePage(startPage, gamePage, resultPage) {

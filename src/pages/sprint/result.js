@@ -13,6 +13,7 @@ export default class Result extends GameWindow {
       { class: 'back-button', text: 'к списку заданий' },
       { class: 'repeat-button', text: 'повторить' },
       { class: 'parameters-button', text: 'параметры' },
+      { class: 'statistic-button', text: 'статистика' },
     ];
   }
 
@@ -165,6 +166,10 @@ export default class Result extends GameWindow {
 
         if (event.target.classList.contains('repeat-button')) {
           this.openGamePage(this.startPage, this.gamePage, this.resultPage);
+        }
+
+        if (event.target.classList.contains('statistic-button')) {
+          this.redirectToStatisticPage();
         }
       }
     });
