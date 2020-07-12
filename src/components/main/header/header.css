@@ -1,4 +1,4 @@
-header {
+.site-header {
   padding: 0px 40px;
   display: flex;
   justify-content: space-between;
@@ -41,7 +41,7 @@ header {
 
 .burger-menu {
   display: none;
-  margin: 10px;
+  margin-top: 13px;
   width: 50px;
   height: 50px;
   background-image: url('/assets/images/burger-menu-icon.svg');
@@ -60,38 +60,42 @@ header {
   display: block;
 }
 
-header a {
+.site-header a {
   text-decoration: none;
   color: #fff;
   display: block;
 }
 
-header ul {
+.site-header .menu-link {
+  color: #fff;
+}
+
+.site-header ul {
   list-style: none;
   position: relative;
   text-align: left;
 }
 
-header li {
+.site-header li {
   float: left;
 }
 
-header li.selected > a {
+.site-header li.selected > a {
   box-sizing: border-box;
   box-shadow: 0px -4px 0px 0px yellowgreen;
 }
 
-header ul:after {
+.site-header ul:after {
   clear: both;
 }
 
-header ul:before,
-header ul:after {
+.site-header ul:before,
+.site-header ul:after {
   content: ' ';
   display: table;
 }
 
-header nav {
+.site-header nav {
   position: relative;
   background: #738795;
   background-image: linear-gradient(bottom, #2b2b2b 7%, #333333 100%);
@@ -103,21 +107,21 @@ header nav {
   border-bottom-left-radius: 8px;
 }
 
-header ul.primary li a {
+.site-header ul.primary li a {
   display: block;
   padding: 20px 30px;
   border-right: 1px solid #3d3d3d;
 }
 
-header ul.primary li:last-child a {
+.site-header ul.primary li:last-child a {
   border-right: none;
 }
 
-header ul.primary li a:hover {
+.site-header ul.primary li a:hover {
   color: #cde2e9;
 }
 
-header ul.sub {
+.site-header ul.sub {
   position: absolute;
   z-index: 200;
   box-shadow: 2px 2px 0 #bebebe;
@@ -125,44 +129,44 @@ header ul.sub {
   display: none;
 }
 
-header ul.sub li {
+.site-header ul.sub li {
   float: none;
   margin: 0;
 }
 
-header ul.sub li a {
+.site-header ul.sub li a {
   border-bottom: 1px dotted #ccc;
   border-right: none;
   color: #000;
   padding: 15px 30px;
 }
 
-header ul.sub li:last-child a {
+.site-header ul.sub li:last-child a {
   border-bottom: none;
 }
 
-header ul.sub li a:hover {
+.site-header ul.sub li a:hover {
   color: #000;
   background: #eeeeee;
 }
 
-header ul.primary li:hover ul {
+.site-header ul.primary li:hover ul {
   display: block;
   background: #fff;
 }
 
-header ul.primary li:hover a {
+.site-header ul.primary li:hover a {
   background: #fff;
   color: #666;
   text-shadow: none;
 }
 
-header ul.primary li:hover > a {
+.site-header ul.primary li:hover > a {
   color: #000;
 }
 
 @media only screen and (max-width: 800px) {
-  header {
+  .site-header {
     padding: 0px 1%;
   }
 
@@ -189,41 +193,41 @@ header ul.primary li:hover > a {
     display: inline-block;
   }
 
-  header li {
+  .site-header li {
     float: none;
   }
 
-  header li.selected > a {
+  .site-header li.selected > a {
     box-shadow: none;
     border-left: 5px solid yellowgreen;
   }
 
-  header ul.primary li:hover a {
+  .site-header ul.primary li:hover a {
     background: none;
     color: #8b8b8b;
     text-shadow: 1px 1px #000;
   }
 
-  header ul.primary li:hover ul {
+  .site-header ul.primary li:hover ul {
     display: block;
     background: #272727;
     color: #fff;
   }
 
-  header ul.sub {
+  .site-header ul.sub {
     display: block;
     position: static;
     box-shadow: none;
     width: 100%;
   }
 
-  header ul.sub li a {
+  .site-header ul.sub li a {
     background: #272727;
     border: none;
     color: #8b8b8b;
   }
 
-  header ul.sub li a:hover {
+  .site-header ul.sub li a:hover {
     color: #ccc;
     background: none;
   }
@@ -235,4 +239,37 @@ header ul.primary li:hover > a {
   .user-profile {
     padding-left: 1%;
   }
+}
+
+.user-profile.authorized.selected .authorized-block,
+.user-profile.unauthorized.selected .unauthorized-block {
+  display: block;
+}
+
+.user-settings-block {
+  margin-left: -100px;
+  z-index: 10;
+}
+
+.authorized-block,
+.unauthorized-block {
+  display: none;
+  text-align: left;
+  width: 150px;
+  color: #fff;
+  background: #2b2b2b;
+}
+
+.user-profile .authorized-block a,
+.user-profile .authorized-block div,
+.user-profile .unauthorized-block a {
+  display: block;
+  padding: 10px;
+}
+
+.user-profile .authorized-block a:hover,
+.user-profile .authorized-block div:hover,
+.user-profile .unauthorized-block a:hover {
+  color: #000;
+  background: #eeeeee;
 }
