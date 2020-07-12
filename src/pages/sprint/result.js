@@ -1,6 +1,7 @@
 import GameWindow from './gameWindow';
-import { createUserWord, getUserWord } from '../../services/userWordService';
-import { getToken } from '../../services/token';
+import { getUserWord } from '../../services/userWordService';
+import { createWordWithError } from '../../services/SRgameWordsService';
+import { getStatistics, putStatistics } from '../../services/statsService';
 
 export default class Result extends GameWindow {
   constructor() {
@@ -87,53 +88,10 @@ export default class Result extends GameWindow {
         </div>`;
   }
 
-  async getStatistic({ userId }) {
-    try {
-      const rawResponse = await fetch(
-        `https://afternoon-falls-25894.herokuapp.com/users/${userId}/statistics`,
-        {
-          method: 'GET',
-          withCredentials: true,
-          headers: {
-            Authorization: `Bearer ${getToken()}`,
-            Accept: 'application/json',
-          },
-        },
-      );
-
-      const content = await rawResponse.json();
-
-      return content;
-      // eslint-disable-next-line no-empty
-    } catch (err) {}
-
-    return false;
-  }
-
-  async putStatistic({ userId, statistic }) {
-    const rawResponse = await fetch(
-      `https://afternoon-falls-25894.herokuapp.com/users/${userId}/statistics`,
-      {
-        method: 'PUT',
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${getToken()}`,
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(statistic),
-      },
-    );
-
-    const content = await rawResponse.json();
-
-    return content;
-  }
-
   async updateServerStatistic() {
     const date = new Date().toLocaleString();
 
-    const statistic = (await this.getStatistic({ userId: localStorage.userID })) || {};
+    const statistic = (await getStatistics({ userId: localStorage.userID })) || {};
 
     if (!statistic.optional) {
       statistic.optional = {};
@@ -150,9 +108,9 @@ export default class Result extends GameWindow {
       errors: this.score.wrongWords.length,
     };
 
-    await this.putStatistic({
+    await putStatistics({
       userId: localStorage.userID,
-      statistic,
+      payload: statistic,
     });
   }
 
@@ -166,13 +124,8 @@ export default class Result extends GameWindow {
         });
       } catch (err) {
         try {
-          const wordData = { optional: { status: 'to_study' } };
-          await createUserWord({
-            userId: localStorage.userID,
-            // eslint-disable-next-line no-underscore-dangle
-            wordId: item._id,
-            word: wordData,
-          });
+          // eslint-disable-next-line no-underscore-dangle
+          createWordWithError({ wordId: item._id });
           // eslint-disable-next-line no-empty
         } catch (error) {}
       }
