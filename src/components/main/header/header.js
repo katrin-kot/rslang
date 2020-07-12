@@ -96,7 +96,7 @@ export const header = () => {
             </ul>
           </li>
           <li>
-            <a href="/statistic.html">Статистика</a>
+            <a href="/stats.html">Статистика</a>
           </li>
         </ul>
       </nav>
