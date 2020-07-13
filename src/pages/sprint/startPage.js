@@ -31,6 +31,7 @@ export default class StartPage extends GameWindow {
     this.resultPage = resultPage;
 
     checkUserLogin();
+
     this.getPage();
   }
 
