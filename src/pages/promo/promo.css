@@ -28,7 +28,9 @@ h1,h2,h3,h4 {
   width: 100%;
 }
 
-/* -------- Carousel styles ---------  */
+.row {
+  margin-top: 40px;
+}
 
 .carousel-control {
   border: none;
@@ -40,20 +42,26 @@ h1,h2,h3,h4 {
 }
 
 .carousel-caption {
-  background: none;
+  margin: 0 auto;
+  border-radius: 20px;
   max-width: 800px;
-  top: 150px;
+  top: 100px;
   padding: 0 200px;
 }
 
-.carousel-logo {
+.carousel-item:nth-child(1) .carousel-logo {
   width: auto;
   height: 100px;
+  left:45%;
 }
 
 .carousel-caption h1 {
   color:#ffffff;
-  text-shadow: 0px 2px #222;
+}
+
+.carousel-item:nth-child(1) h1 {
+  color:rgb(255, 0, 64);
+  text-shadow: 1px 1px 2px black, 0 0 1em white;
 }
 
 .carousel-caption a {
@@ -66,8 +74,20 @@ h1,h2,h3,h4 {
   color: #ffffff;
 }
 
+.carousel-item:nth-child(1) img {
+  width: inherit;
+  position-y: center;
+  object-fit: cover;
+  border-style: none;
+  min-width: 100;
+  min-height: auto;
+  height: 100%;
+  position: absolute;
+   left: 0;
+}
+
 .carousel-item:nth-child(2){
-  background: url(../../../assets/images/abstract.png)  no-repeat center center fixed; 
+  background: url(../../../assets/images/fashion.png)  no-repeat center center fixed; 
   background-size: auto;
   
 }
@@ -83,8 +103,6 @@ h1,h2,h3,h4 {
   height: inherit;
 }
 
-/* -------- Page styles ---------  */
-
 #heading,
 #screenshots,
 #features,
@@ -92,10 +110,6 @@ h1,h2,h3,h4 {
   text-align: center;
   padding: 50px 0;
 }
-
-/* #about div.row {
-  padding: 50px 0;
-} */
 
 #screenshots h1 {
   padding-bottom: 30px;
@@ -146,6 +160,11 @@ h1,h2,h3,h4 {
   .carousel-item {
     height: 300px;
   }
+
+  .carousel-logo {
+    display: none;
+  }
+
   .carousel-img {
     height: 300px;
   }
