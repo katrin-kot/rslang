@@ -672,7 +672,6 @@ body {
   justify-content: space-around;
 }
 
-.btn-stats__wrapper,
 .btn-stats-back__wrapper {
   justify-content: center;
 }
@@ -1033,6 +1032,16 @@ button.btn-attention {
   .result-btns__wrapper {
     flex-direction: column;
     align-items: center;
+  }
+
+  .btn-stats__wrapper {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .btn-main-menu {
+    margin-top: 15px;
   }
 
   .answer-item {

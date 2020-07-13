@@ -24,7 +24,7 @@ class StatsPageController {
     } catch (e) {
       stats = {};
     }
-    if (Object.keys(stats).length !== 0) {
+    if (Object.keys(stats).length !== 0 && stats.optional.speakIt) {
       StatsPageView.renderStats(stats.optional.speakIt);
     } else {
       StatsPageView.setEmptyStats();
