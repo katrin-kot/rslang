@@ -23,6 +23,7 @@ class ResultPageView {
           </div>
           <div class="btn-stats__wrapper">
             <button class="btn-show-stats menu-btns">Statistics</button>
+            <button class="btn-main-menu menu-btns">Main menu</button>
           </div>
         </div>
       </div>
@@ -52,6 +53,10 @@ class ResultPageView {
 
       if (e.target.classList.contains('btn-show-stats')) {
         PubSub.publish('showStatsPage');
+      }
+
+      if (e.target.classList.contains('btn-main-menu')) {
+        PubSub.publish('redirectOnMain');
       }
     });
   }

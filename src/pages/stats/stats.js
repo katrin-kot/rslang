@@ -9,11 +9,13 @@ import { TabsComponent } from './components/tabs';
 import { getUserSettings } from '../../services/settingsService';
 import { header } from '../../components/main/header/header';
 import { footer } from '../../components/main/footer/footer';
+import {checkUserLogin} from "../../services/verifyUserService";
 
 const body = document.querySelector('body');
 const userId = getUserID();
 
 async function renderPage() {
+  await checkUserLogin();
   const data = {
     optional: {
       audioCall: {},
@@ -33,7 +35,9 @@ async function renderPage() {
     fragment.appendChild(statsTable(el[1]));
     return [el[0], fragment];
   });
-  body.appendChild(layoutGrid([header(), TabsComponent(tabsContent), footer()]));
+  body.appendChild(layoutGrid([TabsComponent(tabsContent)]));
+  header();
+  footer();
 }
 
 renderPage();
