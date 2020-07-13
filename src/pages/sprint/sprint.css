@@ -1,6 +1,8 @@
 body {
   margin: 0px;
-  background-image: url('/assets/images/foggy_birds_@2X.png');
+  background-image: url('/assets/images/sprint-bg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
   display: flex;
   justify-content: center;
   align-items: center;
