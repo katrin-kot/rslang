@@ -252,8 +252,13 @@ export default class Game extends GameWindow {
 
   async checkNewWords(isPreload = false) {
     if (this.words.ingameWords.length < 10) {
-      await this.getWordsByServer();
-      this.round = (Number(this.round) + 1) % this.maxPages;
+      if (isPreload) {
+        await this.getWordsByServer();
+        this.round = (Number(this.round) + 1) % this.maxPages;
+      } else {
+        this.getWordsByServer();
+        this.round = (Number(this.round) + 1) % this.maxPages;
+      }
     }
 
     if (!isPreload) {
