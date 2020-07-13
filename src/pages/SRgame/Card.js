@@ -40,6 +40,10 @@ export default class Card {
     });
     this.error = 0;
     this.container = createElement('div', 'card-container swiper-slide');
+
+    this.showAnswerBtn.addEventListener('click', () => {
+      document.querySelector('.swiper-slide-active.card-container').dataset.showAnswer = 1;
+    });
   }
 
   static createCard() {

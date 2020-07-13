@@ -307,6 +307,12 @@ export default class CardGame {
       const err = isNaN(parseInt(i.dataset.errors, 10)) ? 0 : parseInt(i.dataset.errors, 10);
       errors += err;
     });
+    let showAnswer = 0;
+    words.forEach((i) => {
+      const show = Number.isNaN(parseInt(i.dataset.showAnswer, 10)) ? 0 : parseInt(i.dataset.showAnswer, 10);
+      showAnswer += show;
+    });
+
     const modal = createElement('div', 'modal statistics');
     const statistics = createElement('div', 'statistics-container');
     let rightAnswersSeries = Math.max(...this.rightAnswersSeriesArr);
@@ -317,7 +323,7 @@ export default class CardGame {
         <img id="logo" class ="logo" src="/assets/images/logo.png" alt="logo">
         <h3 class="statistics-container_title">Серия завершена</h3>
         <p><span>Карточек завершено:</span><span>${cards.length}</span></p>
-        <p><span>Правильные ответы:</span><span>${Math.round(100 - errors / (words.length / 100))}%</span></p>
+        <p><span>Правильные ответы:</span><span>${Math.round(100 - (errors + showAnswer) / (words.length / 100))}%</span></p>
         <p><span>Новые слова:</span><span>${this.newCards.length}</span></p>
         <p><span>Самая длинная серия правильных ответов:</span><span>${rightAnswersSeries}</span></p>`;
 
