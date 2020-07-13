@@ -70,11 +70,10 @@ export const header = () => {
   const headerBlock = `
     <header class="site-header">
     <div class="site-profile">
-      <a class="site-logo" href="/"></a>
+      <a class="site-logo" href="/login.html"></a>
     </div>
     <div class="burger-menu"></div>
     <div class="header-wrap">
-      <span class="decor"></span>
       <nav>
         <ul class="primary-nav">
           <li>
@@ -96,7 +95,7 @@ export const header = () => {
             </ul>
           </li>
           <li>
-            <a href="/statistic.html">Статистика</a>
+            <a href="/stats.html">Статистика</a>
           </li>
         </ul>
       </nav>
@@ -109,7 +108,7 @@ export const header = () => {
             <div class="logout">Выйти</div>
           </div>
           <div class="unauthorized-block">
-            <a href="/">Войти</a>
+            <a href="/login.html">Войти</a>
           </div>
         </div>
     </div>
