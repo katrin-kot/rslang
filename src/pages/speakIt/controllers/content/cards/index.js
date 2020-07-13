@@ -11,6 +11,7 @@ class CardsController {
   constructor() {
     this.isStudyWordsRendered = false;
     this.renderCards = this.renderCards.bind(this);
+    this.isFirstLoad = true;
   }
 
   init() {
@@ -60,7 +61,15 @@ class CardsController {
         CardsView.render(studyWords);
         Words.setCurrentWords(studyWords);
         this.isStudyWordsRendered = true;
+        this.isFirstLoad = false;
       } else {
+        if (this.isFirstLoad) {
+          this.isFirstLoad = false;
+          PubSub.publish('showNotification', {
+            message: 'Уровень сложности - Базовый, раунд - 0',
+            type: 'info',
+          });
+        }
         CardsView.render(words);
         Words.setCurrentWords(words);
       }
