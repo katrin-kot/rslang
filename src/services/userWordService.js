@@ -1,4 +1,4 @@
-import { getToken } from './authService';
+import { getToken } from './token';
 import { getWordbyId } from './wordService';
 import { randomUserWords } from '../helpers/random';
 

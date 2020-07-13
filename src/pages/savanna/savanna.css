@@ -1,336 +1,438 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
-    font-size: 12px;
-    font-weight: 400;
-    background-size: cover;
-    background-image: url('/assets/images/savanna-bg.png');
-    background-repeat: no-repeat;
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  background-size: cover;
+  background-image: url("/assets/images/savanna-bg.png");
+  background-repeat: no-repeat;
 }
 
 .wrapper {
-    padding: 10px;
-    display: flex;
+  padding: 10px;
+  display: flex;
+  width: 100%;
 }
 
 .button {
-    color: #fff;
-    background-color: transparent;
-    cursor: pointer;
-    border: none;
-    outline: none;
+  color: #fff;
+  background-color: transparent;
+  cursor: pointer;
+  border: none;
+  outline: none;
 }
 
 .button--return {
-    margin-left: auto;
-    width: 40px;
-    height: 40px;
-    background-image: url('/assets/images/cross.svg');
-    background-size: cover;
-    background-repeat: no-repeat;
-
+  margin-left: auto;
+  width: 40px;
+  height: 40px;
+  background-image: url("/assets/images/cross.svg");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .button--start {
-    margin: 0 auto;
-    padding: 10px 40px;
-    max-width: max-content;
-    font-size: 24px;
-    font-weight: 300;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    border-radius: 5px;
-    background-color: #412C84;
+  margin: 0 auto;
+  padding: 10px 40px;
+  max-width: max-content;
+  font-size: 24px;
+  font-weight: 300;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  border-radius: 5px;
+  background-color: #412c84;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #fff;
 }
 
 .savanna__title {
-    margin-top: 150px;
-    font-size: 40px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 13px;
-    text-align: center;
+  margin-top: 150px;
+  font-size: 40px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 13px;
+  text-align: center;
 }
 
 .savanna__description {
-    margin: 50px auto;
-    max-width: 585px;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 700;
-    opacity: .8;
+  margin: 50px auto;
+  max-width: 585px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  opacity: 0.8;
 }
 
 .await-block {
-    padding-top: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  padding-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .await-block__keyboard {
-    width: 100px;
-    height: 85px;
-    background-image: url('/assets/images/keyboard.svg');
-    background-repeat: no-repeat;
-    background-size: cover;
+  width: 100px;
+  height: 85px;
+  background-image: url("/assets/images/keyboard.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .await-block__promt {
-    max-width: 300px;
-    font-size: 18px;
-    font-weight: 700;
-    text-align: center;
-    color: #fff;
-    opacity: .8;
+  max-width: 300px;
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  color: #fff;
+  opacity: 0.8;
 }
 
 .await-block__form {
-    margin-top: 25px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .form__input {
-    padding: 1rem .5rem;
-    height: 3.5rem;
-    color: #fff;
-    border: 1px solid #fff;
-    outline: none;
-    background-color: transparent;
+  padding: .5rem .25rem;
+  height: 2.5rem;
+  color: #fff;
+  border: 1px solid #fff;
+  outline: none;
+  background-color: transparent;
 }
 
-.form__input::placeholder {
-    color: #fff;
+.form__round {
+  margin-top: 10px;
+  padding: .5rem .25rem;
+  width: 165px;
+  height: 2rem;
+  color: #fff;
+  border: 1px solid #fff;
+  outline: none;
+  background-color: transparent;
 }
 
-.form-difficult label:before {
-    bottom: 11px;
-}
-
-.difficult-block {
-    width: 100%;
-}
-
-.difficult-block p {
-    font-size: 16px;
-    text-align: center;
-}
-
-.form-difficult .label-difficult {
-    display: inline-block;
-    cursor: pointer;
-    position: relative;
-    font-size: 16px;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 8px 0 8px 30px;
+.form__input::placeholder,
+.form__round::placeholder {
+  color: #fff;
+  opacity: .7;
 }
 
 .form__button {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .form__error {
-    margin: 5px 0;
-    color: red;
-    font-weight: 700;
-    font-size: 18px;
-}
-
-.form-difficult {
-    margin-top: 20px;
+  margin: 5px 0;
+  color: red;
+  font-weight: 700;
+  font-size: 18px;
 }
 
 .button--sound {
-    width: 38px;
-    height: 48px;
-    background-image: url(/assets/images/savanna-sound.svg);
-    background-size: cover;
-    background-repeat: no-repeat;
+  width: 38px;
+  height: 48px;
+  background-image: url(/assets/images/savanna-sound.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .sound-disabled {
-    background-image: url(/assets/images/savanna-sound-disabled.svg);
+  background-image: url(/assets/images/savanna-sound-disabled.svg);
 }
 
 .lifes-wrapper {
-    margin: 10px 0 10px auto;
-    display: flex;
+  margin: 10px 0 10px auto;
+  display: flex;
 }
 
 .heart-icon {
-    margin-left: 10px;
-    width: 20px;
-    height: 20px;
-    background-image: url(/assets/images/savanna-heart.svg);
-    background-size: cover;
-    background-repeat: no-repeat;
+  margin-left: 10px;
+  width: 20px;
+  height: 20px;
+  background-image: url(/assets/images/savanna-heart.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .heart-icon--disabled {
-    margin-left: 10px;
-    width: 20px;
-    height: 20px;
-    background-image: url(/assets/images/savanna-heart-disabled.svg);
-    background-size: cover;
-    background-repeat: no-repeat;
+  margin-left: 10px;
+  width: 20px;
+  height: 20px;
+  background-image: url(/assets/images/savanna-heart-disabled.svg);
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .game-block {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  position: relative;
+  min-height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 .answers-wrapper {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  min-width: 60%;
 }
 
 .button--english {
-    margin: 10px auto;
-    padding: 10px 15px;
-    width: max-content;
-    font-size: 20px;
-    text-transform: uppercase;
-    background-color: #2f2f61d4;
-    cursor: none;
-    border-radius: 5px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin-left: -90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 180px;
+  padding: 10px 0;
+  font-size: 20px;
+  text-transform: uppercase;
+  background-color: #2f2f61d4;
+  cursor: none;
+  border-radius: 5px;
 }
 
 .button--rus {
-    margin: 15px;
-    padding: 10px 15px;
-    width: max-content;
-    font-size: 16px;
-    background-color: #849fd2;
-    border-radius: 5px;
-}
-
-.overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    background-color: teal;
-    opacity: .3;
+  padding: 10px 15px;
+  width: max-content;
+  font-size: 16px;
+  background-color: #7883b1;
+  border-radius: 5px;
 }
 
 .game-results {
-    position: absolute;
-    width: 50vw;
-    height: 90vh;
-    top: 5vh;
-    left: 50%;
-    margin-left: -25vw;
-    border-radius: 5px;
-    background-color: hsla(199, 43%, 62%, 0.5);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  position: absolute;
+  width: 50vw;
+  height: 75vh;
+  top: 5vh;
+  left: 50%;
+  margin-left: -25vw;
+  border-radius: 5px;
+  background-color: hsla(199, 43%, 62%, 0.5);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .game-results__text {
-    margin-top: 30px;
-    font-size: 30px;
-    text-transform: uppercase;
+  margin-top: 30px;
+  font-size: 30px;
+  text-transform: uppercase;
 }
 
 .game-results__result {
-    margin-top: 30px;
-    font-size: 18px;
-    cursor: pointer;
-    text-decoration: underline;
+  margin-top: 30px;
+  font-size: 18px;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .game-results__description {
-    margin-top: 0;
-    display: flex;
-    justify-content: space-around;
-    color: #fff;
-    width: 0;
-    height: 0;
-    font-size: 0;
-    background-color: #4879a2;
-    border-radius: 5px;
-    transition: all .5s linear;
+  margin-top: 0;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  width: 60%;
+  height: 0;
+  font-size: 17px;
+  background-color: #4879a2;
+  border-radius: 5px;
+  overflow-y: hidden;
+  transition: all 0.5s linear;
 }
 
 .game-results__description--click {
-    margin-top: 15px;
-    padding: 15px 20px;
-    font-size: 12px;
-    width: 60%;
-    height: max-content;
+  margin-top: 15px;
+  padding: 15px 20px;
+  height: 150px;
+  overflow-y: scroll;
 }
 
 .block-title {
-    margin-bottom: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
+  margin-bottom: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 .block-title--right {
-    color: blue;
+  color: blue;
 }
 
 .block-title--wrong {
-    color: red;
+  margin-top: 20px;
+  color: red;
 }
 
-.game-results__answer {
-    margin-top: 5px;
+.answer {
+  margin-top: 10px;
+  display: flex;
 }
 
-.game-results__answer:hover {
-    text-decoration: underline;
-    cursor: pointer;
+.answer__text:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.answer__sound {
+  margin-right: 15px;
+  width: 20px;
+  height: 20px;
+  background-size: cover;
+  background-image: url("/assets/images/sound-image.svg");
+  cursor: pointer;
 }
 
 .game-results__try {
-    margin-top: 20px;
-    padding: 10px 15px;
-    font-size: 14px;
-    background-color: #4879a2;
-    cursor: pointer;
+  margin-top: 20px;
+  padding: 10px 15px;
+  font-size: 14px;
+  background-color: #4879a2;
+  cursor: pointer;
 }
 
 .game-results__back {
-    margin-top: 15px;
-    font-size: 14px;
-    cursor: pointer;
-    text-decoration: underline;
+  margin-top: 15px;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .loading {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #fff;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-image: url('/assets/images/loading.gif');
-    opacity: 0.99;
-    z-index: 1000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-image: url("/assets/images/loading.gif");
+  opacity: 0.99;
+  z-index: 1000;
 }
 
 .hidden {
+  display: none;
+}
+
+.dropped {
+  animation: fluidDrop 5s linear;
+}
+
+@keyframes fluidDrop {
+  from {
+    top: 0;
+  }
+  to {
+    top: 160px;
+  }
+}
+
+@media (max-width: 900px) {
+  body {
+    background-size: 100% 100%;
+    min-height: 620px;
+  }
+
+  .await-block__promt {
     display: none;
+  }
+
+  .await-block__keyboard {
+    display: none;
+  }
+
+  .game-results {
+    width: 72vw;
+    padding: 3%;
+    height: max-content;
+    left: 28%;
+    margin-left: -14vw;
+  }
+
+  .game-results__text {
+    margin-top: 10px;
+    font-size: 15px;
+  }
+
+  .game-results__description {
+    width: 90%;
+  }
+}
+
+@media (max-width: 500px) {
+  body {
+    background-size: cover;
+    min-height: 700px;
+  }
+
+  .wrapper--top-buttons {
+    margin-top: 10px;
+  }
+
+  .form__error {
+    font-size: 16px;
+  }
+
+  .game-block {
+    margin-top: 20px;
+  }
+
+  .answers-wrapper {
+    margin-top: 160px;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .button--rus {
+    margin-top: 20px;
+  }
+
+  .game-results {
+    width: 95vw;
+    padding: 3%;
+    height: max-content;
+    left: 5%;
+    margin-left: -2.5vw;
+  }
+
+  .game-results__text {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .game-results__result {
+    text-align: center;
+  }
+
+  .game-results__description--click {
+    padding: 3%;
+    width: 100%;
+  }
+
+  @keyframes fluidDrop {
+    from {
+      top: 0;
+    }
+    to {
+      top: 120px;
+    }
+  }
 }

@@ -36,7 +36,6 @@ export default class LearningCard extends Card {
       this.ease = 'good';
     });
     this.againBtn.addEventListener('click', () => {
-      this.settings.optional.count = parseInt(this.settings.optional.count, 10) + 1;
       this.again = true;
     });
     this.addToHardBtn.addEventListener('click', () => {
@@ -56,7 +55,6 @@ export default class LearningCard extends Card {
   }
 
   processWord() {
-    this.settings.optional.count = parseInt(this.settings.optional.count, 10) + 1;
     if (this.error || this.again) {
       this.settings.optional.learningGroup = 1;
     } else {
@@ -65,5 +63,10 @@ export default class LearningCard extends Card {
     const group = parseInt(this.settings.optional.learningGroup, 10);
     const days = countDaysInterval(group, this.ease);
     this.addDateToShow(days);
+  }
+
+  addCountAndErrors(count, errors) {
+    this.settings.optional.count = parseInt(this.settings.optional.count, 10) + count;
+    this.settings.optional.errors = parseInt(this.settings.optional.errors, 10) + errors;
   }
 }

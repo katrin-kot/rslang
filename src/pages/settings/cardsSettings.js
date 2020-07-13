@@ -34,11 +34,11 @@ const cardsSettings = [
   },
 ];
 
-export function renderCardsSettings(defaultSettings) {
+export function renderCardsSettings(userSettings) {
   const fragment = document.createDocumentFragment();
 
   cardsSettings.forEach((elem) => {
-    renderCheckbox(elem, fragment, defaultSettings);
+    renderCheckbox(elem, fragment, userSettings);
   });
   return fragment;
 }

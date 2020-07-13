@@ -7,11 +7,20 @@ import {
 import { renderAllCards } from './renderAllCards';
 import { getUserSettings } from '../../services/settingsService';
 import { getUserID } from '../../services/authService';
+import { getToken } from '../../services/token';
+import { errorWindow } from '../../components/main/errorWindow/errorWindow';
+import { showSpinner, hideSpinner, renderSpinner } from './spinner';
+import { header } from '../../components/main/header/header';
+import { footer } from '../../components/main/footer/footer';
 
 const body = document.querySelector('body');
+header();
 const main = document.createElement('main');
 const userId = getUserID();
-
+const token = getToken();
+if (!userId || !token) {
+  errorWindow();
+}
 const typeWords = [
   {
     name: 'to_study',
@@ -58,12 +67,13 @@ function renderTabContent() {
 }
 main.innerHTML = `
 <div class="row">
-  <div class="col-3 navigation">
+  <div class="col-12 col-sm-3 navigation">
   </div>
-  <div class="col-9 words-content">
+  <div class="col-12 col-sm-9 words-content">
   </div></div>
   
 `;
+renderSpinner(main);
 const col1 = main.querySelector('.navigation');
 col1.appendChild(renderNavTabs());
 const col2 = main.querySelector('.words-content');
@@ -76,6 +86,7 @@ const loaders = {
 };
 
 async function initContent(user, name) {
+  showSpinner(main);
   const content = await loaders[name](user);
   const activeTab = document.querySelector('.show');
   const allSettings = await getUserSettings({ userId });
@@ -83,6 +94,7 @@ async function initContent(user, name) {
   const wordsContent = await renderAllCards(content, settings);
   activeTab.innerHTML = '';
   activeTab.appendChild(wordsContent);
+  hideSpinner(main);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -90,4 +102,5 @@ document.addEventListener('DOMContentLoaded', () => {
   const navTabs = main.querySelectorAll('.nav-link');
   navTabs.forEach((elem) => elem.addEventListener('click', () => initContent({ userId }, elem.dataset.content)));
   body.appendChild(main);
+  footer();
 });

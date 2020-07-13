@@ -1,21 +1,33 @@
 import createNode from '../../helpers/createNode';
 import diffLevel from '../../components/main/difficultOptions/difficultOptions';
-import { getWordforGame } from '../../services/userWordService';
+import { getWordforGame, getUserWord } from '../../services/userWordService';
 import { getUserID } from '../../services/authService';
+import { checkUserLogin } from '../../services/verifyUserService';
+import { createWordWithError, updateWordWithError } from '../../services/SRgameWordsService';
+import { getStatistics, putStatistics, addEmptyStatistics } from '../../services/statsService';
 
 class Game {
   constructor() {
+    this.state = {};
     this.app = document.querySelector('body');
     this.isSoundEnabled = true;
-
     this.trueAnswers = [];
     this.wrongAnswers = [];
+    this.statsForBack = {};
+    this.keydownListener = '';
 
     this.appContainer = createNode('div', 'savanna');
 
     this.app.append(this.appContainer);
 
-    this.topButtonsWrapper = createNode('div', 'wrapper', 'wrapper--top-buttons');
+    this.loading = createNode('div', 'loading', 'hidden');
+    this.appContainer.append(this.loading);
+
+    this.topButtonsWrapper = createNode(
+      'div',
+      'wrapper',
+      'wrapper--top-buttons',
+    );
 
     this.exitButton = createNode('button', 'button', 'button--return');
 
@@ -28,13 +40,20 @@ class Game {
     this.buttonStartGame.textContent = 'Начать';
   }
 
-  render() {
+  async render() {
+    this.startLoading();
+    await checkUserLogin();
     this.topButtonsWrapper.append(this.exitButton);
-    this.startContainer.append(this.title, this.descriptionGame, this.buttonStartGame);
+    this.startContainer.append(
+      this.title,
+      this.descriptionGame,
+      this.buttonStartGame,
+    );
     this.appContainer.append(this.topButtonsWrapper, this.startContainer);
 
     this.startGame();
     this.exitGame();
+    this.stopLoading();
   }
 
   startGame() {
@@ -48,7 +67,16 @@ class Game {
 
   exitGame() {
     this.exitButton.addEventListener('click', () => {
-      console.log('ПЕРЕХОДИМ НА СТРАНИЦУ ТРЕНИРОВОК');
+      this.startLoading();
+      if (Object.keys(this.statsForBack).length !== 0) {
+        this.pushStats();
+      }
+      if (this.wrongAnswers.length !== 0) {
+        this.addWrongAnswersToAnki();
+      }
+      document.location.href = './index.html';
+
+      this.stopLoading();
     });
   }
 
@@ -56,7 +84,7 @@ class Game {
     this.awaitBlock = createNode('div', 'await-block');
     this.keyboardImage = createNode('div', 'await-block__keyboard');
     this.promt = createNode('p', 'await-block__promt');
-    this.promt.textContent = 'Используйте клавишы 1, 2, 3 и 4, чтобы дать быстрый ответ';
+    this.promt.textContent = 'Используйте клавиши 1, 2, 3 и 4, чтобы дать быстрый ответ';
 
     this.diffLevel = createNode('div', 'difficult-block');
     this.diffLevel.innerHTML = diffLevel();
@@ -64,15 +92,32 @@ class Game {
     this.form = createNode('form', 'await-block__form');
 
     this.inputField = createNode('input', 'form__input');
-    this.inputField.setAttribute('placeholder', 'Введите число от 5 до 20');
+    this.inputField.setAttribute('placeholder', 'Введите количество слов');
     this.inputField.setAttribute('required', 'true');
 
-    this.submitButton = createNode('button', 'button', 'form__button', 'button--start');
+    this.selectRound = createNode('input', 'form__round');
+    this.selectRound.setAttribute('type', 'number');
+    this.selectRound.setAttribute('placeholder', 'Введите раунд игры');
+    this.selectRound.setAttribute('min', '0');
+    this.selectRound.setAttribute('max', '29');
+    this.selectRound.setAttribute('required', 'true');
+
+    this.submitButton = createNode(
+      'button',
+      'button',
+      'form__button',
+      'button--start',
+    );
     this.submitButton.setAttribute('type', 'submit');
     this.submitButton.setAttribute('id', 'submitButton');
     this.submitButton.textContent = 'Продолжить';
 
-    this.form.append(this.inputField, this.diffLevel, this.submitButton);
+    this.form.append(
+      this.inputField,
+      this.selectRound,
+      this.diffLevel,
+      this.submitButton,
+    );
 
     this.awaitBlock.append(this.keyboardImage, this.promt, this.form);
     this.appContainer.append(this.awaitBlock);
@@ -93,32 +138,34 @@ class Game {
       event.preventDefault();
 
       if (this.error) this.error.remove();
-      if (!Number.isInteger(Number(this.inputField.value))
-      || this.inputField.value > 20
-      || this.inputField.value < 5) return this.showError();
+      if (
+        !Number.isInteger(Number(this.inputField.value))
+        || this.inputField.value > 20
+        || this.inputField.value < 7
+      ) return this.showError();
 
-      new Audio('/assets/audio/startGame.mp3').play();
       this.awaitBlock.classList.add('hidden');
       this.startLoading();
       this.updateBody();
-      return this.getInfo(this.inputField.value);
+      localStorage.setItem('numberOfWords', this.inputField.value);
+      localStorage.setItem('round', this.selectRound.value);
+      return this.getInfo(this.inputField.value, this.selectRound.value);
     });
   }
 
   showError() {
     this.error = createNode('p', 'form__error');
-    this.error.textContent = 'Внимание! Введите число от 5 до 20';
+    this.error.textContent = 'Внимание! Введите число от 7 до 20';
     this.form.prepend(this.error);
     this.inputField.value = '';
   }
 
   startLoading() {
-    this.loading = createNode('div', 'loading');
-    this.appContainer.append(this.loading);
+    this.loading.classList.remove('hidden');
   }
 
   stopLoading() {
-    this.loading.remove();
+    this.loading.classList.add('hidden');
   }
 
   updateBody() {
@@ -153,44 +200,130 @@ class Game {
 
     this.gameBlock.append(this.engWord, this.rusAnswersSection);
     this.appContainer.append(this.gameBlock);
+
+    const clickListener = (event) => {
+      event.preventDefault();
+
+      if (event.target.tagName !== 'BUTTON') return;
+      if (
+        event.target.textContent === this.engWord.getAttribute('data-trans')
+      ) {
+        this.getRightAnswer();
+      } else {
+        this.getWrongAnswer();
+      }
+    };
+
+    this.rusAnswersSection.addEventListener('click', clickListener);
+
+    this.keydownListener = (event) => {
+      event.preventDefault();
+
+      const answers = this.rusAnswersSection.querySelectorAll('button');
+
+      switch (event.code) {
+        case 'Digit1':
+        case 'Numpad1':
+          if (
+            answers[0].textContent === this.engWord.getAttribute('data-trans')
+          ) {
+            this.getRightAnswer();
+          } else {
+            this.getWrongAnswer();
+          }
+          break;
+        case 'Digit2':
+        case 'Numpad2':
+          if (
+            answers[1].textContent === this.engWord.getAttribute('data-trans')
+          ) {
+            this.getRightAnswer();
+          } else {
+            this.getWrongAnswer();
+          }
+          break;
+        case 'Digit3':
+        case 'Numpad3':
+          if (
+            answers[2].textContent === this.engWord.getAttribute('data-trans')
+          ) {
+            this.getRightAnswer();
+          } else {
+            this.getWrongAnswer();
+          }
+          break;
+
+        case 'Digit4':
+        case 'Numpad4':
+          if (
+            answers[3].textContent === this.engWord.getAttribute('data-trans')
+          ) {
+            this.getRightAnswer();
+          } else {
+            this.getWrongAnswer();
+          }
+          break;
+        default:
+      }
+    };
+
+    this.app.addEventListener('keydown', this.keydownListener);
   }
 
-  async getInfo(numberOfWords) {
+  async getInfo(numberOfWords, roundNumber) {
+    new Audio('/assets/audio/startGame.mp3').play();
+    this.numberOfWords = numberOfWords;
     try {
-      const data = await getWordforGame(getUserID(), localStorage.getItem('difficultSprint'), numberOfWords);
-      if (data.Error) {
+      this.data = await getWordforGame(
+        getUserID(),
+        localStorage.getItem('difficultSprint'),
+        numberOfWords,
+        roundNumber,
+      );
+      if (this.data.Error) {
         this.stopLoading();
-        throw new Error(data.Error);
+        throw new Error(this.data.Error);
       }
 
-      const rusAnswers = [];
+      this.rusAnswers = [];
 
-      data.forEach((item) => {
-        rusAnswers.push(item.wordTranslate);
+      this.data.forEach((item) => {
+        this.rusAnswers.push(item.wordTranslate);
       });
 
-      this.updateButtonsContent(data, rusAnswers);
-      this.waitingAnswer(data, rusAnswers);
+      this.updateButtonsContent();
       this.stopLoading();
     } catch (e) {
+      // eslint-disable-next-line no-alert
       alert(e);
     }
   }
 
-  updateButtonsContent(data, rusAnswers) {
-    this.engWord.textContent = data[data.length - 1].word;
-    this.engWord.setAttribute('data-trans', data[data.length - 1].wordTranslate);
+  updateButtonsContent() {
+    this.engWord.classList.add('dropped');
+    const timer = setTimeout(() => {
+      this.engWord.classList.remove('dropped');
+      this.getWrongAnswer();
+    }, 5000);
+
+    this.state.currentTimerId = timer;
+
+    this.engWord.textContent = this.data[this.data.length - 1].word;
+    this.engWord.setAttribute(
+      'data-trans',
+      this.data[this.data.length - 1].wordTranslate,
+    );
 
     const answersArray = this.rusAnswersSection.querySelectorAll('button');
     const answerWords = [];
 
-    let dataLength = data.length - 1;
+    let dataLength = this.data.length - 1;
 
     for (let i = 0; i < 4; i += 1) {
       if (dataLength - i < 0) {
-        dataLength = data.length + i;
+        dataLength = this.data.length + i + 3;
       }
-      answerWords.push(rusAnswers[dataLength - i]);
+      answerWords.push(this.rusAnswers[dataLength - i]);
     }
 
     const sortAnsArray = answerWords.sort(() => Math.random() - 0.5);
@@ -201,78 +334,35 @@ class Game {
     });
   }
 
-  waitingAnswer(data, rusAnswers) {
-    this.rusAnswersSection.addEventListener('click', (event) => {
-      event.preventDefault();
-
-      if (event.target.tagName !== 'BUTTON') return;
-      if (event.target.textContent === this.engWord.getAttribute('data-trans')) {
-        this.getRightAnswer(data, rusAnswers);
-      } else {
-        this.getWrongAnswer(data, rusAnswers);
-      }
-    });
-
-    document.addEventListener('keydown', (event) => {
-      event.preventDefault();
-
-      const answers = this.rusAnswersSection.querySelectorAll('button');
-
-      if (event.code === 'Digit1' || event.code === 'Numpad1') {
-        if (answers[0].textContent === this.engWord.getAttribute('data-trans')) {
-          this.getRightAnswer(data, rusAnswers);
-        } else {
-          this.getWrongAnswer(data, rusAnswers);
-        }
-      }
-
-      if (event.code === 'Digit2' || event.code === 'Numpad2') {
-        if (answers[1].textContent === this.engWord.getAttribute('data-trans')) {
-          this.getRightAnswer(data, rusAnswers);
-        } else {
-          this.getWrongAnswer(data, rusAnswers);
-        }
-      }
-
-      if (event.code === 'Digit3' || event.code === 'Numpad3') {
-        if (answers[2].textContent === this.engWord.getAttribute('data-trans')) {
-          this.getRightAnswer(data, rusAnswers);
-        } else {
-          this.getWrongAnswer(data, rusAnswers);
-        }
-      }
-
-      if (event.code === 'Digit4' || event.code === 'Numpad4') {
-        if (answers[3].textContent === this.engWord.getAttribute('data-trans')) {
-          this.getRightAnswer(data, rusAnswers);
-        } else {
-          this.getWrongAnswer(data, rusAnswers);
-        }
-      }
-    });
-  }
-
-  getRightAnswer(data, rusAnswers) {
-    this.trueAnswers.push(data.pop());
+  getRightAnswer() {
+    clearTimeout(this.state.currentTimerId);
+    this.engWord.classList.remove('dropped');
+    this.trueAnswers.push(this.data.pop());
     if (this.isSoundEnabled) new Audio('/assets/audio/correct.mp3').play();
-    if (data.length === 0) return this.showResults();
-    return this.updateButtonsContent(data, rusAnswers);
+    if (this.data.length === 0) return setTimeout(() => this.showResults(), 1000);
+    return setTimeout(() => this.updateButtonsContent(), 500);
   }
 
-  getWrongAnswer(data, rusAnswers) {
-    this.wrongAnswers.push(data.pop());
+  getWrongAnswer() {
+    clearTimeout(this.state.currentTimerId);
+    this.engWord.classList.remove('dropped');
+    this.wrongAnswers.push(this.data.pop());
     if (this.isSoundEnabled) new Audio('/assets/audio/error.mp3').play();
-    this.lifesWrapper.querySelector('.heart-icon').classList.add('heart-icon--disabled');
-    this.lifesWrapper.querySelector('.heart-icon').classList.remove('heart-icon');
+    this.lifesWrapper
+      .querySelector('.heart-icon')
+      .classList.add('heart-icon--disabled');
+    this.lifesWrapper
+      .querySelector('.heart-icon')
+      .classList.remove('heart-icon');
     const lostLifes = this.lifesWrapper.querySelectorAll('.heart-icon');
-    if (lostLifes.length === 0 || data.length === 0) return this.showResults();
-    return this.updateButtonsContent(data, rusAnswers);
+    if (lostLifes.length === 0
+      || this.data.length === 0) return setTimeout(() => this.showResults(), 1000);
+    return setTimeout(() => this.updateButtonsContent(), 500);
   }
 
   showResults() {
     new Audio('/assets/audio/endGame.mp3').play();
     this.appContainer.innerHTML = '';
-    this.overlay = createNode('div', 'overlay');
     this.resModal = createNode('div', 'game-results');
     this.resText = createNode('p', 'game-results__text');
 
@@ -304,8 +394,9 @@ class Game {
     if (this.trueAnswers.length !== 0) {
       this.trueAnswers.map((item) => {
         this.resultsRightContainer.innerHTML += `
-        <div>
-          <p class="game-results__answer">${item.word}  -  ${item.wordTranslate}</p>
+        <div class="answer">
+          <span class="answer__sound"></span>
+          <p class="answer__text">${item.word}  -  ${item.wordTranslate}</p>
           <audio src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${item.audio}" preload="none"></audio>
         </div>`;
         return this.trueAnswers;
@@ -322,15 +413,19 @@ class Game {
     if (this.wrongAnswers.length !== 0) {
       this.wrongAnswers.map((item) => {
         this.resultsWrongContainer.innerHTML += `
-        <div>
-          <p class="game-results__answer">${item.word}  -  ${item.wordTranslate}</p>
+        <div class="answer">
+          <span class="answer__sound"></span>
+          <p class="answer__text">${item.word}  -  ${item.wordTranslate}</p>
           <audio src="https://raw.githubusercontent.com/bobrui4anin/rslang-data/master/${item.audio}" preload="none"></audio>
         </div>`;
         return this.wrongAnswers;
       });
     }
 
-    this.resDescContainer.append(this.resultsRightContainer, this.resultsWrongContainer);
+    this.resDescContainer.append(
+      this.resultsRightContainer,
+      this.resultsWrongContainer,
+    );
 
     this.tryAgain = createNode('p', 'game-results__try');
     this.tryAgain.textContent = 'Продолжить тренировку';
@@ -339,13 +434,18 @@ class Game {
     this.backToTrain.textContent = 'К списку тренировок';
 
     this.resModal.append(this.resText, this.resLink);
-    this.resModal.append(this.resDescContainer, this.tryAgain, this.backToTrain);
+    this.resModal.append(
+      this.resDescContainer,
+      this.tryAgain,
+      this.backToTrain,
+    );
 
-    this.appContainer.append(this.overlay, this.resModal);
+    this.appContainer.append(this.resModal);
 
     this.resultsListener();
     this.playAudioResults();
-    console.log(this.trueAnswers, this.wrongAnswers);
+
+    this.getStatsInfo();
   }
 
   resultsListener() {
@@ -355,24 +455,159 @@ class Game {
       if (event.target.tagName !== 'P') return;
 
       if (event.target === this.resLink) {
-        this.resDescContainer.classList.toggle('game-results__description--click');
+        this.resDescContainer.classList.toggle(
+          'game-results__description--click',
+        );
       }
 
       if (event.target === this.tryAgain) {
-        window.location.reload();
+        if (this.wrongAnswers.length !== 0) {
+          this.addWrongAnswersToAnki();
+        }
+        const oldContainer = this.rusAnswersSection;
+        const container = oldContainer.cloneNode(true);
+        oldContainer.parentNode.replaceChild(container, oldContainer);
+
+        this.app.removeEventListener('keydown', this.keydownListener, false);
+        this.app.innerHTML = '';
+        this.appContainer = createNode('div', 'savanna');
+        this.app.append(this.appContainer);
+
+        this.topButtonsWrapper = createNode(
+          'div',
+          'wrapper',
+          'wrapper--top-buttons',
+        );
+
+        this.exitButton = createNode('button', 'button', 'button--return');
+        this.topButtonsWrapper.append(this.exitButton);
+        this.appContainer.append(this.topButtonsWrapper);
+
+        this.exitGame();
+        this.startLoading();
+        this.updateBody();
+        this.isSoundEnabled = true;
+        this.trueAnswers = [];
+        this.wrongAnswers = [];
+
+        localStorage.setItem(
+          'round',
+          Number(localStorage.getItem('round')) + 1,
+        );
+
+        if (Number(localStorage.getItem('round')) === 30) {
+          localStorage.setItem('round', 0);
+          localStorage.setItem(
+            'difficultSprint',
+            Number(localStorage.getItem('difficultSprint')) + 1,
+          );
+
+          if (Number(localStorage.getItem('difficultSprint')) === 6) {
+            localStorage.setItem('difficultSprint', 0);
+          }
+        }
+
+        this.getInfo(
+          Number(localStorage.getItem('numberOfWords')),
+          Number(localStorage.getItem('round')),
+        );
       }
 
-      if (event.target === this.backToAnotherTrain) {
-        console.log('ПЕРЕХОДИМ НА СТРАНИЦУ ТРЕНИРОВОК');
+      if (event.target === this.backToTrain) {
+        this.startLoading();
+        if (Object.keys(this.statsForBack).length !== 0) {
+          this.pushStats();
+        }
+        if (this.wrongAnswers.length !== 0) {
+          this.addWrongAnswersToAnki();
+        }
+        document.location.href = './index.html';
+        this.stopLoading();
       }
     });
   }
 
   playAudioResults() {
     this.resDescContainer.addEventListener('click', (event) => {
-      if (event.target.classList.value !== 'game-results__answer') return;
+      if (event.target.classList.value !== 'answer__sound') return;
 
       event.target.closest('div').querySelector('audio').play();
+    });
+  }
+
+  async getStatsInfo() {
+    const date = new Date();
+    const day = `0${date.getDate()}`;
+    const month = `0${date.getMonth() + 1}`;
+    const year = date.getFullYear();
+    const hour = date.getHours();
+    const min = `0${date.getMinutes()}`;
+    const sec = `0${date.getSeconds()}`;
+
+    const fullDate = `${day.substr(-2)}.${month.substr(
+      -2,
+    )}.${year}, ${hour}:${min.substr(-2)}:${sec.substr(-2)}`;
+    const res = `${this.trueAnswers.length}-${this.wrongAnswers.length}`;
+
+    this.statsForBack[`${fullDate}`] = {
+      score: res,
+    };
+  }
+
+  async pushStats() {
+    let stats;
+
+    try {
+      stats = await getStatistics({
+        userId: getUserID(),
+      });
+    } catch (e) {
+      await addEmptyStatistics({
+        userId: getUserID(),
+      });
+    }
+    delete stats.id;
+
+    if (!stats.optional) {
+      stats.optional = {};
+    }
+
+    if (!stats.optional.savanna) {
+      stats.optional = {
+        savanna: {},
+      };
+    }
+
+    stats.optional.savanna = this.statsForBack;
+
+    try {
+      await putStatistics({
+        userId: getUserID(),
+        payload: stats,
+      });
+    } catch (e) {
+      // eslint-disable-next-line no-alert
+      alert(e);
+    }
+  }
+
+  addWrongAnswersToAnki() {
+    this.wrongAnswers.forEach(async (item) => {
+      // eslint-disable-next-line no-underscore-dangle
+      const id = item._id;
+      try {
+        await getUserWord({
+          userId: getUserID(),
+          wordId: id,
+        });
+        updateWordWithError({
+          wordId: id,
+        });
+      } catch (err) {
+        createWordWithError({
+          wordId: id,
+        });
+      }
     });
   }
 }

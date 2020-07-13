@@ -1,2 +1,5 @@
-const body = document.querySelector('body');
-body.innerHTML = 'я главная';
+import { header } from '../../components/main/header/header';
+import { footer } from '../../components/main/footer/footer';
+
+header();
+footer();
