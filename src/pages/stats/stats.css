@@ -14,3 +14,15 @@ body, html {
   width: 100%;
   height: 100%;
 }
+
+@media screen and (max-width: 320px) {
+  .tab-layout {
+    grid-template-areas:
+        "gauge"
+        "statsTable"
+        "overallStats"
+        "todayStats";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+  }
+}
