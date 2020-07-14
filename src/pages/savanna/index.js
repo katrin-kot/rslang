@@ -573,9 +573,7 @@ class Game {
     }
 
     if (!stats.optional.savanna) {
-      stats.optional = {
-        savanna: {},
-      };
+      stats.optional.savanna = {};
     }
 
     stats.optional.savanna = this.statsForBack;
