@@ -1,24 +1,27 @@
 * {
-    margin: 0px;
-    padding: 0px;
-    box-sizing: border-box;
-  }
-  
-  body,
-  html {
-    height: 100%;
-    font-family: 'Poppins', sans-serif;
-    font-weight: 900;
-  }
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
 
-  main { 
-    background: url(../../../assets/images/bg.jpg) no-repeat center center fixed; 
-    background-size: cover;
-  }
+body,
+html {
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 900;
+}
 
-h1,h2,h3,h4 {
-    font-family: 'Oswald', sans-serif;
-    color: #47adcb;
+main {
+  background: url(../../../assets/images/bg.jpg) no-repeat center center fixed;
+  background-size: cover;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Oswald', sans-serif;
+  color: #47adcb;
 }
 
 .divider {
@@ -52,15 +55,15 @@ h1,h2,h3,h4 {
 .carousel-item:nth-child(1) .carousel-logo {
   width: auto;
   height: 100px;
-  left:45%;
+  left: 45%;
 }
 
 .carousel-caption h1 {
-  color:#ffffff;
+  color: #ffffff;
 }
 
 .carousel-item:nth-child(1) h1 {
-  color:rgb(255, 0, 64);
+  color: rgb(255, 0, 64);
   text-shadow: 1px 1px 2px black, 0 0 1em white;
 }
 
@@ -83,19 +86,19 @@ h1,h2,h3,h4 {
   min-height: auto;
   height: 100%;
   position: absolute;
-   left: 0;
+  left: 0;
 }
 
-.carousel-item:nth-child(2){
-  background: url(../../../assets/images/fashion.png)  no-repeat center center fixed; 
+.carousel-item:nth-child(2) {
+  background: url(../../../assets/images/fashion.png) no-repeat center center
+    fixed;
   background-size: auto;
-  
 }
 
-.carousel-item:nth-child(3){
-  background: url(../../../assets/images/fashion.png) no-repeat center center fixed; 
+.carousel-item:nth-child(3) {
+  background: url(../../../assets/images/fashion.png) no-repeat center center
+    fixed;
   background-size: cover;
-
 }
 
 .carousel-image {
@@ -116,17 +119,15 @@ h1,h2,h3,h4 {
 }
 
 .img-polaroid {
-  width: inherit;;
+  width: inherit;
 }
 @media (max-width: 979px) {
   .carousel-caption {
     height: 500px;
   }
- 
 }
 
 @media (max-width: 767px) {
- 
   .carousel-item {
     height: 300px;
   }
@@ -145,18 +146,22 @@ h1,h2,h3,h4 {
   .carousel-caption .btn {
     font-size: 16px;
   }
-
- }
+}
 
 @media (max-width: 480px) {
+  .container {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  
   .img-polaroid {
     width: 280px;
   }
-  
+
   #screenshots {
     padding: 0;
   }
-  
+
   .carousel-item {
     height: 300px;
   }
@@ -170,7 +175,7 @@ h1,h2,h3,h4 {
   }
   .carousel-caption {
     width: 100%;
-    left:0;
+    left: 0;
     padding: 0 100px;
     position: absolute;
     top: 50px;
