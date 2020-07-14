@@ -39,7 +39,7 @@ export default class StartScreen {
       }
     });
     
-    const newWords = createElement('div', 'new-words');;
+    const newWords = createElement('div', 'new-words');
     newWords.innerHTML += `<h3>Учить новые слова</h3><span class="new-number">Всего: ${newWordsCount}</span>`;
     newWords.addEventListener('click', () => {
       if (newWordsCount === 0) {

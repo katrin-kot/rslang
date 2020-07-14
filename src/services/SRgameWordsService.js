@@ -39,7 +39,6 @@ export const getNewWords = async () => {
 export const getLearningWords = async () => {
   const filterForLearningWords = '{"userWord":{"$ne":null}}';
   const response = await getAllUserAggregatedWords(filterForLearningWords, 3600);
-  console.log(response[0].paginatedResults)
   return response[0].paginatedResults;
 };
 
@@ -150,7 +149,7 @@ export const updateStatLearningWords = async (num) => {
   if (!stat.optional.SRgame[getTodayDate()]) {
     stat.optional.SRgame[getTodayDate()] = { learningWords: 0, newWords: 0 };
   }
-  stat.optional.SRgame[getTodayDate()].learningWords = num;
+  stat.optional.SRgame[getTodayDate()].learningWords += num;
   putStatistics({
     userId: getUserID(),
     payload: stat,
