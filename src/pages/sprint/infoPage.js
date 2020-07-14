@@ -15,10 +15,19 @@ const listenToStart = (startPage, gamePage, resultPage) => {
   });
 };
 
+const listenToClose = () => {
+  const closeButton = document.querySelector('.close-game');
+
+  closeButton.addEventListener('click', () => {
+    window.location.pathname = '/index.html';
+  });
+};
+
 export const infoPage = (startPage, gamePage, resultPage) => {
   const body = document.querySelector('body');
 
   const info = `
+    <button class="close-game"></button>
     <div class="info-wrapper">
       <div class="info-block">
         <div class="game-name">
@@ -39,4 +48,5 @@ export const infoPage = (startPage, gamePage, resultPage) => {
   body.insertAdjacentHTML('afterbegin', info);
 
   listenToStart(startPage, gamePage, resultPage);
+  listenToClose();
 };
