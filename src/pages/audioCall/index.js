@@ -61,6 +61,11 @@ class Game {
       this.startPage.classList.add('hidden');
 
       this.displayGame();
+
+      if (!localStorage.getItem('difficultAudioCall')) {
+        const diffValue = parseInt(document.querySelector('input[name="difficult"]:checked').value, 10);
+        localStorage.setItem('difficultAudioCall', diffValue);
+      }
     });
   }
 
@@ -147,7 +152,7 @@ class Game {
     }
 
     if (
-      !parseInt(this.selectRound.value, 10)
+      Number.isInteger(this.selectRound.value)
       || this.selectRound.value < MIN_QUANTITY_RAUNDS
       || this.selectRound.value > MAX_QUANTITY_RAUNDS
     ) {
