@@ -19,7 +19,7 @@ export function gameOver(score, words, error) {
     'afterbegin',
     ` <thead><tr>
   <th scope="col">Слово</th>
-  <th scope="col">Перевод</th></tr></thead><tbody></tbody>`
+  <th scope="col">Перевод</th></tr></thead><tbody></tbody>`,
   );
   const tbody = table.querySelector('tbody');
   words.forEach((elem) => {
@@ -41,14 +41,14 @@ export function gameOver(score, words, error) {
     Статистика
   </div>
 </div>
-  `
+  `,
   );
   table.insertAdjacentHTML(
     'afterend',
     `
 <button type="button" class="btn btn-outline-secondary">Повторить раунд</button>
 <button type="button" class="btn btn-outline-primary">Следующий раунд</button>
-  `
+  `,
   );
   const group = localStorage.getItem('group');
   const count = localStorage.getItem('count');
