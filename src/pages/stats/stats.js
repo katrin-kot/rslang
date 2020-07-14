@@ -26,6 +26,7 @@ async function renderPage() {
       savanna: {},
       speakIt: {},
       SRgame: {},
+      sprintMinigame: {},
       memoryGame: {},
     },
     ...await getStatistics({ userId }),
