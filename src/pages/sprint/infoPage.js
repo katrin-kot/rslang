@@ -21,6 +21,14 @@ export const infoPage = (startPage, gamePage, resultPage) => {
   const info = `
     <div class="info-wrapper">
       <div class="info-block">
+        <div id="btn-home">
+          <button class="btn-main-page">
+            <span class="circle" aria-hidden="true">
+              <span class="icon arrow"></span>
+            </span>
+            <a href="/index.html" class="button-text">На главную</a>
+          </button>
+        </div>
         <div class="game-name">
           <h1>
             С П Р И Н Т

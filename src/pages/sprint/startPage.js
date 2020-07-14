@@ -39,11 +39,21 @@ export default class StartPage extends GameWindow {
     const body = document.querySelector('body');
 
     const startField = `
-    <div class="game-wrapper">
-      ${difficultOptions()}
-      <span>Выберите раунд: </span> <input class="round" type="number" value="1" max="30" min="1">
-      ${this.getOptionField(this.additionOption)}
-      <div class="buttons-block">${this.getButton(this.buttonList)}</>
+    <div class="main-block">
+      <div id="btn-home">
+        <button class="btn-main-page">
+          <span class="circle" aria-hidden="true">
+            <span class="icon arrow"></span>
+          </span>
+          <a href="/index.html" class="button-text">На главную</a>
+        </button>
+      </div>
+      <div class="game-wrapper">
+        ${difficultOptions()}
+        <span>Выберите раунд: </span> <input class="round" type="number" value="1" max="30" min="1">
+        ${this.getOptionField(this.additionOption)}
+        <div class="buttons-block">${this.getButton(this.buttonList)}</>
+      </div>
     </div>
     `;
 

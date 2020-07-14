@@ -24,16 +24,9 @@ export default class GameWindow {
   }
 
   clearGameWindow() {
-    const elements = [
-      document.querySelector('.game-wrapper'),
-      document.querySelector('.game-score'),
-    ];
+    const mainBlock = document.querySelector('.main-block');
 
-    elements.forEach((element) => {
-      if (element !== null) {
-        element.remove();
-      }
-    });
+    mainBlock.remove();
   }
 
   toggleLoader(wasCreate = false) {

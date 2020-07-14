@@ -13,9 +13,12 @@
   font-family: 'Poppins', sans-serif;
   width: 80%;
   min-width: 320px;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .game-name {
+  width: 100%;
   font-size: 28px;
   font-weight: 700;
   text-transform: uppercase;
