@@ -85,6 +85,17 @@ class Game {
     this.selectRound.setAttribute('max', '29');
     this.selectRound.setAttribute('required', 'true');
 
+    this.btnHomeTemplate = `
+      <div id="btn-home">
+        <button class="btn-main-page">
+          <span class="circle" aria-hidden="true">
+            <span class="icon arrow"></span>
+          </span>
+          <a href="/index.html" class="button-text">На главную</a>
+        </button>
+      </div>
+    `;
+
     this.submitButton = createNode(
       'button',
       'button',
@@ -191,7 +202,7 @@ class Game {
     }
 
     this.buttonNext = createNode('button', 'button', 'css-arrow', 'button--arrow', 'event-pointer-none');
-
+    this.gameBlock.insertAdjacentHTML('afterbegin', this.btnHomeTemplate);
     this.gameBlock.append(this.engTopBlock, this.rusAnswersSection, this.buttonNext);
     this.appContainer.append(this.gameBlock);
 
