@@ -1,10 +1,16 @@
 import Chart from 'chart.js';
-import {getRandomIntInclusive} from "../features/random";
+import groupBy from 'lodash/groupBy';
+import { getNumberOfWeek } from '../features/date';
 
 
 let instances = 0;
 
-export function statsTable() {
+export function statsTable(dataFromServer) {
+  const aggregated = groupBy(
+    Object.entries(dataFromServer),
+    ([dateStr]) => getNumberOfWeek(new Date(dateStr)),
+  );
+
   const wrapper = document.createElement('div');
   wrapper.className = 'wrapper';
   const canvasEl = document.createElement('canvas');
@@ -23,20 +29,15 @@ export function statsTable() {
       },
     };
 
-    const wordsLearned = new Array(10).fill(0).map(() => getRandomIntInclusive(0,300));
+    const wordsLearned = [0].concat(Object.values(aggregated).map((el) => el.reduce((acc, cur) => {
+      if (cur[1].score) {
+        const [correct, wrong] = cur[1].score.split('-');
+        return acc + +correct + +wrong;
+      }
+      return acc;
+    }, 0)));
 
-    const labels = [
-      'Неделя 1',
-      'Неделя 2',
-      'Неделя 3',
-      'Неделя 4',
-      'Неделя 5',
-      'Неделя 6',
-      'Неделя 7',
-      'Неделя 8',
-      'Неделя 9',
-      'Неделя 10',
-    ];
+    const labels = [''].concat(Object.keys(aggregated).map((el, i) => `неделя ${i + 1}`));
 
     const ctx = document.getElementById(canvasEl.id).getContext('2d');
     ctx.canvas.height = 100;
@@ -99,7 +100,7 @@ export function statsTable() {
               },
               ticks: {
                 beginAtZero: false,
-                max: 300,
+                max: wordsLearned.reduce((acc, cur) => Math.max(acc, cur), 0),
                 min: 0,
                 padding: 10,
               },
