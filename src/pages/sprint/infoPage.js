@@ -15,21 +15,20 @@ const listenToStart = (startPage, gamePage, resultPage) => {
   });
 };
 
-const listenToClose = () => {
-  const closeButton = document.querySelector('.close-game');
-
-  closeButton.addEventListener('click', () => {
-    window.location.pathname = '/index.html';
-  });
-};
-
 export const infoPage = (startPage, gamePage, resultPage) => {
   const body = document.querySelector('body');
 
   const info = `
-    <button class="close-game"></button>
     <div class="info-wrapper">
       <div class="info-block">
+        <div id="btn-home">
+          <button class="btn-main-page">
+            <span class="circle" aria-hidden="true">
+              <span class="icon arrow"></span>
+            </span>
+            <a href="/index.html" class="button-text">На главную</a>
+          </button>
+        </div>
         <div class="game-name">
           <h1>
             С П Р И Н Т
@@ -48,5 +47,4 @@ export const infoPage = (startPage, gamePage, resultPage) => {
   body.insertAdjacentHTML('afterbegin', info);
 
   listenToStart(startPage, gamePage, resultPage);
-  listenToClose();
 };

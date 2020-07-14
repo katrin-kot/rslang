@@ -66,27 +66,37 @@ export default class Game extends GameWindow {
     const body = document.querySelector('body');
 
     const gameField = `
-      <div class="game-wrapper">
-        <div class="game-bonus yellow">
-          <div class="game-score">
-            <span class="inner-content">0</span>
-            <span class="added-score"></span>
-            ${this.getCanvas()}
-            <div class="audio-check audio-true"></div>
-          </div>
+      <div class="main-block">
+        <div id="btn-home">
+          <button class="btn-main-page">
+            <span class="circle" aria-hidden="true">
+              <span class="icon arrow"></span>
+            </span>
+            <a href="/index.html" class="button-text">На главную</a>
+          </button>
         </div>
-        ${this.getGameImage()}
-        <div class="word-block">
-          <div class="speaker">
-          <img src="https://cdn.discordapp.com/attachments/624997901248233505/728348020193886218/speaker.svg">
+        <div class="game-wrapper">
+          <div class="game-bonus yellow">
+            <div class="game-score">
+              <span class="inner-content">0</span>
+              <span class="added-score"></span>
+              ${this.getCanvas()}
+              <div class="audio-check audio-true"></div>
+            </div>
           </div>
-          ${this.addDivByClass('game-word')}
-          ${this.addDivByClass('game-translation')}
-        </div>
+          ${this.getGameImage()}
+          <div class="word-block">
+            <div class="speaker">
+              <img src="https://cdn.discordapp.com/attachments/624997901248233505/728348020193886218/speaker.svg">
+            </div>
+            ${this.addDivByClass('game-word')}
+            ${this.addDivByClass('game-translation')}
+          </div>
 
-        <hr>
-        <div class="answer-check"></div>
-        ${this.addDivByClass('buttons-block', this.getButton(this.buttonList))}
+          <hr>
+          <div class="answer-check"></div>
+          ${this.addDivByClass('buttons-block', this.getButton(this.buttonList))}
+        </div>
       </div>
     `;
 
