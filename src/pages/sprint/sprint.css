@@ -1,5 +1,6 @@
 body {
   margin: 0px;
+  font-family: 'Poppins', sans-serif;
   background-image: url('/assets/images/sprint-bg.jpg');
   background-size: cover;
   background-repeat: no-repeat;
