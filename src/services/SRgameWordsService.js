@@ -3,7 +3,7 @@ import { createUserWord, updateUserWord, getAllHardWords } from './userWordServi
 import { getTodayDate } from '../pages/SRgame/helpers';
 import { newWordsPerDay, learningWordsPerDay, isShowAllLearningWords } from '../pages/SRgame/settings';
 import { getToken } from './token';
-
+import { getStatistics, putStatistics } from './statsService';
 
 const userID = getUserID();
 
@@ -26,14 +26,20 @@ const getAllUserAggregatedWords = async (filter, wordsPerPage) => {
 
 
 export const getNewWords = async () => {
+  const studiedWords = await getTodayNewWordsCount();
+  if (studiedWords >= newWordsPerDay) {
+    return [];
+  }
+  const count = newWordsPerDay - studiedWords;
   const filterForNewWords = '{"userWord":null}';
-  const response = await getAllUserAggregatedWords(filterForNewWords, newWordsPerDay);
+  const response = await getAllUserAggregatedWords(filterForNewWords, count);
   return response[0].paginatedResults;
 };
 
 export const getLearningWords = async () => {
   const filterForLearningWords = '{"userWord":{"$ne":null}}';
   const response = await getAllUserAggregatedWords(filterForLearningWords, 3600);
+  console.log(response[0].paginatedResults)
   return response[0].paginatedResults;
 };
 
@@ -116,14 +122,75 @@ export const getHardWordsCount = async () => {
 export const getLearningWordsCount = async () => {
   const words = await filterLearningWordsPerDate();
   const wordsCount = words.length;
+  const learnedWords = await getTodayLearnedWordsCount();
   if (isShowAllLearningWords) {
     return wordsCount;
   }
-  if (wordsCount > learningWordsPerDay) {
-    return learningWordsPerDay;
+  if (learnedWords >= learningWordsPerDay) {
+    return 0;
   }
-  if (wordsCount < learningWordsPerDay) {
-    return wordsCount;
+  if (learnedWords < learningWordsPerDay) {
+    const count = learningWordsPerDay - learnedWords;
+    if (wordsCount > count) {
+      return count;
+    }
+    if (wordsCount < count) {
+      return wordsCount;
+    }
   }
   return 0;
+};
+
+export const updateStatLearningWords = async (num) => {
+  const stat = await getStatistics({ userId: getUserID() });
+  if (!stat.optional.SRgame) {
+    stat.optional.SRgame = {};
+  }
+  delete stat.id;
+  if (!stat.optional.SRgame[getTodayDate()]) {
+    stat.optional.SRgame[getTodayDate()] = { learningWords: 0, newWords: 0 };
+  }
+  stat.optional.SRgame[getTodayDate()].learningWords = num;
+  putStatistics({
+    userId: getUserID(),
+    payload: stat,
+  });
+};
+
+export const updateStatNewWords = async (num) => {
+  const stat = await getStatistics({ userId: getUserID() });
+  if (!stat.optional.SRgame) {
+    stat.optional.SRgame = {};
+  }
+  delete stat.id;
+  if (!stat.optional.SRgame[getTodayDate()]) {
+    stat.optional.SRgame[getTodayDate()] = { learningWords: 0, newWords: 0 };
+  }
+  stat.optional.SRgame[getTodayDate()].newWords += num;
+  putStatistics({
+    userId: getUserID(),
+    payload: stat,
+  });
+};
+
+export const getTodayLearnedWordsCount = async () => {
+  const stat = await getStatistics({ userId: getUserID() });
+  if (!stat.optional.SRgame) {
+    return 0;
+  }
+  if (!stat.optional.SRgame[getTodayDate()]) {
+    return 0;
+  }
+  return stat.optional.SRgame[getTodayDate()].learningWords;
+};
+
+export const getTodayNewWordsCount = async () => {
+  const stat = await getStatistics({ userId: getUserID() });
+  if (!stat.optional.SRgame) {
+    return 0;
+  }
+  if (!stat.optional.SRgame[getTodayDate()]) {
+    return 0;
+  }
+  return stat.optional.SRgame[getTodayDate()].newWords;
 };

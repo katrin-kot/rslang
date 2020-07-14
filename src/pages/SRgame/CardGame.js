@@ -1,7 +1,10 @@
 import NewCard from './NewCard';
 import LearningCard from './LearningCard';
 import swiper from './swiper';
-import { getNewWords, filterLearningWordsPerDate, getHardWords } from '../../services/SRgameWordsService';
+import {
+  getNewWords, filterLearningWordsPerDate, getHardWords, updateStatLearningWords,
+  updateStatNewWords, getLearningWordsCount,
+} from '../../services/SRgameWordsService';
 import { getUserID } from '../../services/authService';
 import {
   countErrors, createElement, createCountObj, createErrorObj,
@@ -26,7 +29,8 @@ export default class CardGame {
 
   async createCardsForLearningCardGame() {
     let cards = await filterLearningWordsPerDate();
-    cards = cards.slice(0, 3);
+    const count = await getLearningWordsCount();
+    cards = cards.slice(0, count);
     cards.forEach((word) => {
       this.learningCards.push(new LearningCard(word));
     });
@@ -185,6 +189,10 @@ export default class CardGame {
           swiper.slideNext();
           swiper.allowSlideNext = false;
         }, 1000);
+        if (swiper.activeIndex === document.querySelectorAll('.swiper-slide').length - 1) {
+          document.querySelector('.swiper-slide-active .show-answer-btn').innerText = 'Завершить игру';
+          document.querySelector('.swiper-slide-active .show-answer-btn').classList.add('end-game');
+        }
       } else if (value !== input.dataset.word) {
         if (!document.querySelector('.swiper-slide-active.card-container').dataset.errors) {
           document.querySelector('.swiper-slide-active.card-container').dataset.errors = 1;
@@ -258,7 +266,7 @@ export default class CardGame {
         setTimeout(() => {
           swiper.slideNext();
           swiper.allowSlideNext = false;
-        }, 1000);
+        }, 4000);
         this.rightAnswersSeries = 0;
       }
     });
@@ -280,8 +288,8 @@ export default class CardGame {
   }
 
   async endGame(cards) {
-    document.addEventListener('click', (e) => {
-      if (e.target.tagName === 'BUTTON') {
+    document.addEventListener('click', async (e) => {
+      if (e.target.tagName === 'BUTTON' && e.target.classList.contains('end-game')) {
         if (swiper.activeIndex === document.querySelectorAll('.swiper-slide').length - 1) {
           const words = document.querySelectorAll('.card-container');
           const errObj = createErrorObj(words);
@@ -294,6 +302,12 @@ export default class CardGame {
             await card.createUserCard();
           });
           this.renderStatistic(cards);
+          if (this.newCards.length) {
+            await updateStatNewWords(this.newCards.length);
+          }
+          if (this.learningCards.length) {
+            await updateStatLearningWords(this.learningCards.length);
+          }
         }
       }
     });
@@ -303,8 +317,7 @@ export default class CardGame {
     const words = document.querySelectorAll('.card-container');
     let errors = 0;
     words.forEach((i) => {
-      // eslint-disable-next-line no-restricted-globals
-      const err = isNaN(parseInt(i.dataset.errors, 10)) ? 0 : parseInt(i.dataset.errors, 10);
+      const err = Number.isNaN(parseInt(i.dataset.errors, 10)) ? 0 : parseInt(i.dataset.errors, 10);
       errors += err;
     });
     let showAnswer = 0;
@@ -323,7 +336,7 @@ export default class CardGame {
         <img id="logo" class ="logo" src="/assets/images/logo.png" alt="logo">
         <h3 class="statistics-container_title">Серия завершена</h3>
         <p><span>Карточек завершено:</span><span>${cards.length}</span></p>
-        <p><span>Правильные ответы:</span><span>${Math.round(100 - (errors + showAnswer) / (words.length / 100))}%</span></p>
+        <p><span>Правильные ответы:</span><span>${Math.round(100 - ((errors + showAnswer) / (words.length / 100)))}%</span></p>
         <p><span>Новые слова:</span><span>${this.newCards.length}</span></p>
         <p><span>Самая длинная серия правильных ответов:</span><span>${rightAnswersSeries}</span></p>`;
 
@@ -337,6 +350,7 @@ export default class CardGame {
 
     document.body.innerHTML = '';
     document.body.append(modal);
+    console.log(errors, showAnswer, words.length);
   }
 
   static renderNotification() {

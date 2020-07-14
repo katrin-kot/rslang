@@ -12,7 +12,13 @@ const swiper = new Swiper('.swiper-container', {
   initialSlide: 0,
   slidesPerView: 1,
   centeredSlides: true,
+  allowTouchMove: false,
 
+});
+swiper.on('slideChange', () => {
+  setTimeout(() => {
+    document.querySelector('.swiper-slide-active .word-input').focus();
+  }, 1000);
 });
 
 export default swiper;
