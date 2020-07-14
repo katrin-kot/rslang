@@ -2,17 +2,21 @@ import './tabs.css';
 
 export function TabsComponent(content) {
   const navigationContainer = document.createElement('div');
-  navigationContainer.className = 'tabs__navigation';
+  navigationContainer.className = 'tabs__navigation nav nav-tabs';
   content.forEach(([elText], index) => {
-    const btn = document.createElement('button');
-    btn.innerText = elText;
+    const btn = document.createElement('div');
+    btn.innerHTML = `<a href="#" class="nav-link ${index === 0 ? 'active' : ''}">${elText}</a>`;
+    btn.className = 'nav-item'
     btn.setAttribute('data-index', index);
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', (e) => {
       Array.from(document.querySelectorAll('[data-tab]')).forEach((el) => {
         /* eslint-disable no-param-reassign */
         el.style.display = 'none';
       });
       document.querySelector(`[data-tab-index="${index}"]`).style.display = 'block';
+      document.querySelector('.nav-link.active').classList.remove('active')
+      const {currentTarget} = e
+      currentTarget.querySelector('.nav-link').classList.add('active')
     });
     navigationContainer.appendChild(btn);
   });
