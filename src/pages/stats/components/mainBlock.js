@@ -35,7 +35,7 @@ function getNewWordsCount(data) {
   }, 0);
 }
 
-export function mainBlock(dataFromServer, passedCardsLength = 0) {
+export function mainBlock(dataFromServer, passedCardsLength = 0,learnedWords = 0) {
   const mainContainer = document.createElement('div');
   mainContainer.className = 'main-container';
   const completionChartId = `chart-${instances}`;
@@ -49,7 +49,7 @@ export function mainBlock(dataFromServer, passedCardsLength = 0) {
   `;
   setTimeout(() => {
     // Course Completion Chart
-    const percent = 0.0;
+    const percent = (learnedWords / 3600);
     const text = `${(percent * 100).toFixed(0)}%`;
     const pieChartWidth = 260;
     const pieChartHeight = 260;

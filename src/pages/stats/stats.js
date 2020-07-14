@@ -11,6 +11,7 @@ import { header } from '../../components/main/header/header';
 import { footer } from '../../components/main/footer/footer';
 import {checkUserLogin} from "../../services/verifyUserService";
 import {
+  filterLearningWordsPerDate,
   getLearningWords
 } from "../../services/SRgameWordsService";
 
@@ -31,10 +32,11 @@ async function renderPage() {
   };
   const settings = await getUserSettings({ userId });
   const learningWords = await getLearningWords();
+  const learningWordsPerDate = await filterLearningWordsPerDate();
   const tabsContent = Object.entries(data.optional).map((el) => {
     const fragment = document.createElement('div');
     fragment.className = 'tab-layout';
-    fragment.appendChild(mainBlock(el[1],learningWords.length));
+    fragment.appendChild(mainBlock(el[1],learningWords.length,learningWordsPerDate.length));
     fragment.appendChild(overallStats(el[1], settings));
     fragment.appendChild(statsTable(el[1]));
     return [el[0], fragment];
