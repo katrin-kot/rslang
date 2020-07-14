@@ -7,7 +7,7 @@ import { getToken } from './token';
 
 const userID = getUserID();
 
-const getAllUserAggregatedWords = async (filter, wordsPerPage) => {
+export const getAllUserAggregatedWords = async (filter, wordsPerPage) => {
   const token = getToken();
   const rawResponse = await fetch(
     `https://afternoon-falls-25894.herokuapp.com/users/${userID}/aggregatedWords?wordsPerPage=${wordsPerPage}&filter=${filter}`,

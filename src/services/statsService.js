@@ -35,7 +35,7 @@ export const addEmptyStatistics = ({ userId }) => {
           savanna: {},
           speakIt: {},
           SRgame: {},
-          memory: {}
+          memoryGame: {}
         },
       }),
     });

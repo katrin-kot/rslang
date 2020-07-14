@@ -1,6 +1,5 @@
 import './mainBlock.css';
 import * as d3 from 'd3';
-import {getRandomIntInclusive} from "../features/random";
 
 let instances = 0;
 
@@ -16,6 +15,16 @@ function getAnswerPercent(data) {
   return (correct / (total || 1)) * 100;
 }
 
+function correctAnswersStreak(data) {
+  return Object.values(data).filter((el) => parseInt(el.errors) > 0).reduce((acc,cur) => {
+    if(cur.score) {
+      const [correct] = cur.score.split('-');
+      return acc + correct;
+    }
+    return acc;
+  },0)
+}
+
 function getNewWordsCount(data) {
   return Object.values(data).reduce((acc, cur) => {
     if(cur.score) {
@@ -26,7 +35,7 @@ function getNewWordsCount(data) {
   }, 0);
 }
 
-export function mainBlock(dataFromServer) {
+export function mainBlock(dataFromServer, passedCardsLength = 0) {
   const mainContainer = document.createElement('div');
   mainContainer.className = 'main-container';
   const completionChartId = `chart-${instances}`;
@@ -40,7 +49,7 @@ export function mainBlock(dataFromServer) {
   `;
   setTimeout(() => {
     // Course Completion Chart
-    const percent = Math.random().toFixed(2);
+    const percent = 0.0;
     const text = `${(percent * 100).toFixed(0)}%`;
     const pieChartWidth = 260;
     const pieChartHeight = 260;
@@ -134,10 +143,10 @@ export function mainBlock(dataFromServer) {
       yAxis.selectAll('text').style('font-size', '12px');
     };
     const data = [
-      { name: 'Кол-во пройденных карточек', value: getRandomIntInclusive(0, 40) },
+      { name: 'Кол-во пройденных карточек', value: passedCardsLength },
       { name: '% Правильных ответов', value: Math.round(getAnswerPercent(dataFromServer)) },
       { name: 'Кол-во новых слов', value: getNewWordsCount(dataFromServer) },
-      { name: 'Серия правильных ответов', value: getRandomIntInclusive(0, 40) },
+      { name: 'Серия правильных ответов', value: correctAnswersStreak(dataFromServer) },
     ];
     barChart(`#${barChartId}`, data);
   });
