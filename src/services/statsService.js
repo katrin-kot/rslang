@@ -36,14 +36,14 @@ export const addEmptyStatistics = ({ userId }) => {
           speakIt: {},
           SRgame: {},
           sprintMinigame: {},
-          memoryGame: {}
+          memoryGame: {},
         },
       }),
     });
 };
 export const putStatistics = ({ userId, payload }) => {
   const token = getToken();
-  const statistics = getStatistics({userId})
+  const statistics = getStatistics({ userId });
   return fetch(`https://afternoon-falls-25894.herokuapp.com/users/${userId}/statistics`,
     {
       method: 'PUT',

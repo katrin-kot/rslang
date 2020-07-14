@@ -16,26 +16,26 @@ function getAnswerPercent(data) {
 }
 
 function correctAnswersStreak(data) {
-  return Object.values(data).filter((el) => parseInt(el.errors) > 0).reduce((acc,cur) => {
-    if(cur.score) {
+  return Object.values(data).filter((el) => parseInt(el.errors, 10) > 0).reduce((acc, cur) => {
+    if (cur.score) {
       const [correct] = cur.score.split('-');
       return acc + correct;
     }
     return acc;
-  },0)
+  }, 0);
 }
 
 function getNewWordsCount(data) {
   return Object.values(data).reduce((acc, cur) => {
-    if(cur.score) {
+    if (cur.score) {
       const [correct, wrong] = cur.score.split('-');
       return acc + +correct + +wrong;
     }
-     return acc;
+    return acc;
   }, 0);
 }
 
-export function mainBlock(dataFromServer, passedCardsLength = 0,learnedWords = 0) {
+export function mainBlock(dataFromServer, passedCardsLength = 0, learnedWords = 0) {
   const mainContainer = document.createElement('div');
   mainContainer.className = 'main-container';
   const completionChartId = `chart-${instances}`;

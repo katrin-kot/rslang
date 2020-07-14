@@ -1,7 +1,9 @@
 import { createElement } from './helpers';
 import { getHardWordsCount, getLearningWordsCount } from '../../services/SRgameWordsService';
 import { newWordsPerDay } from './settings';
-import { renderNewGame, renderHardGame, renderGame, renderLearningGame } from './handlers';
+import {
+  renderNewGame, renderHardGame, renderGame, renderLearningGame,
+} from './handlers';
 
 export default class StartScreen {
   static async createScreen() {

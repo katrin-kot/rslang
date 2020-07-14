@@ -1,12 +1,15 @@
 import Chart from 'chart.js';
-import groupBy from 'lodash/groupBy'
-import {getNumberOfWeek} from "../features/date";
+import groupBy from 'lodash/groupBy';
+import { getNumberOfWeek } from '../features/date';
 
 
 let instances = 0;
 
 export function statsTable(dataFromServer) {
-  const aggregated = groupBy(Object.entries(dataFromServer), ([dateStr]) => getNumberOfWeek(new Date(dateStr)))
+  const aggregated = groupBy(
+    Object.entries(dataFromServer),
+    ([dateStr]) => getNumberOfWeek(new Date(dateStr)),
+  );
 
   const wrapper = document.createElement('div');
   wrapper.className = 'wrapper';
@@ -26,12 +29,12 @@ export function statsTable(dataFromServer) {
       },
     };
 
-    const wordsLearned = [0].concat(Object.values(aggregated).map(el => el.reduce((acc, cur) => {
+    const wordsLearned = [0].concat(Object.values(aggregated).map((el) => el.reduce((acc, cur) => {
       if (cur[1].score) {
-        const [correct, wrong] = cur[1].score.split('-')
-        return acc + +correct + +wrong
+        const [correct, wrong] = cur[1].score.split('-');
+        return acc + +correct + +wrong;
       }
-      return acc
+      return acc;
     }, 0)));
 
     const labels = [''].concat(Object.keys(aggregated).map((el, i) => `неделя ${i + 1}`));
