@@ -10,13 +10,15 @@ export const checkUserLogin = async () => {
 
   if (!userId || !token || !settings) {
     errorWindow();
-    return;
+    return false;
   }
   try {
     await getUserSettings({ userId });
   } catch (error) {
     errorWindow();
+    return false;
   }
+  return true;
 };
 
 export const checkUserLoginWithoutWindow = async () => {
