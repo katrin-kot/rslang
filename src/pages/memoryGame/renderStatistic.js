@@ -10,8 +10,11 @@ export async function renderStatistic(score, error) {
     countError = error.length;
   }
   const statistic = await getStatistics({ userId });
+  if (!statistic.optional) {
+    statistic.optional = {};
+  }
   if (!statistic.optional.memoryGame) {
-    statistic.optional = { memoryGame: {} };
+    statistic.optional.memoryGame = {};
   }
   delete statistic.id;
   const date = new Date();

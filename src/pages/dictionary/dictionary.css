@@ -6,30 +6,31 @@
 
 body,
 html {
+  display: flex;
+  flex-direction: column;
   height: 100%;
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
 }
 
-body {
-  background: linear-gradient(
-    62deg,
-    rgba(64, 180, 189, 1) 0%,
-    rgba(214, 212, 225, 1) 61%,
-    rgba(255, 255, 255, 1) 100%
-  );
+main {
+  flex:1;
 }
 
 .row {
   margin: 0;
-  height: 100vh;
+}
+
+.words-content {
+  justify-content: center;
+  height: calc(100%-128px);
 }
 
 .tab-header {
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  margin-top: 20px;
+  margin: 20px 0;
 }
 
 a {
@@ -67,16 +68,17 @@ p {
   font-size: 18px;
 }
 
-.col-3 {
+body {
   background: linear-gradient(
     62deg,
     rgba(64, 180, 189, 1) 0%,
     rgba(214, 212, 225, 1) 61%,
     rgba(255, 255, 255, 1) 100%
-  );
+  ) no-repeat center center fixed;
+  background-size: cover;
 }
 
-.col-9 {
+.words-content {
   background: #f6ecee;
 }
 
@@ -85,9 +87,8 @@ p {
 }
 
 .word-card {
-  height: 200px;
-  border-bottom: 2px solid #666666;
-  padding: 0 5px 5px 5px;
+  border-top: 2px dashed #666666;
+  padding: 16px 0;
 }
 
 .english-word {
@@ -101,14 +102,16 @@ p {
 }
 
 .explanation {
-  height: inherit;
-  overflow-y: scroll;
-  padding: 8px 5px 8px 5px;
+  padding: 8px 5px;
 }
 
 .card-image {
   width: inherit;
   max-height: 190px;
+}
+
+.image-block {
+  padding-top: 20px;
 }
 
 .btn-play,
@@ -150,12 +153,16 @@ p {
   left: 70%;
 }
 
-ul {
+main ul {
   margin-top: 10px;
   width: 100px;
   height: 10px;
   display: flex;
   justify-content: space-between;
+}
+
+.dots-progress {
+  margin-bottom: 0;
 }
 
 .dot {
@@ -195,7 +202,7 @@ ul {
 
 @media (max-width: 575px) {
   .word-card {
-    margin-bottom: 200px;
+    margin-bottom: 10px;
     margin-right: 10px;
   }
 
@@ -237,16 +244,21 @@ ul {
 }
 
 @media (max-width: 360px) {
+  main .row {
+    flex-direction: column;
+  }
+
   h4 {
     font-size: 1.4rem;
   }
 
-  .word-card {
-    margin-bottom: 140px;
-  }
-
   h5 {
     font-size: 1.1rem;
+  }
+
+  .words-content {
+    padding-left: 0;
+    padding-right: 0;
   }
   
   .navigation {

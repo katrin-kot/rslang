@@ -3,8 +3,11 @@ import { initHandlers } from './initHandlers';
 import { getUserID } from '../../services/authService';
 import { errorWindow } from '../../components/main/errorWindow/errorWindow';
 import { getToken } from '../../services/token';
+import { header } from '../../components/main/header/header';
+import { footer } from '../../components/main/footer/footer';
 
 const body = document.querySelector('body');
+header();
 const main = document.createElement('main');
 const userId = getUserID();
 const token = getToken();
@@ -42,4 +45,5 @@ main.innerHTML = `
 </form>
 </div>`;
 body.appendChild(main);
+footer();
 initHandlers();

@@ -63,5 +63,5 @@ export async function initHandlers() {
   });
 
   const returnMainpage = document.querySelector('.btn-outline-secondary');
-  returnMainpage.addEventListener('click', () => { window.location.pathname = '/SRgame.html'; });
+  returnMainpage.addEventListener('click', () => { window.location.pathname = '/index.html'; });
 }

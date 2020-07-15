@@ -109,7 +109,7 @@ export function renderCard(content, settings) {
     explanation.appendChild(meaningTranslate);
   }
   const wrapper = document.createElement('div');
-  wrapper.classList.add('col-12', 'col-sm-4');
+  wrapper.classList.add('image-block', 'col-12', 'col-sm-4');
   fragment.appendChild(wrapper);
   if (settings.image === true) {
     const img = document.createElement('img');

@@ -1,7 +1,5 @@
 .main-container {
-  grid-area: gauge;
-  grid-column: 1/-1;
-  display: flex;
+  display: contents;
   color: cadetblue;
 }
 
@@ -10,8 +8,8 @@
 }
 
 .bar-chart {
-  width: 50%;
   margin-top: 1rem;
+  grid-area: statsTable;
 }
 
 .bar-chart svg {
@@ -23,6 +21,7 @@
   width: 50%;
   align-items: center;
   flex-direction: column;
+  grid-area: gauge;
 }
 
 .course-completion {

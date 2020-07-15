@@ -1,8 +1,10 @@
 import createNode from '../../helpers/createNode';
 import diffLevel from '../../components/main/difficultOptions/difficultOptions';
-import { getWordforGame } from '../../services/userWordService';
+import { getWordforGame, getUserWord } from '../../services/userWordService';
 import { getUserID } from '../../services/authService';
 import { checkUserLogin } from '../../services/verifyUserService';
+import { createWordWithError, updateWordWithError } from '../../services/SRgameWordsService';
+import { getStatistics, putStatistics, addEmptyStatistics } from '../../services/statsService';
 
 class Game {
   constructor() {
@@ -11,14 +13,15 @@ class Game {
     this.isSoundEnabled = true;
     this.trueAnswers = [];
     this.wrongAnswers = [];
-    this.statsForBack = {
-      Savanna: {},
-    };
+    this.statsForBack = {};
     this.keydownListener = '';
 
     this.appContainer = createNode('div', 'savanna');
 
     this.app.append(this.appContainer);
+
+    this.loading = createNode('div', 'loading', 'hidden');
+    this.appContainer.append(this.loading);
 
     this.topButtonsWrapper = createNode(
       'div',
@@ -64,7 +67,16 @@ class Game {
 
   exitGame() {
     this.exitButton.addEventListener('click', () => {
-      console.log('ПЕРЕХОДИМ НА СТРАНИЦУ ТРЕНИРОВОК');
+      this.startLoading();
+      if (Object.keys(this.statsForBack).length !== 0) {
+        this.pushStats();
+      }
+      if (this.wrongAnswers.length !== 0) {
+        this.addWrongAnswersToAnki();
+      }
+      document.location.href = './index.html';
+
+      this.stopLoading();
     });
   }
 
@@ -72,7 +84,7 @@ class Game {
     this.awaitBlock = createNode('div', 'await-block');
     this.keyboardImage = createNode('div', 'await-block__keyboard');
     this.promt = createNode('p', 'await-block__promt');
-    this.promt.textContent = 'Используйте клавишы 1, 2, 3 и 4, чтобы дать быстрый ответ';
+    this.promt.textContent = 'Используйте клавиши 1, 2, 3 и 4, чтобы дать быстрый ответ';
 
     this.diffLevel = createNode('div', 'difficult-block');
     this.diffLevel.innerHTML = diffLevel();
@@ -85,6 +97,7 @@ class Game {
 
     this.selectRound = createNode('input', 'form__round');
     this.selectRound.setAttribute('type', 'number');
+    this.selectRound.setAttribute('placeholder', 'Введите раунд игры');
     this.selectRound.setAttribute('min', '0');
     this.selectRound.setAttribute('max', '29');
     this.selectRound.setAttribute('required', 'true');
@@ -128,7 +141,7 @@ class Game {
       if (
         !Number.isInteger(Number(this.inputField.value))
         || this.inputField.value > 20
-        || this.inputField.value < 5
+        || this.inputField.value < 7
       ) return this.showError();
 
       this.awaitBlock.classList.add('hidden');
@@ -142,18 +155,17 @@ class Game {
 
   showError() {
     this.error = createNode('p', 'form__error');
-    this.error.textContent = 'Внимание! Введите число от 5 до 20';
+    this.error.textContent = 'Внимание! Введите число от 7 до 20';
     this.form.prepend(this.error);
     this.inputField.value = '';
   }
 
   startLoading() {
-    this.loading = createNode('div', 'loading');
-    this.appContainer.append(this.loading);
+    this.loading.classList.remove('hidden');
   }
 
   stopLoading() {
-    this.loading.remove();
+    this.loading.classList.add('hidden');
   }
 
   updateBody() {
@@ -233,7 +245,7 @@ class Game {
         case 'Digit3':
         case 'Numpad3':
           if (
-            answers[3].textContent === this.engWord.getAttribute('data-trans')
+            answers[2].textContent === this.engWord.getAttribute('data-trans')
           ) {
             this.getRightAnswer();
           } else {
@@ -244,7 +256,7 @@ class Game {
         case 'Digit4':
         case 'Numpad4':
           if (
-            answers[4].textContent === this.engWord.getAttribute('data-trans')
+            answers[3].textContent === this.engWord.getAttribute('data-trans')
           ) {
             this.getRightAnswer();
           } else {
@@ -282,6 +294,7 @@ class Game {
       this.updateButtonsContent();
       this.stopLoading();
     } catch (e) {
+      // eslint-disable-next-line no-alert
       alert(e);
     }
   }
@@ -308,7 +321,7 @@ class Game {
 
     for (let i = 0; i < 4; i += 1) {
       if (dataLength - i < 0) {
-        dataLength = this.data.length + i + 1;
+        dataLength = this.data.length + i + 3;
       }
       answerWords.push(this.rusAnswers[dataLength - i]);
     }
@@ -326,8 +339,8 @@ class Game {
     this.engWord.classList.remove('dropped');
     this.trueAnswers.push(this.data.pop());
     if (this.isSoundEnabled) new Audio('/assets/audio/correct.mp3').play();
-    if (this.data.length === 0) return setTimeout(() => this.showResults(), 1500);
-    return setTimeout(() => this.updateButtonsContent(), 1000);
+    if (this.data.length === 0) return setTimeout(() => this.showResults(), 1000);
+    return setTimeout(() => this.updateButtonsContent(), 500);
   }
 
   getWrongAnswer() {
@@ -343,8 +356,8 @@ class Game {
       .classList.remove('heart-icon');
     const lostLifes = this.lifesWrapper.querySelectorAll('.heart-icon');
     if (lostLifes.length === 0
-      || this.data.length === 0) return setTimeout(() => this.showResults(), 1500);
-    return setTimeout(() => this.updateButtonsContent(), 1000);
+      || this.data.length === 0) return setTimeout(() => this.showResults(), 1000);
+    return setTimeout(() => this.updateButtonsContent(), 500);
   }
 
   showResults() {
@@ -448,6 +461,9 @@ class Game {
       }
 
       if (event.target === this.tryAgain) {
+        if (this.wrongAnswers.length !== 0) {
+          this.addWrongAnswersToAnki();
+        }
         const oldContainer = this.rusAnswersSection;
         const container = oldContainer.cloneNode(true);
         oldContainer.parentNode.replaceChild(container, oldContainer);
@@ -497,8 +513,16 @@ class Game {
         );
       }
 
-      if (event.target === this.backToAnotherTrain) {
-        console.log('ПЕРЕХОДИМ НА СТРАНИЦУ ТРЕНИРОВОК');
+      if (event.target === this.backToTrain) {
+        this.startLoading();
+        if (Object.keys(this.statsForBack).length !== 0) {
+          this.pushStats();
+        }
+        if (this.wrongAnswers.length !== 0) {
+          this.addWrongAnswersToAnki();
+        }
+        document.location.href = './index.html';
+        this.stopLoading();
       }
     });
   }
@@ -511,7 +535,7 @@ class Game {
     });
   }
 
-  getStatsInfo() {
+  async getStatsInfo() {
     const date = new Date();
     const day = `0${date.getDate()}`;
     const month = `0${date.getMonth() + 1}`;
@@ -522,13 +546,67 @@ class Game {
 
     const fullDate = `${day.substr(-2)}.${month.substr(
       -2,
-    )}.${year}T${hour}:${min.substr(-2)}:${sec.substr(-2)}`;
+    )}.${year}, ${hour}:${min.substr(-2)}:${sec.substr(-2)}`;
     const res = `${this.trueAnswers.length}-${this.wrongAnswers.length}`;
 
-    this.statsForBack.Savanna[`${fullDate}`] = res;
+    this.statsForBack[`${fullDate}`] = {
+      score: res,
+    };
+  }
 
-    const state = this.statsForBack;
-    console.log(state);
+  async pushStats() {
+    let stats;
+
+    try {
+      stats = await getStatistics({
+        userId: getUserID(),
+      });
+    } catch (e) {
+      await addEmptyStatistics({
+        userId: getUserID(),
+      });
+    }
+    delete stats.id;
+
+    if (!stats.optional) {
+      stats.optional = {};
+    }
+
+    if (!stats.optional.savanna) {
+      stats.optional.savanna = {};
+    }
+
+    stats.optional.savanna = this.statsForBack;
+
+    try {
+      await putStatistics({
+        userId: getUserID(),
+        payload: stats,
+      });
+    } catch (e) {
+      // eslint-disable-next-line no-alert
+      alert(e);
+    }
+  }
+
+  addWrongAnswersToAnki() {
+    this.wrongAnswers.forEach(async (item) => {
+      // eslint-disable-next-line no-underscore-dangle
+      const id = item._id;
+      try {
+        await getUserWord({
+          userId: getUserID(),
+          wordId: id,
+        });
+        updateWordWithError({
+          wordId: id,
+        });
+      } catch (err) {
+        createWordWithError({
+          wordId: id,
+        });
+      }
+    });
   }
 }
 

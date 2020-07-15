@@ -27,7 +27,7 @@ const config = {
   entry: {
     main: './src/pages/main/main.js',
     login: './src/pages/login/login.js',
-    audioCall: './src/pages/audioCall/startPage.js',
+    audioCall: './src/pages/audioCall/audioCall.js',
     stats: './src/pages/stats/stats.js',
     savanna: './src/pages/savanna/savanna.js',
     speakIt: './src/pages/speakIt/speakIt.js',
@@ -36,6 +36,8 @@ const config = {
     dictionary: './src/pages/dictionary/dictionary.js',
     memory: './src/pages/memoryGame/memory.js',
     sprint: './src/pages/sprint/sprint.js',
+    promo: './src/pages/promo/promo.js',
+    team: './src/pages/team/team.js',
   },
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -185,14 +187,15 @@ const config = {
       title: 'RS lang-main',
       favicon: './assets/images/favicon.ico',
       chunks: ['main'],
-      filename: './main.html',
+      template: 'src/pages/main/main.html',
+      filename: './index.html',
     }),
     new HtmlWebPackPlugin({
       title: 'RS lang',
       favicon: './assets/images/favicon.ico',
       chunks: ['login'],
       template: 'src/pages/login/login.html',
-      filename: './index.html',
+      filename: './login.html',
     }),
 
     new HtmlWebPackPlugin({
@@ -254,6 +257,20 @@ const config = {
       favicon: './assets/images/favicon.ico',
       chunks: ['sprint'],
       filename: './sprint.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['promo'],
+      template: 'src/pages/promo/promo.html',
+      filename: './promo.html',
+    }),
+    new HtmlWebPackPlugin({
+      title: 'RS lang',
+      favicon: './assets/images/favicon.ico',
+      chunks: ['team'],
+      template: 'src/pages/team/team.html',
+      filename: './team.html',
     }),
     new CopyWebpackPlugin([
       {

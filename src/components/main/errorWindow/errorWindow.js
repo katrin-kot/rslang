@@ -1,11 +1,21 @@
 import './errorWindow.css';
 
+const addButtonListener = (listener) => {
+  const button = document.querySelector('.error-button');
+
+  button.addEventListener('click', listener);
+};
+
+const defaultListener = () => {
+  window.location.replace('/login.html');
+};
+
 export const errorWindow = (
   errorText = 'Ошибка авторизации. Необходимо войти в учётную запись.',
   buttonText = 'Авторизоваться',
   listener = defaultListener,
 ) => {
-  const errorWindow = `
+  const window = `
     <div class="error-wrapper">
       <div class="error-window">
         <span class="error-message">
@@ -16,17 +26,7 @@ export const errorWindow = (
     </div>
   `;
 
-  document.querySelector('body').insertAdjacentHTML('afterbegin', errorWindow);
+  document.querySelector('body').insertAdjacentHTML('afterbegin', window);
 
   addButtonListener(listener);
-};
-
-const addButtonListener = (listener) => {
-  const button = document.querySelector('.error-button');
-
-  button.addEventListener('click', listener);
-};
-
-const defaultListener = () => {
-  location.replace(window.location.origin);
 };

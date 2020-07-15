@@ -372,3 +372,4 @@ export default class CardGame {
     document.body.append(modal);
   }
 }
+

@@ -147,7 +147,9 @@ class GameController {
         userId: getUserID(),
       });
     } catch (e) {
-      await addEmptyStatistics();
+      await addEmptyStatistics({
+        userId: getUserID(),
+      });
     }
     delete stats.id;
 

@@ -8,6 +8,7 @@ class ResultPageController {
     ResultPageView.render();
     PubSub.subscribe('showResults', this.showResults);
     PubSub.subscribe('playVoiceResultWord', this.playVoiceResultWord);
+    PubSub.subscribe('redirectOnMain', this.redirectOnMain);
   }
 
   showResults() {
@@ -16,6 +17,10 @@ class ResultPageController {
 
   playVoiceResultWord(src) {
     VoiceView.changeSrc(src);
+  }
+
+  redirectOnMain() {
+    window.location.pathname = '/index.html';
   }
 }
 

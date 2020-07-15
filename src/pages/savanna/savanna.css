@@ -113,18 +113,21 @@ body {
   background-color: transparent;
 }
 
-.form__input::placeholder {
-  color: #fff;
-}
-
 .form__round {
   margin-top: 10px;
   padding: .5rem .25rem;
+  width: 165px;
   height: 2rem;
   color: #fff;
   border: 1px solid #fff;
   outline: none;
   background-color: transparent;
+}
+
+.form__input::placeholder,
+.form__round::placeholder {
+  color: #fff;
+  opacity: .7;
 }
 
 .form__button {

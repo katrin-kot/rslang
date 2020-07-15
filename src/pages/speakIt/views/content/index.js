@@ -6,6 +6,14 @@ class ContentView {
   constructor() {
     this.template = `
       <div class="speakIt__content__wrapper container">
+        <div id="btn-home">
+          <button class="btn-main-page">
+            <span class="circle" aria-hidden="true">
+              <span class="icon arrow"></span>
+            </span>
+            <a href="/index.html" class="button-text">На главную</a>
+          </button>
+        </div>
         <div class="speakIt__top-bar">
           <div class ="speakIt__difficulty-lvl__wrapper"></div>
           <div class="speakIt__progress-bar__wrapper">

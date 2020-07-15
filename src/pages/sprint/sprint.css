@@ -1,6 +1,119 @@
 body {
   margin: 0px;
-  background-image: url('/assets/images/foggy_birds_@2X.png');
+  font-family: 'Poppins', sans-serif;
+  background-image: url('/assets/images/sprint-bg.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  height: 100vh;
+}
+
+#btn-home {
+  text-align: center;
+  margin: 0 auto;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.main-block #btn-home {
+  margin: 0 0 15px;
+  max-width: 320px;
+}
+
+.btn-main-page {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+  vertical-align: middle;
+  text-decoration: none;
+  background: transparent;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+  width: 12rem;
+  height: auto;
+  margin: 0px auto;
+}
+
+.btn-main-page .circle {
+  -webkit-transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  position: relative;
+  display: block;
+  margin: 0;
+  width: 3rem;
+  height: 3rem;
+  background: #fff;
+  border-radius: 10px;
+}
+
+.btn-main-page .circle .icon {
+  -webkit-transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  background: #000;
+}
+
+button.btn-main-page .circle .icon.arrow {
+  -webkit-transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  left: 0.625rem;
+  width: 1.125rem;
+  height: 0.125rem;
+  background: none;
+}
+
+.btn-main-page .circle .icon.arrow::before {
+  position: absolute;
+  content: '';
+  top: -0.25rem;
+  right: 0.0625rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  border-top: 0.125rem solid #000;
+  border-right: 0.125rem solid #000;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+  box-sizing: border-box;
+}
+
+.btn-main-page .button-text {
+  -webkit-transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  transition: all 0.45s cubic-bezier(0.65, 0, 0.076, 1);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.75rem 0;
+  margin: 0 0 0 1.85rem;
+  color: #fff;
+  font-weight: 700;
+  line-height: 1.6;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.btn-main-page:hover .circle {
+  width: 100%;
+}
+
+.btn-main-page:hover .circle .icon.arrow {
+  background: #000;
+  -webkit-transform: translate(1rem, 0);
+  transform: translate(1rem, 0);
+}
+
+.btn-main-page:hover .button-text {
+  color: #000;
 }
 
 .game-wrapper {
@@ -8,12 +121,10 @@ body {
   width: 30%;
   min-width: 320px;
   max-width: 400px;
-  margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   padding: 20px;
-
   font-family: 'Poppins', sans-serif;
   font-size: 15px;
   line-height: 1.2;
@@ -150,6 +261,7 @@ input[type='checkbox']:checked + label:before {
   position: relative;
   width: 100%;
 }
+
 .game-score,
 .game-bonus {
   height: 60px;
@@ -157,7 +269,7 @@ input[type='checkbox']:checked + label:before {
 }
 
 .game-score {
-  padding: 20px 0px;
+  padding: 10px 0px;
   font-family: Poppins, sans-serif;
   font-size: 20px;
   color: #333;
@@ -166,35 +278,37 @@ input[type='checkbox']:checked + label:before {
   font-weight: 600;
 }
 
+.game-score .inner-content,
+.game-score .added-score {
+  display: block;
+}
+
+.game-score .added-score {
+  font-size: 15px;
+}
+
 .game-bonus {
   position: absolute;
   z-index: 1;
   width: 100%;
   top: 0px;
-  background-color: #fff;
   border-top-right-radius: 25px;
   border-top-left-radius: 25px;
   background-color: #d6d4e1;
+  background-size: contain;
+  background-blend-mode: soft-light;
 }
 
-.speaker {
-  position: absolute;
-  z-index: 2;
-  width: 75px;
-  height: 75px;
-  top: 0px;
-  left: 0%;
+.game-bonus.yellow {
+  background-image: url('/assets/images/roof-yellow.png');
 }
 
-.speaker img {
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
+.game-bonus.green {
+  background-image: url('/assets/images/roof-green.png');
 }
 
-.speaker img:hover {
-  width: 55px;
-  height: 55px;
+.game-bonus.blue {
+  background-image: url('/assets/images/roof-blue.png');
 }
 
 .countdown-timer {
@@ -203,7 +317,7 @@ input[type='checkbox']:checked + label:before {
   width: 75px;
   height: 75px;
   top: -10px;
-  left: 80%;
+  left: 77%;
 }
 
 .audio-check {
@@ -227,12 +341,17 @@ input[type='checkbox']:checked + label:before {
   margin-top: 40px;
 }
 
+.word-block {
+  position: relative;
+  width: 100%;
+}
+
 .game-word,
 .game-translation {
   width: 100%;
   height: 20px;
   box-sizing: border-box;
-
+  position: relative;
   padding: 20px 0px;
   font-family: Poppins, sans-serif;
   font-size: 20px;
@@ -240,6 +359,26 @@ input[type='checkbox']:checked + label:before {
   line-height: 1.2;
   text-align: center;
   font-weight: 600;
+}
+
+.speaker {
+  position: absolute;
+  z-index: 2;
+  width: 75px;
+  height: 75px;
+  top: 25px;
+  left: 25px;
+}
+
+.speaker img {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+}
+
+.speaker img:hover {
+  width: 55px;
+  height: 55px;
 }
 
 hr {
@@ -253,11 +392,19 @@ hr {
 }
 
 .correct-answer-icon {
+  opacity: 0;
+  margin: -15px auto 0px;
+  width: 35px;
+  height: 35px;
   background-size: contain;
   background-image: url('/assets/images/correct-icon.png');
 }
 
 .wrong-answer-icon {
+  opacity: 0;
+  margin: -15px auto 0px;
+  width: 35px;
+  height: 35px;
   background-size: contain;
   background-image: url('/assets/images/incorrect-icon.png');
 }
@@ -385,7 +532,8 @@ hr {
 
 .back-button,
 .repeat-button,
-.parameters-button {
+.parameters-button,
+.statistic-button {
   width: 60%;
   display: block;
   position: relative;
@@ -411,7 +559,8 @@ hr {
 
 .back-button:hover,
 .repeat-button:hover,
-.parameters-button:hover {
+.parameters-button:hover,
+.statistic-button:hover {
   box-shadow: 0px 0px 8px 0px #81a4b4;
 }
 

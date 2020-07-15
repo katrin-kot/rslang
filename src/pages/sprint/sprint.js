@@ -2,6 +2,7 @@ import './sprint.css';
 import StartPage from './startPage';
 import Game from './game';
 import Result from './result';
+import { infoPage } from './infoPage';
 
 class Builder {
   constructor() {
@@ -11,7 +12,7 @@ class Builder {
   }
 
   initialize() {
-    this.startPage.initPage(this.startPage, this.gamePage, this.resultPage);
+    infoPage(this.startPage, this.gamePage, this.resultPage);
   }
 }
 
