@@ -64,7 +64,7 @@ h4 {
 
 .carousel-item:nth-child(1) h1 {
   color: rgb(255, 0, 64);
-  text-shadow: 1px 1px 2px black, 0 0 1em white;
+  text-shadow: 1px 1px 2px white, 0 0 1em white;
 }
 
 .carousel-caption a {
@@ -139,6 +139,11 @@ h4 {
     padding: 0 100px;
     top: 50px;
   }
+  .row {
+    margin-top: 20px;
+    margin-right: 0px;
+    margin-left: 0px;
+  }
   .carousel-caption h1 {
     font-size: 30px;
   }
@@ -149,11 +154,15 @@ h4 {
 }
 
 @media (max-width: 480px) {
+  #heading h1 {
+    font-size: 30px;
+  }
+
   .container {
     padding-left: 0;
     padding-right: 0;
   }
-  
+
   .img-polaroid {
     width: 280px;
   }
@@ -163,6 +172,7 @@ h4 {
   }
 
   .carousel-item {
+    position: relative;
     height: 300px;
   }
 
@@ -170,18 +180,25 @@ h4 {
     display: none;
   }
 
+  .carousel-item:nth-child(2) .carousel-img {
+    position: absolute;
+    left: -80px;
+  }
+
   .carousel-img {
     height: 300px;
   }
+
   .carousel-caption {
     width: 100%;
+    margin-top: 20px;
     left: 0;
     padding: 0 100px;
     position: absolute;
     top: 50px;
   }
   .carousel-caption h1 {
-    font-size: 20px;
+    font-size: 30px;
   }
   .carousel-caption .lead,
   .carousel-caption .btn {
@@ -200,5 +217,10 @@ h4 {
 
   .form-inline button {
     margin-top: 10px;
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    display: none;
   }
 }

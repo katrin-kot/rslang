@@ -48,7 +48,7 @@ main.innerHTML = `
 <div id="about">
   <div id="heading" class="row">
     <h1 class="col-12">Лучший способ пополнить словарный запас это - RS LangOctopus</h1>
-    <video class="col-12 col-sm-6" controls="controls"><source src="../../../assets/video/video.mp4"></source></video>
+    <div class="col-12 col-sm-6"><iframe width="560" height="315" src="https://www.youtube.com/embed/OsdZkK6hGzg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></source></div>
     <p class="lead col-12 col-sm-6">
     RS LangOctopus – приложение для изучения иностранных слов с методикой интервального повторения, отслеживанием индивидуального прогресса и мини-играми. 
     Главная страница - это основная часть приложения, в которой происходит изучение новых слов. Её прототипами являются приложение Lingvist и программа Anki.
