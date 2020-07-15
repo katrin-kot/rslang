@@ -190,8 +190,8 @@ export default class CardGame {
           swiper.allowSlideNext = false;
         }, 1000);
         if (swiper.activeIndex === document.querySelectorAll('.swiper-slide').length - 1) {
-          document.querySelector('.swiper-slide-active .show-answer-btn').innerText = 'Завершить игру';
-          document.querySelector('.swiper-slide-active .show-answer-btn').classList.add('end-game');
+          const endBtn = createElement('button', 'end-game', 'Завершить игру');
+          document.querySelector('.swiper-slide-active .card-btns').append(endBtn);
         }
       } else if (value !== input.dataset.word) {
         if (!document.querySelector('.swiper-slide-active.card-container').dataset.errors) {
@@ -257,8 +257,8 @@ export default class CardGame {
         const input = document.querySelector('.swiper-slide-active .word-input');
         input.value = input.dataset.word;
         input.setAttribute('disabled', 'disabled');
-        document.querySelector('.swiper-slide-active .meaning-input').value = document.querySelector('.swiper-slide-active .meaning-input').dataset.word;
-        document.querySelector('.swiper-slide-active .example-input').value = document.querySelector('.swiper-slide-active .example-input').dataset.word;
+        if (document.querySelector('.swiper-slide-active .meaning-input')) document.querySelector('.swiper-slide-active .meaning-input').value = document.querySelector('.swiper-slide-active .meaning-input').dataset.word;
+        if (document.querySelector('.swiper-slide-active .example-input')) document.querySelector('.swiper-slide-active .example-input').value = document.querySelector('.swiper-slide-active .example-input').dataset.word;
         document.querySelectorAll('.swiper-slide-active .zero-opacity').forEach((el) => {
           el.classList.remove('zero-opacity');
         });
@@ -322,6 +322,7 @@ export default class CardGame {
     });
     let showAnswer = 0;
     words.forEach((i) => {
+      // eslint-disable-next-line max-len
       const show = Number.isNaN(parseInt(i.dataset.showAnswer, 10)) ? 0 : parseInt(i.dataset.showAnswer, 10);
       showAnswer += show;
     });
@@ -350,7 +351,6 @@ export default class CardGame {
 
     document.body.innerHTML = '';
     document.body.append(modal);
-    console.log(errors, showAnswer, words.length);
   }
 
   static renderNotification() {
@@ -372,4 +372,3 @@ export default class CardGame {
     document.body.append(modal);
   }
 }
-

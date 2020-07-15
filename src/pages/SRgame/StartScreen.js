@@ -1,7 +1,9 @@
 import { createElement } from './helpers';
 import { getHardWordsCount, getLearningWordsCount, getNewWords } from '../../services/SRgameWordsService';
-import { newWordsPerDay } from './settings';
-import { renderNewGame, renderHardGame, renderGame, renderLearningGame, renderNoWordNotification, showNoWordNotification, hideNoWordNotification } from './handlers';
+import {
+  renderNewGame, renderHardGame, renderGame, renderLearningGame,
+  renderNoWordNotification, showNoWordNotification,
+} from './handlers';
 
 export default class StartScreen {
   static async createScreen() {
@@ -38,7 +40,7 @@ export default class StartScreen {
         renderHardGame();
       }
     });
-    
+
     const newWords = createElement('div', 'new-words');
     newWords.innerHTML += `<h3>Учить новые слова</h3><span class="new-number">Всего: ${newWordsCount}</span>`;
     newWords.addEventListener('click', () => {
