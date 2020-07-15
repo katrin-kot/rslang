@@ -50,12 +50,15 @@ const getTodayDate = () => {
   return `${addZeroToTime(date.getMonth() + 1)}/${addZeroToTime(date.getDate())}/${date.getFullYear()}`;
 };
 
+export const getDate = (date) => {
+  return `${addZeroToTime(date.getMonth() + 1)}/${addZeroToTime(date.getDate())}/${date.getFullYear()}`;
+};
+
 export const createErrorObj = (elements) => {
   const errObj = {};
   elements.forEach((i) => {
     if (!errObj[i.dataset.id]) errObj[i.dataset.id] = 0;
-    // eslint-disable-next-line no-restricted-globals
-    const err = isNaN(parseInt(i.dataset.errors, 10)) ? 0 : parseInt(i.dataset.errors, 10);
+    const err = Number.isNaN(parseInt(i.dataset.errors, 10)) ? 0 : parseInt(i.dataset.errors, 10);
     errObj[i.dataset.id] += err;
   });
   return errObj;
@@ -69,6 +72,7 @@ export const createCountObj = (elements) => {
   });
   return countObj;
 };
+
 export {
   countErrors, createElement, addZeroToTime, countDaysInterval, getTodayDate,
 };

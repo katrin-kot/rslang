@@ -1,16 +1,16 @@
 import { createElement } from './helpers';
-import { getHardWordsCount, getLearningWordsCount } from '../../services/SRgameWordsService';
+import { getHardWordsCount, getLearningWordsCount, getNewWords } from '../../services/SRgameWordsService';
 import { newWordsPerDay } from './settings';
-import {
-  renderNewGame, renderHardGame, renderGame, renderLearningGame,
-} from './handlers';
+import { renderNewGame, renderHardGame, renderGame, renderLearningGame, renderNoWordNotification, showNoWordNotification, hideNoWordNotification } from './handlers';
 
 export default class StartScreen {
   static async createScreen() {
     document.querySelector('.swiper-button-next').style.display = 'none';
+    renderNoWordNotification();
     const hardWordsCount = await getHardWordsCount();
     const learningWordsCount = await getLearningWordsCount();
-    const newWordsCount = newWordsPerDay;
+    const words = await getNewWords();
+    const newWordsCount = words.length;
     const wrapper = createElement('div', 'start-screen-container-wrapper');
     const container = createElement('div', 'start-screen-container');
 
@@ -19,21 +19,45 @@ export default class StartScreen {
     const gamesContainer = createElement('div', 'games-container');
 
     const wordsToPractice = createElement('div', 'words-to-practice');
-    wordsToPractice.innerHTML += `<h3>Тренировка на сегодня</h3><br><span class="new-number">${newWordsCount} новых</span><span  class="learning-number">${learningWordsCount} повторить</span></р>`;
-    wordsToPractice.addEventListener('click', renderGame);
+    wordsToPractice.innerHTML += `<h3>Тренировка на сегодня</h3><br><span class="new-number">Всего: ${newWordsCount}</span><span  class="learning-number">Всего: ${learningWordsCount}</span></р>`;
+    wordsToPractice.addEventListener('click', () => {
+      if (newWordsCount === 0 && learningWordsCount === 0) {
+        showNoWordNotification();
+      } else {
+        renderGame();
+      }
+    });
 
     const optionalContainer = createElement('div', 'optional-games-container');
     const hardWords = createElement('div', 'hard-words');
-    hardWords.innerHTML += `<h3>Учить сложные слова</h3><span class="hard-number">${hardWordsCount}</span>`;
-    hardWords.addEventListener('click', renderHardGame);
-
+    hardWords.innerHTML += `<h3>Учить сложные слова</h3><span class="hard-number">Всего: ${hardWordsCount}</span>`;
+    hardWords.addEventListener('click', () => {
+      if (hardWordsCount === 0) {
+        showNoWordNotification();
+      } else {
+        renderHardGame();
+      }
+    });
+    
     const newWords = createElement('div', 'new-words');
-    newWords.addEventListener('click', renderNewGame);
-    newWords.innerHTML += `<h3>Учить новые слова</h3><span class="new-number">${newWordsCount} слов</span>`;
+    newWords.innerHTML += `<h3>Учить новые слова</h3><span class="new-number">Всего: ${newWordsCount}</span>`;
+    newWords.addEventListener('click', () => {
+      if (newWordsCount === 0) {
+        showNoWordNotification();
+      } else {
+        renderNewGame();
+      }
+    });
 
     const learningWords = createElement('div', 'learning-words');
-    learningWords.innerHTML += `<h3>Тренировать изучаемые слова</h3><span class="learning-number">${learningWordsCount} слов</span>`;
-    learningWords.addEventListener('click', renderLearningGame);
+    learningWords.innerHTML += `<h3>Тренировать изучаемые слова</h3><span class="learning-number">Всего: ${learningWordsCount}</span>`;
+    learningWords.addEventListener('click', () => {
+      if (learningWordsCount === 0) {
+        showNoWordNotification();
+      } else {
+        renderLearningGame();
+      }
+    });
 
     container.append(title);
     gamesContainer.append(wordsToPractice);

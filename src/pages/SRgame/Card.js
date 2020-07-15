@@ -18,7 +18,7 @@ import {
 } from './settings';
 
 const fontSize = 16;
-const letterLength = fontSize * 0.7;
+const letterLength = fontSize * 0.8;
 
 
 export default class Card {
@@ -40,6 +40,27 @@ export default class Card {
     });
     this.error = 0;
     this.container = createElement('div', 'card-container swiper-slide');
+
+    this.addToHardBtn.addEventListener('click', () => {
+      this.addToHardBtn.classList.add('btn_clicked');
+    });
+    this.deleteWordBtn.addEventListener('click', () => {
+      this.deleteWordBtn.classList.add('btn_clicked');
+    });
+
+    this.showAnswerBtn.addEventListener('click', () => {
+      if (!document.querySelector('.swiper-slide-active.card-container').dataset.errors && !document.querySelector('.swiper-slide-active .show-answer-btn').classList.contains('end-game')) {
+        document.querySelector('.swiper-slide-active.card-container').dataset.showAnswer = 1;
+      }
+      if (swiper.activeIndex === document.querySelectorAll('.swiper-slide').length - 1) {
+        setTimeout(() => {
+          if (document.querySelector('.swiper-slide-active .show-answer-btn')) {
+            document.querySelector('.swiper-slide-active .show-answer-btn').innerText = 'Завершить игру';
+            document.querySelector('.swiper-slide-active .show-answer-btn').classList.add('end-game');
+          }
+        });
+      }
+    });
   }
 
   static createCard() {

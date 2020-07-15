@@ -121,9 +121,15 @@ body {
   justify-content: space-between;
 }
 .card-btns button {
-   margin-left: 5px;
+  margin-left: 5px;
   padding: 10px;
   background: linear-gradient(#dbdbdb, #b4b2b2);
+}
+.card-btns button:hover {
+  box-shadow: 0 5px 10px 0 rgba(0,0,0,0.5);
+}
+.difficulty-btns button:hover{
+  box-shadow: 0 5px 10px 0 rgba(0,0,0,0.5);
 }
 
 .show-answer-btn {
@@ -211,9 +217,32 @@ body {
   display: none;
 }
 
-.btn_clicked {
+.card-btns .btn_clicked {
   background:rgb(78, 100, 100);
   cursor: not-allowed;
+}
+
+.card-btns .end-game {
+  background: linear-gradient(#53aa19,#68f30b);
+}
+
+.fade {
+  position: fixed;
+  top: 0;
+  z-index: 15;
+  font-size: 16px;
+  font-family: Poppins,Comic Sans MS;
+  color: #4b4545;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(23, 23, 23, 0.9);
+}
+.close-btn {
+  display: block;
+  margin: auto;
+}
+.no-words-container p {
+  text-align: center;
 }
 
 /* static */
@@ -294,7 +323,34 @@ body {
 .notification-container h3, h4 {
   text-align: center;
 }
-
+.new-words:hover, .learning-words:hover, .hard-words:hover, .words-to-practice:hover {
+  box-shadow: 0 5px 10px 0 rgba(0,0,0,0.5);
+}
+.swiper-button-next {
+  right: 50px !important;
+}
+@media (max-width: 1020px) {
+  #audio-control, #translation-control {
+    width: 40px;
+    height: 40px;
+    top: 10px;
+  }
+  #translation-control {
+    left: 10px;
+  }
+  #audio-control {
+    left: 70px;
+  }
+  .swiper-button-next {
+    top: 30px !important;
+    width: 10px !important;
+    height: 40px !important;
+    right: 20px !important;
+  }
+  .swiper-button-next:after {
+    font-size: 20px !important;
+  }
+}
 @media (max-width: 760px) {
   .card-container body, button, input {
     font-size: 12px;
@@ -317,26 +373,6 @@ body {
     width: 95vw;
     font-size: 12px;
   }
-  #audio-control, #translation-control {
-    width: 40px;
-    height: 40px;
-    top: 10px;
-  }
-  #translation-control {
-    left: 10px;
-  }
-  #audio-control {
-    left: 70px;
-  }
-  .swiper-button-next {
-    top: 30px !important;
-    width: 10px !important;
-    height: 40px !important;
-    right: 20px !important;
-  }
-  .swiper-button-next:after {
-    font-size: 20px !important;
-  }
   .difficulty-btns button, .card-btns button {
     font-size: 10px;
   }
@@ -344,4 +380,69 @@ body {
     width: 280px;
     padding: 10px;
   }
+}
+
+
+.spinner {
+  -webkit-animation: rotate 2s linear infinite;
+          animation: rotate 2s linear infinite;
+  z-index: 2;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -25px 0 0 -25px;
+  width: 50px;
+  height: 50px;
+}
+.spinner .path {
+  stroke: #93bfec;
+  stroke-linecap: round;
+  -webkit-animation: dash 1.5s ease-in-out infinite;
+          animation: dash 1.5s ease-in-out infinite;
+}
+
+@-webkit-keyframes rotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate {
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+.show {
+  display: block;
 }
