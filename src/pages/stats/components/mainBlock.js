@@ -19,7 +19,7 @@ function correctAnswersStreak(data) {
   return Object.values(data).filter((el) => parseInt(el.errors, 10) > 0).reduce((acc, cur) => {
     if (cur.score) {
       const [correct] = cur.score.split('-');
-      return acc + correct;
+      return acc + +correct;
     }
     return acc;
   }, 0);

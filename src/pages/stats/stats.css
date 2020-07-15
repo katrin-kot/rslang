@@ -26,3 +26,6 @@ body, html {
     grid-template-rows: auto auto auto auto;
   }
 }
+canvas {
+  max-width: 100%;
+}

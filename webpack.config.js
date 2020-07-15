@@ -244,6 +244,7 @@ const config = {
       favicon: './assets/images/favicon.ico',
       chunks: ['stats'],
       filename: './stats.html',
+      template: 'src/pages/stats/stats.html',
     }),
     new HtmlWebPackPlugin({
       title: 'RS lang',

@@ -19,32 +19,34 @@ const body = document.querySelector('body');
 const userId = getUserID();
 
 async function renderPage() {
-  await checkUserLogin();
-  const data = {
-    optional: {
-      audioCall: {},
-      savanna: {},
-      speakIt: {},
-      SRgame: {},
-      sprintMinigame: {},
-      memoryGame: {},
-    },
-    ...await getStatistics({ userId }),
-  };
-  const settings = await getUserSettings({ userId });
-  const learningWords = await getLearningWords();
-  const learningWordsPerDate = await filterLearningWordsPerDate();
-  const tabsContent = Object.entries(data.optional).map((el) => {
-    const fragment = document.createElement('div');
-    fragment.className = 'tab-layout';
-    fragment.appendChild(mainBlock(el[1], learningWords.length, learningWordsPerDate.length));
-    fragment.appendChild(overallStats(el[1], settings));
-    fragment.appendChild(statsTable(el[1]));
-    return [el[0], fragment];
-  });
-  body.appendChild(layoutGrid([TabsComponent(tabsContent)]));
-  header();
-  footer();
+  const authorized = await checkUserLogin();
+  if(authorized) {
+    const data = {
+      optional: {
+        audioCall: {},
+        savanna: {},
+        speakIt: {},
+        SRgame: {},
+        sprintMinigame: {},
+        memoryGame: {},
+      },
+      ...await getStatistics({ userId }),
+    };
+    const settings = await getUserSettings({ userId });
+    const learningWords = await getLearningWords();
+    const learningWordsPerDate = await filterLearningWordsPerDate();
+    const tabsContent = Object.entries(data.optional).map((el) => {
+      const fragment = document.createElement('div');
+      fragment.className = 'tab-layout';
+      fragment.appendChild(mainBlock(el[1], learningWords.length, learningWordsPerDate.length));
+      fragment.appendChild(overallStats(el[1], settings));
+      fragment.appendChild(statsTable(el[1]));
+      return [el[0], fragment];
+    });
+    body.appendChild(layoutGrid([TabsComponent(tabsContent)]));
+    header();
+    footer();
+  }
 }
 
 renderPage();
