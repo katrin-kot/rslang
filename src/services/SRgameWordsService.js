@@ -28,6 +28,9 @@ export const getTodayLearnedWordsCount = async () => {
   if (!stat.optional) {
     return 0;
   }
+  if (!stat.optional.SRgame) {
+    return 0;
+  }
   if (!stat.optional.SRgame[getTodayDate()]) {
     return 0;
   }
@@ -37,6 +40,9 @@ export const getTodayLearnedWordsCount = async () => {
 export const getTodayNewWordsCount = async () => {
   const stat = await getStatistics({ userId: getUserID() });
   if (!stat.optional) {
+    return 0;
+  }
+  if (!stat.optional.SRgame) {
     return 0;
   }
   if (!stat.optional.SRgame[getTodayDate()]) {
