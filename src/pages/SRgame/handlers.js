@@ -39,6 +39,13 @@ export const renderGame = async () => {
   hideSpinner();
 };
 
+export const hideNoWordNotification = () => {
+  if (document.querySelector('.fade').classList.contains('show')) {
+    document.querySelector('.fade').classList.remove('show');
+  }
+  document.querySelector('.fade').classList.add('display-none');
+};
+
 export const renderNoWordNotification = () => {
   const fade = createElement('div', 'fade display-none');
   const container = createElement('div', 'notification-container no-words-container');
@@ -59,12 +66,4 @@ export const showNoWordNotification = () => {
     document.querySelector('.fade').classList.remove('display-none');
   }
   document.querySelector('.fade').classList.add('show');
-};
-
-
-export const hideNoWordNotification = () => {
-  if (document.querySelector('.fade').classList.contains('show')) {
-    document.querySelector('.fade').classList.remove('show');
-  }
-  document.querySelector('.fade').classList.add('display-none');
 };

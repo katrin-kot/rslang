@@ -66,7 +66,11 @@ export default class LearningCard extends Card {
   }
 
   addCountAndErrors(count, errors) {
-    this.settings.optional.count = parseInt(this.settings.optional.count, 10) + count;
-    this.settings.optional.errors = parseInt(this.settings.optional.errors, 10) + errors;
+    // eslint-disable-next-line max-len
+    const optCount = Number.isNaN(parseInt(this.settings.optional.count, 10)) ? 0 : parseInt(this.settings.optional.count, 10);
+    // eslint-disable-next-line max-len
+    const optErr = Number.isNaN(parseInt(this.settings.optional.errors, 10)) ? 0 : parseInt(this.settings.optional.errors, 10);
+    this.settings.optional.count = optCount + count;
+    this.settings.optional.errors = optErr + errors;
   }
 }
