@@ -50,9 +50,7 @@ const getTodayDate = () => {
   return `${addZeroToTime(date.getMonth() + 1)}/${addZeroToTime(date.getDate())}/${date.getFullYear()}`;
 };
 
-export const getDate = (date) => {
-  return `${addZeroToTime(date.getMonth() + 1)}/${addZeroToTime(date.getDate())}/${date.getFullYear()}`;
-};
+export const getDate = (date) => `${addZeroToTime(date.getMonth() + 1)}/${addZeroToTime(date.getDate())}/${date.getFullYear()}`;
 
 export const createErrorObj = (elements) => {
   const errObj = {};
