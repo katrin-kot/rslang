@@ -1,0 +1,36 @@
+.main-container {
+  display: contents;
+  color: cadetblue;
+}
+
+.course-completion {
+  color: green;
+}
+
+.bar-chart {
+  margin-top: 1rem;
+  grid-area: statsTable;
+}
+
+.bar-chart svg {
+  overflow: inherit;
+}
+
+.pie-chart-block {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  grid-area: gauge;
+}
+
+.course-completion {
+  font-size: 1.5rem;
+  font-family: fantasy;
+  color: cadetblue;
+}
+
+.pie text {
+  font-size: 3em;
+  font-family: "Verdana";
+  fill: #888;
+}

@@ -1,0 +1,38 @@
+.card {
+    box-shadow: 0 5px 10px 0px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    background-color:  #f6ecee;
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+}
+
+.container {
+    flex:1;
+}
+
+.col-lg-4:nth-child(1) .card-body{
+    background-color: slategrey;
+}
+
+.col-lg-4:nth-child(2) .card-body{
+    background-color: steelblue;
+}
+
+.col-lg-4:nth-child(3) .card-body{
+    background-color: slateblue;
+}
+
+.col-lg-4:nth-child(4) .card-body{
+    background-color: dodgerblue;
+}
+
+.col-lg-4:nth-child(5) .card-body{
+    background-color: darkslategrey;
+}
+
+.col-lg-4:nth-child(6) .card-body{
+    background-color: darkcyan;
+}
