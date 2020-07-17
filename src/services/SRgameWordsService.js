@@ -23,7 +23,27 @@ const getAllUserAggregatedWords = async (filter, wordsPerPage) => {
   const content = await rawResponse.json();
   return content;
 };
+export const getTodayLearnedWordsCount = async () => {
+  const stat = await getStatistics({ userId: getUserID() });
+  if (!stat.optional) {
+    return 0;
+  }
+  if (!stat.optional.SRgame[getTodayDate()]) {
+    return 0;
+  }
+  return stat.optional.SRgame[getTodayDate()].learningWords;
+};
 
+export const getTodayNewWordsCount = async () => {
+  const stat = await getStatistics({ userId: getUserID() });
+  if (!stat.optional) {
+    return 0;
+  }
+  if (!stat.optional.SRgame[getTodayDate()]) {
+    return 0;
+  }
+  return stat.optional.SRgame[getTodayDate()].newWords;
+};
 
 export const getNewWords = async () => {
   const studiedWords = await getTodayNewWordsCount();
@@ -142,6 +162,9 @@ export const getLearningWordsCount = async () => {
 
 export const updateStatLearningWords = async (num) => {
   const stat = await getStatistics({ userId: getUserID() });
+  if (!stat.optional) {
+    stat.optional = {};
+  }
   if (!stat.optional.SRgame) {
     stat.optional.SRgame = {};
   }
@@ -158,6 +181,9 @@ export const updateStatLearningWords = async (num) => {
 
 export const updateStatNewWords = async (num) => {
   const stat = await getStatistics({ userId: getUserID() });
+  if (!stat.optional) {
+    stat.optional = {};
+  }
   if (!stat.optional.SRgame) {
     stat.optional.SRgame = {};
   }
@@ -170,26 +196,4 @@ export const updateStatNewWords = async (num) => {
     userId: getUserID(),
     payload: stat,
   });
-};
-
-export const getTodayLearnedWordsCount = async () => {
-  const stat = await getStatistics({ userId: getUserID() });
-  if (!stat.optional.SRgame) {
-    return 0;
-  }
-  if (!stat.optional.SRgame[getTodayDate()]) {
-    return 0;
-  }
-  return stat.optional.SRgame[getTodayDate()].learningWords;
-};
-
-export const getTodayNewWordsCount = async () => {
-  const stat = await getStatistics({ userId: getUserID() });
-  if (!stat.optional.SRgame) {
-    return 0;
-  }
-  if (!stat.optional.SRgame[getTodayDate()]) {
-    return 0;
-  }
-  return stat.optional.SRgame[getTodayDate()].newWords;
 };

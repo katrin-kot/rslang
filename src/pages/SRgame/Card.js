@@ -53,12 +53,8 @@ export default class Card {
         document.querySelector('.swiper-slide-active.card-container').dataset.showAnswer = 1;
       }
       if (swiper.activeIndex === document.querySelectorAll('.swiper-slide').length - 1) {
-        setTimeout(() => {
-          if (document.querySelector('.swiper-slide-active .show-answer-btn')) {
-            document.querySelector('.swiper-slide-active .show-answer-btn').innerText = 'Завершить игру';
-            document.querySelector('.swiper-slide-active .show-answer-btn').classList.add('end-game');
-          }
-        });
+        const endBtn = createElement('button', 'end-game', 'Завершить игру');
+        document.querySelector('.swiper-slide-active .card-btns').append(endBtn);
       }
     });
   }
